@@ -175,7 +175,7 @@
     <ClCompile Include="Wire.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="CMakeList.txt" />
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

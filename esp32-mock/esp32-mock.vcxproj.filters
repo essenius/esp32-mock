@@ -106,6 +106,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="CMakeList.txt" />
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
 </Project>
