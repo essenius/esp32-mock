@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Adafruit_SSD1306.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -107,5 +104,8 @@
     <ClCompile Include="freertos\ringbuf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeList.txt" />
   </ItemGroup>
 </Project>

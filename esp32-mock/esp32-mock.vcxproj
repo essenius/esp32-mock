@@ -145,7 +145,6 @@
     <ClInclude Include="Adafruit_SSD1306.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="ESP.h" />
-    <ClInclude Include="framework.h" />
     <ClInclude Include="freertos\freeRTOS.h" />
     <ClInclude Include="freertos\ringbuf.h" />
     <ClInclude Include="freertos\semphr.h" />
@@ -174,6 +173,9 @@
     <ClCompile Include="WiFi.cpp" />
     <ClCompile Include="WiFiClientSecure.cpp" />
     <ClCompile Include="Wire.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeList.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
