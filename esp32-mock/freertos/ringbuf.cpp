@@ -13,16 +13,10 @@
 
 // Disabling warnings caused by mimicking existing interfaces or mocking hacks
 
-// ReSharper disable CppParameterNeverUsed
 // ReSharper disable CppParameterMayBeConst
-// ReSharper disable CppClangTidyClangDiagnosticVoidPointerToIntCast
-// ReSharper disable CppClangTidyPerformanceNoIntToPtr
-
-#pragma warning (disable:4302 4311 4312 26812)
 
 #include "../ESP.h"
 #include "ringbuf.h"
-
 
 constexpr int16_t MaxItems = 100;
 constexpr int16_t MaxItemSize = 64;
@@ -40,8 +34,9 @@ struct RingBufferContainer {
 RingBufferContainer container[MaxRingbuffers];
 
 int getIndex(RingbufHandle_t bufferHandle) {
-    // Hack, but good enough for a mock
-    return reinterpret_cast<int>(bufferHandle) - 1;
+    // Match the handle size to an int, and subtract 1 to get the index
+    const auto handle = reinterpret_cast<uintptr_t>(bufferHandle); 
+    return static_cast<int>(handle & std::numeric_limits<int>::max()) - 1;
 }
 
 // testing only
@@ -62,13 +57,13 @@ void uxRingbufReset() {
         i.nextBufferItem = 0;
         i.nextReadBufferItem = 0;
         i.bufferIsFull = false;
-        for (unsigned long long& j : i.itemSize) {
+        for (size_t& j : i.itemSize) {
             j = 0;
         }
     }
 }
 
-RingbufHandle_t xRingbufferCreate(size_t xBufferSize, RingbufferType_t xBufferType) {
+RingbufHandle_t xRingbufferCreate(size_t /* xBufferSize */, RingbufferType_t /* xBufferType */) {
     int i = 0;
     while (container[i].ringbufHandle != nullptr && i <= MaxRingbuffers) {
         i++;
@@ -86,7 +81,7 @@ size_t xRingbufferGetCurFreeSize(RingbufHandle_t bufferHandle) {
 }
 
 BaseType_t xRingbufferReceiveSplit(RingbufHandle_t bufferHandle, void** item1, void** item2, size_t* item1Size,
-                                   size_t* item2Size, uint32_t ticksToWait) {
+                                   size_t* item2Size, uint32_t /* ticksToWait */) {
     if (bufferHandle == nullptr) return pdFALSE;
     const int i = getIndex(bufferHandle);
     if (container[i].nextReadBufferItem >= container[i].nextBufferItem) return pdFALSE;

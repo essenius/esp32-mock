@@ -14,6 +14,7 @@
 // Disabling warnings caused by mimicking existing interface
 // ReSharper disable CppParameterNeverUsed
 
+#ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include "time.h"
 #include <Windows.h>
@@ -39,3 +40,4 @@ int gettimeofday(timeval* timeVal, void* ignore) {
     }
     return 0;
 }
+#endif

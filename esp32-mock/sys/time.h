@@ -15,6 +15,7 @@
 // ReSharper disable CppInconsistentNaming
 // ReSharper disable CppNonInlineFunctionDefinitionInHeaderFile
 
+#ifdef _WIN32
 #ifndef HEADER_TIME
 #define HEADER_TIME
 #include <ctime>
@@ -35,4 +36,5 @@ struct timeval {
  */
 int gettimeofday(timeval* timeVal, void* ignore);
 
+#endif
 #endif
