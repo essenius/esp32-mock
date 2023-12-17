@@ -11,14 +11,8 @@
 
 // Mock implementation for unit testing (not targeting the ESP32)
 
-// Disabling warnings caused by mimicking existing interfaces or mocking hacks
-// ReSharper disable CppClangTidyPerformanceNoIntToPtr
-// ReSharper disable CppInconsistentNaming
 // ReSharper disable CppParameterMayBeConst
-// ReSharper disable CppParameterNeverUsed
-
-// deliberate conversion to handle and unscoped enum
-#pragma warning (disable:4312 26812)
+// ReSharper disable CppInconsistentNaming
 
 #include "../ESP.h"
 #include "freeRTOS.h"
@@ -34,7 +28,6 @@ public:
     short currentIndex;
     QueueEntry element[MaxElements];
 };
-
 
 Queue queue[MaxQueues];
 QueueHandle_t queueHandle[MaxQueues] = {nullptr};
@@ -75,7 +68,7 @@ UBaseType_t uxTaskGetStackHighWaterMark(TaskHandle_t taskHandle) {
     return 5250;
 }
 
-QueueHandle_t xQueueCreate(UBaseType_t uxQueueLength, UBaseType_t uxItemSize) {
+QueueHandle_t xQueueCreate(UBaseType_t /*uxQueueLength*/, UBaseType_t /*uxItemSize*/) {
     if (queueIndex < MaxQueues) {
         queueHandle[queueIndex] = &queue[queueIndex];
 
@@ -84,7 +77,7 @@ QueueHandle_t xQueueCreate(UBaseType_t uxQueueLength, UBaseType_t uxItemSize) {
     return nullptr;
 }
 
-BaseType_t xQueueReceive(QueueHandle_t xQueue, void* pvBuffer, TickType_t xTicksToWait) {
+BaseType_t xQueueReceive(QueueHandle_t xQueue, void* pvBuffer, TickType_t /*xTicksToWait*/) {
     const auto queue1 = static_cast<Queue*>(xQueue);
     if (queue1->currentIndex <= 0) return pdFALSE;
     *static_cast<QueueEntry*>(pvBuffer) = queue1->element[0];
@@ -95,7 +88,7 @@ BaseType_t xQueueReceive(QueueHandle_t xQueue, void* pvBuffer, TickType_t xTicks
     return pdTRUE;
 }
 
-BaseType_t xQueueSendToBack(QueueHandle_t xQueue, const void* pvItemToQueue, TickType_t xTicksToWait) {
+BaseType_t xQueueSendToBack(QueueHandle_t xQueue, const void* pvItemToQueue, TickType_t /*xTicksToWait*/) {
     const auto queue1 = static_cast<Queue*>(xQueue);
 
     if (queue1->currentIndex >= MaxElements) return pdFALSE;
@@ -103,7 +96,7 @@ BaseType_t xQueueSendToBack(QueueHandle_t xQueue, const void* pvItemToQueue, Tic
     return pdTRUE;
 }
 
-BaseType_t xQueueSendToFront(QueueHandle_t xQueue, const void* pvItemToQueue, TickType_t xTicksToWait) { return pdFALSE; }
+BaseType_t xQueueSendToFront(QueueHandle_t /*xQueue*/, const void* /*pvItemToQueue*/, TickType_t /*xTicksToWait*/) { return pdFALSE; }
 
 void uxQueueReset() {
     queueIndex = 0;
@@ -123,14 +116,15 @@ UBaseType_t uxQueueSpacesAvailable(QueueHandle_t handle) {
 unsigned long taskHandle = 100;
 
 BaseType_t xTaskCreatePinnedToCore(
-    TaskFunction_t pvTaskCode,
-    const char* pcName,
-    uint16_t usStackDepth,
-    void* pvParameters,
-    UBaseType_t uxPriority,
+    TaskFunction_t /*pvTaskCode*/,
+    const char* /*pcName*/,
+    uint16_t /*usStackDepth*/,
+    void* /*pvParameters*/,
+    UBaseType_t /*uxPriority*/,
     TaskHandle_t* pxCreatedTask,
-    BaseType_t xCoreID) {
-    *pxCreatedTask = reinterpret_cast<TaskHandle_t>(taskHandle++);
+    BaseType_t /*xCoreID*/) {
+	const uintptr_t handle = taskHandle++;
+    *pxCreatedTask = reinterpret_cast<TaskHandle_t>(handle);
     return pdTRUE;
 }
 
@@ -140,11 +134,11 @@ TaskHandle_t xTaskGetCurrentTaskHandle() { return testHandle; }
 
 bool taskNotifyLocked = true;
 
-void vTaskNotifyGiveFromISR(TaskHandle_t xTaskToNotify, BaseType_t* pxHigherPriorityTaskWoken) {
+void vTaskNotifyGiveFromISR(TaskHandle_t /*xTaskToNotify*/, BaseType_t* /*pxHigherPriorityTaskWoken*/) {
     taskNotifyLocked = false;
 }
 
-uint32_t ulTaskNotifyTake(BaseType_t xClearCountOnExit, TickType_t xTicksToWait) {
+uint32_t ulTaskNotifyTake(BaseType_t /*xClearCountOnExit*/, TickType_t /*xTicksToWait*/) {
     if (taskNotifyLocked) return 0;
     taskNotifyLocked = true;
     return 1;

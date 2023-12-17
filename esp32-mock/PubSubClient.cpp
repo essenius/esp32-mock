@@ -14,14 +14,13 @@
 // Disabling warnings caused by mimicking existing interfaces
 // ReSharper disable CppMemberFunctionMayBeStatic
 // ReSharper disable CppMemberFunctionMayBeConst 
-// ReSharper disable CppParameterNeverUsed
 // ReSharper disable CppParameterMayBeConst
 // ReSharper disable CppClangTidyPerformanceUnnecessaryValueParam
 
 #include <SafeCString.h>
 #include "PubSubClient.h"
 
-bool PubSubClient::connect(const char* id, const char* willTopic, uint8_t willQos, bool willRetain, const char* willMessage) {
+bool PubSubClient::connect(const char* id, const char* /*willTopic*/, uint8_t /*willQos*/, bool /*willRetain*/, const char* /*willMessage*/) {
     SafeCString::strcpy(_id, id);
     return _canConnect;
 }
@@ -35,8 +34,9 @@ bool PubSubClient::connect(const char* id, const char* user, const char* pass,
 
 void PubSubClient::setLoopCallback(const char* topic, const uint8_t* payload, int size) {
     SafeCString::strcpy(_loopTopic, topic);
-    memcpy(_loopPayload, payload, size);
-    _loopPayloadSize = size;
+    const auto usedSize = std::min(size, SinglePayloadSize - 1);
+    memcpy(_loopPayload, payload, usedSize);
+    _loopPayloadSize = usedSize;
 }
 
 bool PubSubClient::loop() {

@@ -13,7 +13,6 @@
 // ReSharper disable CppMemberFunctionMayBeConst
 // ReSharper disable CppMemberFunctionMayBeStatic
 // ReSharper disable CppInconsistentNaming
-// ReSharper disable CppParameterNeverUsed
 // ReSharper disable CppParameterMayBeConst
 
 #ifndef HEADER_WIFI
@@ -32,7 +31,7 @@ public:
 
     void mode(int i) { }
 
-    void begin(const char* ssid, const char* password, int ignore = 0, const uint8_t* _bssid = nullptr) {
+    void begin(const char* ssid, const char* /*password*/, int /*ignore*/ = 0, const uint8_t* /*_bssid*/ = nullptr) {
         SafeCString::strcpy(_ssid, ssid);
     }
 

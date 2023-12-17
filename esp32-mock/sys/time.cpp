@@ -11,32 +11,29 @@
 
 // Mock implementation for unit testing (not targeting the ESP32)
 
-// Disabling warnings caused by mimicking existing interface
-// ReSharper disable CppParameterNeverUsed
-
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include "time.h"
 #include <Windows.h>
 
-int gettimeofday(timeval* timeVal, void* ignore) {
+int gettimeofday(timeval* timeVal, void* /*ignore*/) {
     if (timeVal) {
-        FILETIME filetime; // 0.1 microsecond intervals since January 1, 1601 00:00 UTC 
-        ULARGE_INTEGER x;
-        ULONGLONG usec;
-        static constexpr ULONGLONG EpochOffsetMicros = 11644473600000000ULL;
-        // microseconds betweeen Jan 1,1601 and Jan 1,1970 
+        // 0.1 microsecond intervals since January 1, 1601 00:00 UTC 
+        FILETIME filetime{ 0,0 }; 
 
 #if _WIN32_WINNT >= _WIN32_WINNT_WIN8
         GetSystemTimePreciseAsFileTime(&filetime);
 #else
         GetSystemTimeAsFileTime(&filetime);
 #endif
-        x.LowPart = filetime.dwLowDateTime;
-        x.HighPart = filetime.dwHighDateTime;
-        usec = x.QuadPart / 10 - EpochOffsetMicros;
-        timeVal->tv_sec = static_cast<time_t>(usec / 1000000ULL);
-        timeVal->tv_usec = static_cast<long>(usec % 1000000ULL);
+        const ULARGE_INTEGER x {filetime.dwLowDateTime, filetime.dwHighDateTime};
+
+    	// microseconds betweeen Jan 1,1601 and Jan 1,1970 (start date of Unix epoch)
+        static constexpr ULONGLONG EpochOffsetMicroSeconds = 11644473600000000ULL;
+
+    	const ULONGLONG microSeconds = x.QuadPart / 10 - EpochOffsetMicroSeconds;
+        timeVal->tv_sec = static_cast<time_t>(microSeconds / 1000000ULL);
+        timeVal->tv_usec = static_cast<long>(microSeconds % 1000000ULL);
     }
     return 0;
 }

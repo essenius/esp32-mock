@@ -9,12 +9,12 @@
 // is distributed on an "AS IS" BASIS WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-// ReSharper disable CppInconsistentNaming - mimicking existing interface
-// ReSharper disable CppParameterNeverUsed
-
+// Disabling warnings caused by mimicking existing interface
+// ReSharper disable CppInconsistentNaming
 // ReSharper disable CppMemberFunctionMayBeConst
 // ReSharper disable CppMemberFunctionMayBeStatic
 // ReSharper disable CppParameterMayBeConst
+
 #ifndef HEADER_ADAFRUIT_SSD1306_H
 #define HEADER_ADAFRUIT_SSD1306_H
 

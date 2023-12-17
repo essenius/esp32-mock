@@ -35,9 +35,9 @@ int Esp::getFreeHeap() {
 
 // GPIO functions
 
-constexpr uint8_t PinCount = 36;
-uint8_t pinValue[PinCount];
-uint8_t pinModeValue[PinCount];
+constexpr uint8_t _espPinCount = 36;
+uint8_t pinValue[_espPinCount];
+uint8_t pinModeValue[_espPinCount];
 
 uint8_t digitalRead(uint8_t pin) {
     return pinValue[pin];
@@ -57,50 +57,50 @@ void pinMode(uint8_t pin, uint8_t mode) {
 
 // Time functions
 
-unsigned long Micros = 0;
-unsigned long MicrosSteps = 50;
-bool RealTimeOn = false;
-auto startTime = std::chrono::high_resolution_clock::now();
-bool DisableDelay = false;
+unsigned long _espMicros = 0;
+unsigned long _espMicrosSteps = 50;
+bool _espRealTimeOn = false;
+auto _espStartTime = std::chrono::high_resolution_clock::now();
+bool _espDisableDelay = false;
 
-long long microShift = 0;
+long long _espMicroShift = 0;
 
 void configTime(int i, int i1, const char* str, const char* text) {}
 
 void shiftMicros(long long shift) {
-    microShift = shift;
+    _espMicroShift = shift;
 }
 
 void delayMicroseconds(unsigned long delay) {
-    if (RealTimeOn) {
-        microShift += delay;
+    if (_espRealTimeOn) {
+        _espMicroShift += delay;
     }
     else {
-        Micros += delay;
+        _espMicros += delay;
     }
 }
 
 void disableDelay(bool disable) {
-    DisableDelay = disable;
+    _espDisableDelay = disable;
 }
 
 void delay(int delay) {
-    if (DisableDelay) return;
-    if (RealTimeOn) {
-        microShift += delay * 1000LL;
+    if (_espDisableDelay) return;
+    if (_espRealTimeOn) {
+        _espMicroShift += delay * 1000LL;
     }
     else {
-        Micros += delay * 1000UL;
+        _espMicros += delay * 1000UL;
     }
 }
 
 void setRealTime(bool on) {
-    RealTimeOn = on;
-    if (RealTimeOn) {
-        startTime = std::chrono::high_resolution_clock::now();
+    _espRealTimeOn = on;
+    if (_espRealTimeOn) {
+        _espStartTime = std::chrono::high_resolution_clock::now();
     }
     else {
-        Micros = 0;
+        _espMicros = 0;
     }
 }
 
@@ -109,13 +109,12 @@ unsigned long millis() {
 }
 
 unsigned long micros() {
-    if (RealTimeOn) {
+    if (_espRealTimeOn) {
         const auto now = std::chrono::high_resolution_clock::now();
-        return static_cast<unsigned long>(std::chrono::duration_cast<std::chrono::microseconds>(now - startTime).count() +
-            microShift);
+        return std::chrono::duration_cast<std::chrono::microseconds>(now - _espStartTime).count() + _espMicroShift;
     }
-    Micros += MicrosSteps;
-    return Micros;
+    _espMicros += _espMicrosSteps;
+    return _espMicros;
 }
 
 // Serial class
@@ -179,7 +178,7 @@ const char* toString(LogLevel level) {
     return nullptr;
 }
 
-int timerAlarmEnabled = false;
+int _espTimerAlarmEnabled = false;
 hw_timer_t dummy{ 1, 1 };
 
 hw_timer_t* timerBegin(uint8_t num, uint16_t divider, bool countUp) {
@@ -189,7 +188,7 @@ hw_timer_t* timerBegin(uint8_t num, uint16_t divider, bool countUp) {
 }
 
 void timerAlarmEnable(hw_timer_t* timer) {
-    timerAlarmEnabled = true;
+    _espTimerAlarmEnabled = true;
 }
 
 void timerEnd(hw_timer_t* timer) {

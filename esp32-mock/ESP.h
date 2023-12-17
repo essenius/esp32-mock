@@ -14,14 +14,12 @@
 // Disabling warnings caused by mimicking existing interfaces
 // ReSharper disable CppInconsistentNaming
 // ReSharper disable CppMemberFunctionMayBeStatic
-// ReSharper disable CppParameterNeverUsed
 
 #ifndef HEADER_ESP
 #define HEADER_ESP
 #define WIN32_LEAN_AND_MEAN
 #define ARDUINO_ISR_ATTR
 #include <cstdint>
-#include <string>
 #include <SafeCString.h>
 
 // ReSharper disable once CppUnusedIncludeDirective -- added on purpose
@@ -194,8 +192,8 @@ struct hw_timer_t {
 };
 
 hw_timer_t* timerBegin(uint8_t num, uint16_t divider, bool countUp);
-inline void timerAttachInterrupt(hw_timer_t* timer, void (*fn)(), bool edge) {}
-inline void timerAlarmWrite(hw_timer_t* timer, uint64_t alarm_value, bool autoreload) {}
+inline void timerAttachInterrupt(hw_timer_t* /*timer*/, void (*)(), bool /*edge*/) {}
+inline void timerAlarmWrite(hw_timer_t* /*timer*/, uint64_t /*alarm_value*/, bool /*autoreload*/) {}
 void timerAlarmEnable(hw_timer_t* timer);
 void timerEnd(hw_timer_t* timer);
 #endif

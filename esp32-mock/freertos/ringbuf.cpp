@@ -18,6 +18,8 @@
 #include "../ESP.h"
 #include "ringbuf.h"
 
+#include <limits>
+
 constexpr int16_t MaxItems = 100;
 constexpr int16_t MaxItemSize = 64;
 constexpr int MaxRingbuffers = 10;
@@ -69,7 +71,8 @@ RingbufHandle_t xRingbufferCreate(size_t /* xBufferSize */, RingbufferType_t /* 
         i++;
     }
     if (i > MaxRingbuffers) return nullptr;
-    container[i].ringbufHandle = reinterpret_cast<RingbufHandle_t>(i + 1);
+    const uint64_t handle = static_cast<uint64_t>(i + 1);
+    container[i].ringbufHandle = reinterpret_cast<RingbufHandle_t>(handle);
     return container[i].ringbufHandle;
 }
 

@@ -12,7 +12,6 @@
 // Disabling warnings caused by mimicking existing interface
 // ReSharper disable CppInconsistentNaming
 // ReSharper disable CppMemberFunctionMayBeStatic
-// ReSharper disable CppParameterNeverUsed
 
 #ifndef HEADER_HTTPCLIENT
 #define HEADER_HTTPCLIENT
@@ -27,7 +26,7 @@ class HTTPClient {
 public:
     HTTPClient() = default;
 
-    bool begin(WiFiClient& client, const char* url) { return true; }
+    bool begin(WiFiClient& /*client*/, const char* /*url*/) { return true; }
     void end() {}
     int GET() { return ReturnValue; }
     String getString() { return {"0.1.1"}; }

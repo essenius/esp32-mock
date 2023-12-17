@@ -14,14 +14,13 @@
 // Disabling warnings caused by mimicking existing interface
 // ReSharper disable CppMemberFunctionMayBeConst
 // ReSharper disable CppParameterMayBeConst
-// ReSharper disable CppParameterNeverUsed
 
 #include "Preferences.h"
 
 #include <fstream>
 #include <sstream>
 
-bool Preferences::begin(const char* name, bool readOnly) {
+bool Preferences::begin(const char* name, bool /*readOnly*/) {
     _started = true;
     _currentPreference = &_preferences[name];
     return true;
@@ -50,7 +49,7 @@ void Preferences::getBytes(const char* key, void* buf, const size_t maxLen) {
 }
 
 String Preferences::getString(const char* key) {
-    if (!_started) return nullptr;
+    if (!_started) return "";
     return {(*_currentPreference)[key].c_str()};
 }
 

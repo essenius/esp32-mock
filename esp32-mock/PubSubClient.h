@@ -64,6 +64,8 @@ private:
     constexpr static int FieldSize = 64;
     constexpr static int PayloadSize = 1024;
     constexpr static int TopicSize = 2500;
+    constexpr static int SingleTopicSize = 100;
+    constexpr static int SinglePayloadSize = 10;
     std::function<void(char*, unsigned char*, unsigned)> _callback;
     int _callCount = 0;
     bool _canConnect = true;
@@ -75,8 +77,8 @@ private:
     char _payload[PayloadSize] = {};
     char _topic[TopicSize] = {};
     char _user[FieldSize] = {};
-    char _loopTopic[100] = "\0";
-    uint8_t _loopPayload[10] = {};
+    char _loopTopic[SingleTopicSize] = "\0";
+    uint8_t _loopPayload[SinglePayloadSize] = {};
     int _loopPayloadSize = 0;
 };
 
