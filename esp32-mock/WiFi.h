@@ -29,7 +29,7 @@ class WiFiClass {
 public:
     WiFiClass();
 
-    void mode(int i) { }
+    void mode(int /*i*/) { }
 
     void begin(const char* ssid, const char* /*password*/, int /*ignore*/ = 0, const uint8_t* /*_bssid*/ = nullptr) {
         SafeCString::strcpy(_ssid, ssid);

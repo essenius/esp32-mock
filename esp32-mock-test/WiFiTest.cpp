@@ -13,7 +13,7 @@
 #include "../esp32-mock/WiFi.h"
 
 namespace Esp32MockTest {
-	TEST(WifiTest, WiFiInitTest) {
+	TEST(WifiTest, InitTest) {
 		EXPECT_STREQ("00:11:22:33:44:55", WiFi.macAddress().c_str());
 		for (int i = 0; i < 5; i++) {
 			EXPECT_FALSE(WiFi.isConnected());
@@ -40,14 +40,14 @@ namespace Esp32MockTest {
 		EXPECT_STREQ("", WiFi.getHostname());
 	}
 
-	TEST(WifiTest, WiFiConnectInTest) {
+	TEST(WifiTest, ConnectInTest) {
 		WiFi.connectIn(2);
 		EXPECT_FALSE(WiFi.isConnected());
 		EXPECT_FALSE(WiFi.isConnected());
 		EXPECT_TRUE(WiFi.isConnected());
 	}
 
-	TEST(WifiTest, WiFiConfigTest) {
+	TEST(WifiTest, ConfigTest) {
 		WiFi.config(IPAddress(1, 2, 3, 4), IPAddress(5, 6, 7, 8), IPAddress(9, 10, 11, 12), IPAddress(13,14,15,16), IPAddress(17,18,19,20));
 		EXPECT_STREQ("1.2.3.4", WiFi.localIP().toString().c_str());
 		EXPECT_STREQ("5.6.7.8", WiFi.gatewayIP().toString().c_str());

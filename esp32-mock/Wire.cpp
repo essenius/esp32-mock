@@ -71,9 +71,9 @@ uint8_t TwoWire::getAddress() {
 size_t TwoWire::write(uint8_t value) {
     if (_writeIndex < WriteBufferSize) {
         _written[_writeIndex++] = value;
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
 short TwoWire::writeMismatchIndex(const uint8_t* expected, const short length) const {

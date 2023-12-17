@@ -108,7 +108,9 @@
     <ClCompile Include="IPAddressTest.cpp" />
     <ClCompile Include="PreferencesTest.cpp" />
     <ClCompile Include="PubSubClientTest.cpp" />
+    <ClCompile Include="WiFiClientSecureTest.cpp" />
     <ClCompile Include="WiFiTest.cpp" />
+    <ClCompile Include="WireTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\esp32-mock\esp32-mock.vcxproj">
