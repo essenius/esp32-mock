@@ -12,7 +12,6 @@
 // Disabling warnings caused by mimicking existing interface
 // ReSharper disable CppMemberFunctionMayBeStatic
 // ReSharper disable CppInconsistentNaming
-// ReSharper disable CppParameterNeverUsed
 // ReSharper disable CppParameterMayBeConst
 // ReSharper disable CppClangTidyPerformanceUnnecessaryValueParam
 // ReSharper disable CppPassValueParameterByConstReference

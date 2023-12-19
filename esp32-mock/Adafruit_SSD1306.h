@@ -30,7 +30,7 @@ constexpr uint8_t SSD1306_SWITCHCAPVCC = 0x02;
  */
 class Adafruit_SSD1306 {
 public:
-    Adafruit_SSD1306(unsigned width, unsigned height, TwoWire* wire) {}
+    Adafruit_SSD1306(unsigned /*width*/, unsigned /*height*/, TwoWire* /*wire*/) {}
 
     /**
      * \brief 
@@ -40,11 +40,11 @@ public:
      * \param initDependencies call begin on the dependencies (Wire) as well
      * \return true on success, false on failure
      */
-    bool begin(uint8_t switchvcc, uint8_t i2caddr, bool reset = true, bool initDependencies = true) {
+    bool begin(uint8_t /*switchvcc*/, uint8_t /*i2caddr*/, bool /*reset*/ = true, bool /*initDependencies*/ = true) {
         return _isPresent;
     }
 
-    void cp437(bool x = true) {}
+    void cp437(bool /*x*/ = true) {}
 
     /**
      * \brief push the display buffer to the hardware

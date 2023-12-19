@@ -15,9 +15,11 @@
 // ReSharper disable CppInconsistentNaming
 // ReSharper disable CppNonInlineFunctionDefinitionInHeaderFile
 
-#ifdef _WIN32
 #ifndef HEADER_TIME
 #define HEADER_TIME
+
+#ifdef _WIN32
+
 #include <ctime>
 
 /**

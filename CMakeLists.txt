@@ -6,11 +6,11 @@ project(${libName} VERSION 0.0.1 LANGUAGES CXX)
 
 # We only want to enable testing and code coverage for the top level project
 # On Windows, these are also only used when building a vcpkg package.
-#if ((CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR) AND NOT (WIN32))
-#  set(TOP_LEVEL ON)
-#else()
-#  set(TOP_LEVEL OFF)
-#endif()
+if ((CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR) AND NOT (WIN32))
+  set(TOP_LEVEL ON)
+else()
+  set(TOP_LEVEL OFF)
+endif()
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -29,9 +29,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(esp32-mock)
 
-#if(TOP_LEVEL)
-#  message(STATUS "Top level project - enabling tests")
-#  enable_testing()
-#  add_subdirectory(test)
+
+if(TOP_LEVEL)
+  message(STATUS "Top level project - enabling tests")
+  enable_testing()
+  add_subdirectory(esp32-mock-test)
 #  target_code_coverage(${matrixTestName} EXCLUDE build/_deps/googletest-src/* test/*) 
-#endif()
+endif()

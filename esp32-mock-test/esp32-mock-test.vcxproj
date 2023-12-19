@@ -104,7 +104,9 @@
   <ItemGroup>
     <ClCompile Include="Adafruit_SSD1306Test.cpp" />
     <ClCompile Include="ESPTest.cpp" />
+    <ClCompile Include="freeRTOSTest.cpp" />
     <ClCompile Include="HttpClientTest.cpp" />
+    <ClCompile Include="HTTPUpdateTest.cpp" />
     <ClCompile Include="IPAddressTest.cpp" />
     <ClCompile Include="PreferencesTest.cpp" />
     <ClCompile Include="PubSubClientTest.cpp" />
@@ -119,6 +121,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

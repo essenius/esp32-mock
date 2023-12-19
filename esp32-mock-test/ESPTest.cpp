@@ -37,6 +37,8 @@ namespace Esp32MockTest {
 		delayMicroseconds(1000);
 		EXPECT_EQ(1150, micros());
 		EXPECT_EQ(1, millis());
+		delay(1);
+		EXPECT_EQ(2, millis());
 	}
 
 	TEST(ESPTest, realtimeOntimeTest) {
@@ -64,6 +66,7 @@ namespace Esp32MockTest {
 
 	TEST(ESPTest, SerialTest) {
 		Serial.begin(115200);
+		Serial.setTimeout(1000);
 		EXPECT_STREQ("", Serial.getOutput());
 		Serial.print("Hello");
 		EXPECT_STREQ("Hello", Serial.getOutput());

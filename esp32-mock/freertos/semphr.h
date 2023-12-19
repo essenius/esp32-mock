@@ -17,6 +17,7 @@
 
 #ifndef HEADER_SEMPHR
 #define HEADER_SEMPHR
+#include "freeRTOS.h"
 
 using SemaphoreHandle_t = void*;
 

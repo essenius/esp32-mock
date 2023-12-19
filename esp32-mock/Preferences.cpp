@@ -42,7 +42,7 @@ bool Preferences::getBool(const char* key, const bool defaultValue) {
 
 void Preferences::getBytes(const char* key, void* buf, const size_t maxLen) {
     if (!isKey(key)) {
-        buf = nullptr;
+        static_cast<char *>(buf)[0] = '\0';
         return;
     }
     (*_currentPreference)[key].copy(static_cast<char*>(buf), maxLen);

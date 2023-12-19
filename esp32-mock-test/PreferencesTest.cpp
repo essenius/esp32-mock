@@ -17,6 +17,7 @@ namespace Esp32MockTest {
 		Preferences preferences;
 		EXPECT_STREQ("", preferences.getString("dummy").c_str());
 		EXPECT_TRUE(preferences.begin("test", false));
+		preferences.clear();
 		preferences.putString("dummy", "value");
 		EXPECT_STREQ("value", preferences.getString("dummy").c_str());
 		EXPECT_TRUE(preferences.isKey("dummy"));
@@ -31,6 +32,8 @@ namespace Esp32MockTest {
 		char buf[7];
 		preferences.getBytes("bytes1", buf, sizeof buf);
 		EXPECT_EQ(0, strncmp(buf, "1@%:e~", 6)) << "getBytes OK 2";
+		preferences.getBytes("nonexisting", buf, sizeof buf);
+		EXPECT_EQ(0, buf[0]);
 		preferences.end();
 		preferences.save();
 		preferences.clear();

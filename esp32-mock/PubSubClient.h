@@ -12,7 +12,6 @@
 // Disabling warnings caused by mimicking existing interfaces
 // ReSharper disable CppMemberFunctionMayBeStatic 
 // ReSharper disable CppMemberFunctionMayBeConst
-// ReSharper disable CppParameterNeverUsed
 // ReSharper disable CppParameterMayBeConst
 
 #ifndef HEADER_PUBSUBCLIENT
@@ -38,13 +37,13 @@ public:
 
     bool loop();
     bool publish(const char* topic, const char* payload, bool retain = false);
-    bool setBufferSize(int size) { return true; }
+    bool setBufferSize(int /*size*/) { return true; }
     PubSubClient& setCallback(MQTT_CALLBACK_SIGNATURE);
-    PubSubClient& setClient(Client& client) { return *this; }
-    PubSubClient& setKeepAlive(uint16_t period) { return *this; }
-    PubSubClient& setServer(const char* broker, uint16_t port) { return *this; }
-    bool subscribe(const char* topic) { return _canSubscribe; }
-    bool unsubscribe(const char* topic) { return true; }
+    PubSubClient& setClient(Client& /*client*/) { return *this; }
+    PubSubClient& setKeepAlive(uint16_t /*period*/) { return *this; }
+    PubSubClient& setServer(const char* /*broker*/, uint16_t /*port*/) { return *this; }
+    bool subscribe(const char* /*topic*/) { return _canSubscribe; }
+    bool unsubscribe(const char* /*topic*/) { return true; }
     int state() { return 3; }
 
     // test assistance functions

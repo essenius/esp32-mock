@@ -14,7 +14,7 @@
 #include <SafeCString.h>
 
 namespace Esp32MockTest {
-	class PubSubClientTest : public ::testing::Test {
+	class PubSubClientTest : public testing::Test {
 	public:
 
 		void callback(const char* topic, const uint8_t* payload, const unsigned int length) {
@@ -105,11 +105,11 @@ namespace Esp32MockTest {
 		client.reset();
 
 		for (int i = 0; i < 25; i++) {
-			EXPECT_TRUE(client.publish("ABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghi", "123456789")) << "#" << i;;
+			EXPECT_TRUE(client.publish("ABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghi", "123456789")) << "#" << i;
 		}
 		EXPECT_FALSE(client.publish("ABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghi", "123456789"));
 		for (int i = 0; i < 54; i++) {
-			EXPECT_TRUE(client.publish("", "123456789")) << "#" << i;;
+			EXPECT_TRUE(client.publish("", "123456789")) << "#" << i;
 		}
 		EXPECT_FALSE(client.publish("", "123456789"));
 	}

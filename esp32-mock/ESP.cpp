@@ -16,7 +16,6 @@
 // ReSharper disable CppMemberFunctionMayBeStatic
 // ReSharper disable CppMemberFunctionMayBeConst
 // ReSharper disable CppParameterMayBeConst
-// ReSharper disable CppParameterNeverUsed
 
 #include "ESP.h"
 #include <chrono>
@@ -65,7 +64,7 @@ bool _espDisableDelay = false;
 
 long long _espMicroShift = 0;
 
-void configTime(int i, int i1, const char* str, const char* text) {}
+void configTime(int /*i*/, int /*i1*/, const char* /*str*/, const char* /*text*/) {}
 
 void shiftMicros(long long shift) {
     _espMicroShift = shift;
@@ -111,7 +110,8 @@ unsigned long millis() {
 unsigned long micros() {
     if (_espRealTimeOn) {
         const auto now = std::chrono::high_resolution_clock::now();
-        return std::chrono::duration_cast<std::chrono::microseconds>(now - _espStartTime).count() + _espMicroShift;
+        const auto result = std::chrono::duration_cast<std::chrono::microseconds>(now - _espStartTime).count() + _espMicroShift;
+        return result;
     }
     _espMicros += _espMicrosSteps;
     return _espMicros;
@@ -125,7 +125,7 @@ int HardwareSerial::available() {
     return static_cast<int>(strlen(_inputBufferPointer));
 }
 
-void HardwareSerial::begin(int speed) {
+void HardwareSerial::begin(int /*speed*/) {
     clearInput();
     clearOutput();
 }
@@ -165,7 +165,7 @@ void HardwareSerial::setInput(const char* input) {
     _inputBufferPointer = _inputBuffer;
 }
 
-void HardwareSerial::setTimeout(long timeout) {}
+void HardwareSerial::setTimeout(long /*timeout*/) {}
 
 const char* toString(LogLevel level) {
     switch (level) {
@@ -181,17 +181,17 @@ const char* toString(LogLevel level) {
 int _espTimerAlarmEnabled = false;
 hw_timer_t dummy{ 1, 1 };
 
-hw_timer_t* timerBegin(uint8_t num, uint16_t divider, bool countUp) {
+hw_timer_t* timerBegin(uint8_t num, uint16_t divider, bool /*countUp*/) {
     dummy.num = num;
     dummy.group = static_cast<uint8_t>(divider);
     return &dummy;
 }
 
-void timerAlarmEnable(hw_timer_t* timer) {
+void timerAlarmEnable(hw_timer_t* /*timer*/) {
     _espTimerAlarmEnabled = true;
 }
 
-void timerEnd(hw_timer_t* timer) {
+void timerEnd(hw_timer_t* /*timer*/) {
     dummy.num = 255;
     dummy.group = 255;
 }

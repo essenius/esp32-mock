@@ -12,7 +12,6 @@
 // Disabling warnings caused by mimicking existing interface
 // ReSharper disable CppInconsistentNaming
 // ReSharper disable CppMemberFunctionMayBeStatic
-// ReSharper disable CppParameterNeverUsed
 
 #ifndef HEADER_WIFICLIENTSECURE
 #define HEADER_WIFICLIENTSECURE
@@ -24,9 +23,9 @@
  */
 class WiFiClientSecure final : public WiFiClient {
 public:
-    void setCACert(const char* cert) { }
-    void setCertificate(const char* cert) { }
-    void setPrivateKey(const char* cert) { }
+    void setCACert(const char* /*cert*/) { }
+    void setCertificate(const char* /*cert*/) { }
+    void setPrivateKey(const char* /*cert*/) { }
     void setInsecure() { _insecure = true; }
 
     // testing
