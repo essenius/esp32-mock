@@ -17,6 +17,7 @@
 
 #ifndef HEADER_RINGBUF
 #define HEADER_RINGBUF
+#include "freeRTOS.h"
 
 using RingbufHandle_t = void*;
 

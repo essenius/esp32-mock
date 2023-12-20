@@ -110,6 +110,7 @@
     <ClCompile Include="IPAddressTest.cpp" />
     <ClCompile Include="PreferencesTest.cpp" />
     <ClCompile Include="PubSubClientTest.cpp" />
+    <ClCompile Include="ringbufTest.cpp" />
     <ClCompile Include="WiFiClientSecureTest.cpp" />
     <ClCompile Include="WiFiTest.cpp" />
     <ClCompile Include="WireTest.cpp" />

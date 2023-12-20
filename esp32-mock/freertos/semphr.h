@@ -13,7 +13,6 @@
 
 // Disabling warnings caused by mimicking existing interfaces
 // ReSharper disable CppInconsistentNaming
-// ReSharper disable CppParameterNeverUsed
 
 #ifndef HEADER_SEMPHR
 #define HEADER_SEMPHR
@@ -22,7 +21,7 @@
 using SemaphoreHandle_t = void*;
 
 inline SemaphoreHandle_t xSemaphoreCreateMutex() { return nullptr; }
-inline BaseType_t xSemaphoreTake(SemaphoreHandle_t handle, unsigned long delay) { return pdTRUE; }
-inline void xSemaphoreGive(SemaphoreHandle_t handle) {}
-inline void xSemaphoreGiveFromISR(QueueHandle_t xQueue, BaseType_t* pxHigherPriorityTaskWoken) {}
+inline BaseType_t xSemaphoreTake(SemaphoreHandle_t /*handle*/, unsigned long /*delay*/) { return pdTRUE; }
+inline void xSemaphoreGive(SemaphoreHandle_t /*handle*/) {}
+inline void xSemaphoreGiveFromISR(QueueHandle_t /*xQueue*/, BaseType_t* /*pxHigherPriorityTaskWoken*/) {}
 #endif
