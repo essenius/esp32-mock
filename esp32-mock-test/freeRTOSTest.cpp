@@ -78,8 +78,8 @@ namespace Esp32MockTest {
     TEST_F(FreeRtosTest, TaskNotifyTest) {
 		TaskHandle_t handle = nullptr;
 		EXPECT_EQ(pdTRUE, xTaskCreatePinnedToCore([](void*) {}, "task1", 1000, nullptr, 1, &handle, 1)) << "Task 1 created";
-		EXPECT_EQ(0, ulTaskNotifyTake(pdTRUE, portMAX_DELAY)) << "Take returns 0 before give";
+		EXPECT_EQ(0u, ulTaskNotifyTake(pdTRUE, portMAX_DELAY)) << "Take returns 0 before give";
         vTaskNotifyGiveFromISR(handle, nullptr);
-        EXPECT_EQ(1, ulTaskNotifyTake(pdTRUE, portMAX_DELAY)) << "Take returns 1 after give";
+        EXPECT_EQ(1u, ulTaskNotifyTake(pdTRUE, portMAX_DELAY)) << "Take returns 1 after give";
 	}
 }

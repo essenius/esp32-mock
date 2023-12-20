@@ -31,7 +31,7 @@ using TaskFunction_t = void(*)(void*);
 
 #define pdFALSE ((BaseType_t)0)
 #define pdTRUE  ((BaseType_t)1)
-constexpr unsigned long portMAX_DELAY = ULONG_MAX;
+constexpr TickType_t portMAX_DELAY = 0xffff;
 #define configSTACK_DEPTH_TYPE    uint16_t
 
 #define configTICK_RATE_HZ			(1000)

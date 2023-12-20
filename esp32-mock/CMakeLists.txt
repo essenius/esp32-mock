@@ -25,6 +25,5 @@ foreach (_variableName ${_variableNames})
 endforeach()
 
 target_include_directories(${libName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${safe-cstring_SOURCE_DIR}/src )
-target_link_libraries(${libName} PUBLIC safe-cstring)
 install(TARGETS ${libName} DESTINATION lib)
 install(FILES ${myHeaders} DESTINATION include) 

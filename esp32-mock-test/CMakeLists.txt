@@ -13,7 +13,7 @@ FetchContent_Declare(
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-FetchContent_MakeAvailable_With_Check(googletest)
+FetchContent_MakeAvailable(googletest)
 
 set(testName ${libName}-test)
 
@@ -23,17 +23,19 @@ add_executable(${testName} "")
 set(mySources 
     Adafruit_SSD1306Test.cpp 
     ESPTest.cpp 
+    freeRTOSTest.cpp
     HttpClientTest.cpp 
     HTTPUpdateTest.cpp 
     IPAddressTest.cpp 
     PreferencesTest.cpp
     PubSubClientTest.cpp
+    ringbufTest.cpp
     WiFiClientSecureTest.cpp
     WiFiTest.cpp
     WireTest.cpp
 )
 target_sources (${testName} PRIVATE ${mySources})
-
+target_include_directories(${libName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${safe-cstring_SOURCE_DIR}/src )
 target_link_libraries(${testName} ${libName} gtest_main)
 
 add_test(NAME ${testName} COMMAND ${testName})
