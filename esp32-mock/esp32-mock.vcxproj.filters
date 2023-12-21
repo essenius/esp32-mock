@@ -107,5 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
+    <Text Include="freertos\CMakeLists.txt" />
+    <Text Include="sys\CMakeLists.txt" />
   </ItemGroup>
 </Project>
