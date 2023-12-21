@@ -1,0 +1,1 @@
+target_sources(${libName} PUBLIC freeRTOS.h ringbuf.h semphr.h PRIVATE freeRTOS.cpp ringbuf.cpp)
