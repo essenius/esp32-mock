@@ -16,7 +16,6 @@
 // ReSharper disable CppMemberFunctionMayBeConst
 // ReSharper disable CppMemberFunctionMayBeStatic
 // ReSharper disable CppParameterMayBeConst
-// ReSharper disable CppParameterNeverUsed
 
 #include "Wire.h"
 
@@ -27,7 +26,7 @@ int TwoWire::available() {
     return ++_available;
 }
 
-void TwoWire::begin(int sda, int scl) {
+void TwoWire::begin(int /*sda*/, int /*scl*/) {
     _nextResult = 0;
     _available = 0;
     _writeIndex = 0;
@@ -60,7 +59,7 @@ int TwoWire::read() {
     return _nextResult++;
 }
 
-uint8_t TwoWire::requestFrom(uint8_t address, uint8_t size, bool stop) {
+uint8_t TwoWire::requestFrom(uint8_t /*address*/, uint8_t /*size*/, bool /*stop*/) {
     return 0;
 }
 

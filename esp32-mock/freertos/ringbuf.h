@@ -13,7 +13,6 @@
 
 // Disabling warnings caused by mimicking existing interfaces
 // ReSharper disable CppInconsistentNaming
-// ReSharper disable CppParameterNeverUsed
 
 #ifndef HEADER_RINGBUF
 #define HEADER_RINGBUF
@@ -28,7 +27,7 @@ void setRingBufferBufferFull(RingbufHandle_t bufferHandle, bool isFull);
 void setRingBufferNoMoreEntries(RingbufHandle_t bufferHandle);
 void uxRingbufReset();
 
-inline void vRingbufferReturnItem(RingbufHandle_t bufferHandle, void* item1) {}
+inline void vRingbufferReturnItem(RingbufHandle_t /*bufferHandle*/, void* /*item1*/) {}
 
 RingbufHandle_t xRingbufferCreate(size_t xBufferSize, RingbufferType_t xBufferType);
 

@@ -15,6 +15,7 @@
 
 // ReSharper disable CppParameterMayBeConst
 
+// not unused on Linux (but is on Windows)
 #include "../ESP.h"
 #include "ringbuf.h"
 

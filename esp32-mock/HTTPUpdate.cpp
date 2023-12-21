@@ -14,7 +14,6 @@
 // Disabling warnings caused by mimicking existing interface
 // ReSharper disable CppInconsistentNaming
 // ReSharper disable CppMemberFunctionMayBeConst
-// ReSharper disable CppParameterNeverUsed
 
 #include "HTTPUpdate.h"
 
@@ -22,7 +21,7 @@ int HTTPUpdate::ReturnValue = HTTP_UPDATE_NO_UPDATES;
 
 HTTPUpdate httpUpdate;
 
-t_httpUpdate_return HTTPUpdate::update(WiFiClient& client, const char* url) {
+t_httpUpdate_return HTTPUpdate::update(WiFiClient& /*client*/, const char* /*url*/) {
     if (ReturnValue == HTTP_UPDATE_OK) {
         if (_cbStart) _cbStart();
         if (_cbProgress) {

@@ -13,7 +13,6 @@
 
 // Disabling warnings caused by mimicking existing interfaces
 // ReSharper disable CppInconsistentNaming
-// ReSharper disable CppParameterNeverUsed
 
 #ifndef HEADER_FREERTOS
 #define HEADER_FREERTOS

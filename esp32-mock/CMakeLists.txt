@@ -13,13 +13,16 @@ add_library(${libName} "")
 
 # If we build under vcpkg, we add the include folder 
 if (DEFINED CMAKE_PREFIX_PATH) 
+  file(APPEND ${PROJECT_BINARY_DIR}/output.txt "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}\n")
   foreach (entry ${CMAKE_PREFIX_PATH})
       list(APPEND includeFolders ${entry}/include)
   endforeach() 
 # Otherwise, we directly add the dependency include folder (it's header only)
 else()
+  file(APPEND ${PROJECT_BINARY_DIR}/output.txt "CMAKE_PREFIX_PATH not found\n")
   list(APPEND includeFolders ${safe-cstring_SOURCE_DIR}/src)
 endif()
+file(APPEND ${PROJECT_BINARY_DIR}/output.txt "includeFolders: ${includeFolders}\n")
 
 add_subdirectory(freertos)
 add_subdirectory(sys)
