@@ -11,9 +11,15 @@ FetchContent_MakeAvailable(safe-cstring)
 
 add_library(${libName} "")
 
-foreach (entry ${CMAKE_PREFIX_PATH})
-    list(APPEND includeFolders ${entry}/include)
-endforeach() 
+# If we build under vcpkg, we add the include folder 
+if (DEFINED CMAKE_PREFIX_PATH) 
+  foreach (entry ${CMAKE_PREFIX_PATH})
+      list(APPEND includeFolders ${entry}/include)
+  endforeach() 
+# Otherwise, we directly add the dependency include folder (it's header only)
+else()
+  list(APPEND includeFolders ${safe-cstring_SOURCE_DIR}/src)
+endif()
 
 add_subdirectory(freertos)
 add_subdirectory(sys)
