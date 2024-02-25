@@ -6,7 +6,7 @@ project(${libName} VERSION 0.1.2 LANGUAGES CXX)
 
 # We only want to enable testing and code coverage for the top level project
 # If we are called from a vcpkg build, we also don't want tests
-if ((CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR) AND NOT (${VCPKG_INSTALLED_DIR}))
+if ((CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR) AND NOT (${VCPKG_BASE_VERSION}))
   set(TOP_LEVEL ON)
 else()
   set(TOP_LEVEL OFF)
@@ -18,6 +18,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(esp32-mock)
+
+get_cmake_property(_variableNames VARIABLES)
+
+list (SORT _variableNames)
+foreach (_variableName ${_variableNames})
+    message(STATUS $"v: ${_variableName}=${${_variableName}}\n")
+endforeach()
 
 if(TOP_LEVEL)
   message(STATUS "Top level project - enabling tests")
