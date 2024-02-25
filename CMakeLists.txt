@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.14)
 
 set(libName esp32-mock)
 
-project(${libName} VERSION 0.1.1 LANGUAGES CXX)
+project(${libName} VERSION 0.1.2 LANGUAGES CXX)
 
 # We only want to enable testing and code coverage for the top level project
-# On Windows, these are also only used when building a vcpkg package.
-if ((CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR) AND NOT (WIN32))
+# If we are called from a vcpkg build, we also don't want tests
+if ((CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR) AND NOT (${VCPKG_INSTALLED_DIR}))
   set(TOP_LEVEL ON)
 else()
   set(TOP_LEVEL OFF)
