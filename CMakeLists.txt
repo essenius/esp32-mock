@@ -6,7 +6,7 @@ project(${libName} VERSION 0.1.2 LANGUAGES CXX)
 
 # We only want to enable testing and code coverage for the top level project
 # If we are called from a vcpkg build, we also don't want tests
-if ((CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR) AND NOT (${VCPKG_BASE_VERSION}))
+if ((CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR) AND NOT (${VCPKG_TARGET_TRIPLET}))
   set(TOP_LEVEL ON)
 else()
   set(TOP_LEVEL OFF)
