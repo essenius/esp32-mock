@@ -19,7 +19,6 @@ set(testName ${libName}-test)
 
 add_executable(${testName} "")
 
-#set(myHeaders ArrayTest.h MatrixTest.h)
 set(mySources 
     Adafruit_SSD1306Test.cpp 
     ESPTest.cpp 
@@ -34,6 +33,7 @@ set(mySources
     WiFiTest.cpp
     WireTest.cpp
 )
+
 target_sources (${testName} PRIVATE ${mySources})
 target_include_directories(${libName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${safe-cstring_SOURCE_DIR}/src )
 target_link_libraries(${testName} ${libName} gtest_main)

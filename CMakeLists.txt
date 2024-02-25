@@ -17,22 +17,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-#set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/lib;${PROJECT_BINARY_DIR}/lib/cmake")
-
-#if (TOP_LEVEL) 
-#  message(STATUS "Top level project - enabling code coverage")
-#  add_subdirectory(lib)
-#  set(CODE_COVERAGE ON)
-#  include(code-coverage)
-#  add_code_coverage()
-#endif()
-
 add_subdirectory(esp32-mock)
-
 
 if(TOP_LEVEL)
   message(STATUS "Top level project - enabling tests")
   enable_testing()
   add_subdirectory(esp32-mock-test)
-#  target_code_coverage(${matrixTestName} EXCLUDE build/_deps/googletest-src/* test/*) 
 endif()
