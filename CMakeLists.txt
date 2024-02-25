@@ -24,7 +24,6 @@ get_cmake_property(_variableNames VARIABLES)
 list (SORT _variableNames)
 foreach (_variableName ${_variableNames})
     message(STATUS $"v: ${_variableName}=${${_variableName}}\n")
-    file(APPEND ${HOME}/temp/output.txt "v: ${_variableName}=${${_variableName}}\n")
 endforeach()
 
 message(STATUS "TOP_LEVEL: ${TOP_LEVEL}")
