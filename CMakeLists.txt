@@ -26,6 +26,7 @@ foreach (_variableName ${_variableNames})
     message(STATUS $"v: ${_variableName}=${${_variableName}}\n")
 endforeach()
 
+message(STATUS "TOP_LEVEL: ${TOP_LEVEL}")
 if(TOP_LEVEL)
   message(STATUS "Top level project - enabling tests")
   enable_testing()
