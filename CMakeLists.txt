@@ -21,11 +21,6 @@ add_subdirectory(esp32-mock)
 
 get_cmake_property(_variableNames VARIABLES)
 
-list (SORT _variableNames)
-foreach (_variableName ${_variableNames})
-    message(STATUS $"v: ${_variableName}=${${_variableName}}\n")
-endforeach()
-
 message(STATUS "TOP_LEVEL: ${TOP_LEVEL}")
 if(TOP_LEVEL)
   message(STATUS "Top level project - enabling tests")
