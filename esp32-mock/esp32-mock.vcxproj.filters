@@ -9,10 +9,17 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
+   <!--<Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    </Filter> -->
+    <Filter Include="Header Files\freertos"/>
+    <Filter Include="Source Files\freertos"/>
+    <Filter Include="Header Files\sys"/>
+    <Filter Include="Source Files\sys"/>
+    <Filter Include="CMake" />
+    <Filter Include="CMake\freertos" />
+    <Filter Include="CMake\sys" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Adafruit_SSD1306.h">
@@ -55,16 +62,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sys\time.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\sys</Filter>
     </ClInclude>
     <ClInclude Include="freertos\freeRTOS.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\freertos</Filter>
     </ClInclude>
     <ClInclude Include="freertos\ringbuf.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\freertos</Filter>
     </ClInclude>
     <ClInclude Include="freertos\semphr.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\freertos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -96,18 +103,25 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sys\time.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\sys</Filter>
     </ClCompile>
     <ClCompile Include="freertos\freeRTOS.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\freertos</Filter>
     </ClCompile>
     <ClCompile Include="freertos\ringbuf.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\freertos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="CMakeLists.txt" />
-    <Text Include="freertos\CMakeLists.txt" />
-    <Text Include="sys\CMakeLists.txt" />
+    <Text Include="CMakeLists.txt">
+      <Filter>CMake</Filter>
+    </Text>
+
+    <Text Include="freertos\CMakeLists.txt">
+      <Filter>CMake\freertos</Filter>
+    </Text>
+    <Text Include="sys\CMakeLists.txt">
+      <Filter>CMake\sys</Filter>
+    </Text>
   </ItemGroup>
 </Project>
