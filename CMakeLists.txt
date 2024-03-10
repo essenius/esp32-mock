@@ -19,8 +19,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(esp32-mock)
 
-get_cmake_property(_variableNames VARIABLES)
-
 message(STATUS "TOP_LEVEL: ${TOP_LEVEL}")
 if(TOP_LEVEL)
   message(STATUS "Top level project - enabling tests")
