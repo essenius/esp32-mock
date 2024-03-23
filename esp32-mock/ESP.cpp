@@ -1,4 +1,4 @@
-// Copyright 2021-2023 Rik Essenius
+// Copyright 2021-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -117,6 +117,8 @@ unsigned long micros() {
     return _espMicros;
 }
 
+void yield() {}
+
 // Serial class
 
 HardwareSerial Serial;
@@ -149,10 +151,13 @@ void HardwareSerial::print(const char* input) {
     _printBufferPointer = _printBuffer + strlen(_printBuffer);
 }
 
+void HardwareSerial::println() {
+    print("\n");
+}
+
 void HardwareSerial::println(const char* input) {
     print(input);
-    SafeCString::strcat(_printBuffer, "\n");
-    _printBufferPointer = _printBuffer + strlen(_printBuffer);
+    println();
 }
 
 char HardwareSerial::read() {

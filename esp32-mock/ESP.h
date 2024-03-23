@@ -1,4 +1,4 @@
-// Copyright 2021-2023 Rik Essenius
+// Copyright 2021-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -61,6 +61,7 @@ public:
     int available();
     void begin(int speed);
     void print(const char* input);
+    void println();
     void println(const char* input);
     char read();
     void setTimeout(long timeout);
@@ -119,6 +120,7 @@ void delay(int delay);
 void delayMicroseconds(unsigned long delay);
 unsigned long micros();
 unsigned long millis();
+void yield();
 
 /**
  * \brief Testing: shift the micros() clock

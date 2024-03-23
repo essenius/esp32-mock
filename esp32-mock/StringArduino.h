@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Rik Essenius
+// Copyright 2022-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -24,6 +24,8 @@ public:
     // ReSharper disable once CppNonExplicitConvertingConstructor -- done on purpose to be able to use initialization
     String(const char* value) : _string(value) {}
 
+    bool operator==(const char* other) const { return strcmp(_string.c_str(), other) == 0; }
+    bool operator!=(const char* other) const { return strcmp(_string.c_str(), other) != 0; }
     int toInt() const { return std::stoi(_string); }
     const char* c_str() const { return _string.c_str(); }
 

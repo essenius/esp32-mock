@@ -9,14 +9,14 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-   <!--<Filter Include="Resource Files">
+    <!--<Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter> -->
-    <Filter Include="Header Files\freertos"/>
-    <Filter Include="Source Files\freertos"/>
-    <Filter Include="Header Files\sys"/>
-    <Filter Include="Source Files\sys"/>
+    <Filter Include="Header Files\freertos" />
+    <Filter Include="Source Files\freertos" />
+    <Filter Include="Header Files\sys" />
+    <Filter Include="Source Files\sys" />
     <Filter Include="CMake" />
     <Filter Include="CMake\freertos" />
     <Filter Include="CMake\sys" />
@@ -73,6 +73,9 @@
     <ClInclude Include="freertos\semphr.h">
       <Filter>Header Files\freertos</Filter>
     </ClInclude>
+    <ClInclude Include="EEPROM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ESP.cpp">
@@ -111,17 +114,22 @@
     <ClCompile Include="freertos\ringbuf.cpp">
       <Filter>Source Files\freertos</Filter>
     </ClCompile>
+    <ClCompile Include="EEPROM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt">
       <Filter>CMake</Filter>
     </Text>
-
     <Text Include="freertos\CMakeLists.txt">
       <Filter>CMake\freertos</Filter>
     </Text>
     <Text Include="sys\CMakeLists.txt">
       <Filter>CMake\sys</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="EEPROM.bin" />
   </ItemGroup>
 </Project>

@@ -81,6 +81,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -116,6 +117,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ShowIncludes>false</ShowIncludes>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -145,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="Adafruit_SSD1306.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="EEPROM.h" />
     <ClInclude Include="ESP.h" />
     <ClInclude Include="freertos\freeRTOS.h" />
     <ClInclude Include="freertos\ringbuf.h" />
@@ -162,6 +165,7 @@
     <ClInclude Include="Wire.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EEPROM.cpp" />
     <ClCompile Include="ESP.cpp" />
     <ClCompile Include="freertos\freeRTOS.cpp" />
     <ClCompile Include="freertos\ringbuf.cpp" />
@@ -177,6 +181,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
+    <CopyFileToFolders Include="EEPROM.bin">
+      <DeploymentContent>true</DeploymentContent>
+      <FileType>Text</FileType>
+      <TreatOutputAsContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</TreatOutputAsContent>
+      <TreatOutputAsContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</TreatOutputAsContent>
+    </CopyFileToFolders>
     <Text Include="freertos\CMakeLists.txt" />
     <Text Include="sys\CMakeLists.txt" />
   </ItemGroup>
