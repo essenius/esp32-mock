@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Rik Essenius
+// Copyright 2022-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
-#include "time.h"
+#include "time.h"  // NOLINT(modernize-deprecated-headers)
 #include <Windows.h>
 
 int gettimeofday(timeval* timeVal, void* /*ignore*/) {
