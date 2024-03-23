@@ -24,8 +24,8 @@ endif()
 add_subdirectory(freertos)
 add_subdirectory(sys)
 
-set(myHeaders Adafruit_SSD1306.h Client.h ESP.h HTTPClient.h HTTPUpdate.h IPAddress.h Preferences.h PubSubClient.h StringArduino.h WiFi.h WiFiClient.h WiFiClientSecure.h Wire.h)
-set(mySources ESP.cpp HTTPClient.cpp HTTPUpdate.cpp IPAddress.cpp Preferences.cpp PubSubClient.cpp WiFi.cpp WiFiClientSecure.cpp Wire.cpp)
+set(myHeaders Adafruit_SSD1306.h Client.h EEPROM.h ESP.h HTTPClient.h HTTPUpdate.h IPAddress.h Preferences.h PubSubClient.h StringArduino.h WiFi.h WiFiClient.h WiFiClientSecure.h Wire.h)
+set(mySources EEPROM.cpp ESP.cpp HTTPClient.cpp HTTPUpdate.cpp IPAddress.cpp Preferences.cpp PubSubClient.cpp WiFi.cpp WiFiClientSecure.cpp Wire.cpp)
 
 target_sources (${libName} PUBLIC ${myHeaders} PRIVATE ${mySources})
 target_include_directories(${libName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${includeFolders} )
