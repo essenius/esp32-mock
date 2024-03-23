@@ -129,7 +129,4 @@
       <Filter>CMake\sys</Filter>
     </Text>
   </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="EEPROM.bin" />
-  </ItemGroup>
 </Project>

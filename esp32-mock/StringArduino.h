@@ -14,8 +14,8 @@
 // Disabling warnings caused by mimicking existing interface
 // ReSharper disable CppInconsistentNaming
 
-#ifndef HEADER_STRINGARDUINO
-#define HEADER_STRINGARDUINO
+#ifndef HEADER_STRING_ARDUINO
+#define HEADER_STRING_ARDUINO
 
 #include <string>
 

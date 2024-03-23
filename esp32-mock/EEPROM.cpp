@@ -18,6 +18,10 @@ const char* EEPROMClass::FileName = "EEPROM.bin";
 char EEPROMClass::_content[512] = "";
 
 
+void EEPROMClass::reset() {
+    (void)std::remove(FileName);
+}
+
 void EEPROMClass::begin(int /*maxSize*/) {
     std::ifstream myFile;
     myFile.open(FileName, std::ios::binary);

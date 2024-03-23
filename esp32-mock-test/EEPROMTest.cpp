@@ -14,8 +14,8 @@
 
 namespace Esp32MockTest {
 	TEST(EEPROMTest, BasicTest) {
+		EEPROM.reset(); // forget the previous content - not part of the standard interface
 		EEPROM.begin(512);
-		EXPECT_EQ('{', EEPROM.read(0));
 		EXPECT_EQ(0, EEPROM.read(100));
 		EEPROM.write(100, 'a');
 		EXPECT_EQ('a', EEPROM.read(100));

@@ -19,16 +19,16 @@
 int gettimeofday(timeval* timeVal, void* /*ignore*/) {
     if (timeVal) {
         // 0.1 microsecond intervals since January 1, 1601 00:00 UTC 
-        FILETIME filetime{ 0,0 }; 
+        FILETIME fileTime{ 0,0 }; 
 
 #if _WIN32_WINNT >= _WIN32_WINNT_WIN8
-        GetSystemTimePreciseAsFileTime(&filetime);
+        GetSystemTimePreciseAsFileTime(&fileTime);
 #else
         GetSystemTimeAsFileTime(&filetime);
 #endif
-        const ULARGE_INTEGER x {filetime.dwLowDateTime, filetime.dwHighDateTime};
+        const ULARGE_INTEGER x {{fileTime.dwLowDateTime, fileTime.dwHighDateTime}};
 
-    	// microseconds betweeen Jan 1,1601 and Jan 1,1970 (start date of Unix epoch)
+    	// microseconds between Jan 1,1601 and Jan 1,1970 (start date of Unix epoch)
         static constexpr ULONGLONG EpochOffsetMicroSeconds = 11644473600000000ULL;
 
     	const ULONGLONG microSeconds = x.QuadPart / 10 - EpochOffsetMicroSeconds;

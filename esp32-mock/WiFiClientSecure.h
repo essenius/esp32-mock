@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Rik Essenius
+// Copyright 2022-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -13,8 +13,8 @@
 // ReSharper disable CppInconsistentNaming
 // ReSharper disable CppMemberFunctionMayBeStatic
 
-#ifndef HEADER_WIFICLIENTSECURE
-#define HEADER_WIFICLIENTSECURE
+#ifndef HEADER_WIFI_CLIENT_SECURE
+#define HEADER_WIFI_CLIENT_SECURE
 
 #include "WiFiClient.h"
 

@@ -32,6 +32,7 @@ class Adafruit_SSD1306 {
 public:
     Adafruit_SSD1306(unsigned /*width*/, unsigned /*height*/, TwoWire* /*wire*/) {}
 
+    // ReSharper disable CppDoxygenUnresolvedReference
     /**
      * \brief 
      * \param switchvcc VCC selection. Typically SSD1306_SWITCHCAPVCC
@@ -40,6 +41,7 @@ public:
      * \param initDependencies call begin on the dependencies (Wire) as well
      * \return true on success, false on failure
      */
+    // ReSharper restore CppDoxygenUnresolvedReference
     bool begin(uint8_t /*switchvcc*/, uint8_t /*i2caddr*/, bool /*reset*/ = true, bool /*initDependencies*/ = true) {
         return _isPresent;
     }

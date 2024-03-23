@@ -1,4 +1,4 @@
-// Copyright 2023 Rik Essenius
+// Copyright 2023-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -75,7 +75,7 @@ namespace Esp32MockTest {
 		EXPECT_STREQ("payload", getPayload());
 		EXPECT_FALSE(hasTopicOverflow());
 		EXPECT_FALSE(hasPayloadOverflow());
-		client.setLoopCallback("ABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghij", reinterpret_cast<const uint8_t*>("123456789012345678901234567890"), 20);
+		client.setLoopCallback(R"(ABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghij)", reinterpret_cast<const uint8_t*>("123456789012345678901234567890"), 20);
 		client.loop();
 		EXPECT_EQ(0, client.getCallCount());
 		EXPECT_EQ(3, client.getLoopCount());

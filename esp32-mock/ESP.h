@@ -79,10 +79,10 @@ public:
         return length;
     }
 
-    static constexpr size_t PrintbufferSize = 4096;
+    static constexpr size_t PrintBufferSize = 4096;
 
 private:
-    char _printBuffer[PrintbufferSize] = {};
+    char _printBuffer[PrintBufferSize] = {};
     char* _printBufferPointer = _printBuffer;
     static constexpr size_t InputBufferSize = 100;
     char _inputBuffer[InputBufferSize] = {};
@@ -134,7 +134,7 @@ void shiftMicros(long long shift);
  */
 void setRealTime(bool on);
 
-// delay() is often used to give time for other tasks. Whwn testing, we often run sequential and then this interferes
+// delay() is often used to give time for other tasks. When testing, we often run sequential and then this interferes
 
 /**
  * \brief Testing: disable delay() (to be able to run code sequentially which is normally run in tasks)
@@ -195,7 +195,7 @@ struct hw_timer_t {
 
 hw_timer_t* timerBegin(uint8_t num, uint16_t divider, bool countUp);
 inline void timerAttachInterrupt(hw_timer_t* /*timer*/, void (*)(), bool /*edge*/) {}
-inline void timerAlarmWrite(hw_timer_t* /*timer*/, uint64_t /*alarm_value*/, bool /*autoreload*/) {}
+inline void timerAlarmWrite(hw_timer_t* /*timer*/, uint64_t /*alarm_value*/, bool /*auto-reload*/) {}
 void timerAlarmEnable(hw_timer_t* timer);
 void timerEnd(hw_timer_t* timer);
 #endif

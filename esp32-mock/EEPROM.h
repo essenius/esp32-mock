@@ -22,6 +22,7 @@
 
 class EEPROMClass {
 public:
+    static void reset(); // testing only
     static void begin(int maxSize);
     static byte read(int address);
     static void write(int address, byte value);

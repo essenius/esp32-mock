@@ -181,12 +181,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
-    <CopyFileToFolders Include="EEPROM.bin">
-      <DeploymentContent>true</DeploymentContent>
-      <FileType>Text</FileType>
-      <TreatOutputAsContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</TreatOutputAsContent>
-      <TreatOutputAsContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</TreatOutputAsContent>
-    </CopyFileToFolders>
     <Text Include="freertos\CMakeLists.txt" />
     <Text Include="sys\CMakeLists.txt" />
   </ItemGroup>

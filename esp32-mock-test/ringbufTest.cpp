@@ -1,4 +1,4 @@
-// Copyright 2023 Rik Essenius
+// Copyright 2023-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -26,8 +26,8 @@ namespace Esp32MockTest {
 		char* item2 = nullptr;
 		size_t item1Size;
 		size_t item2Size;
-		constexpr char SinglePayload[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		constexpr char DoublePayload[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890abcdefghijklmnopqrstuvwxyz!@#$%^&*()";
+		constexpr char SinglePayload[] = R"(ABCDEFGHIJKLMNOPQRSTUVWXYZ)";
+		constexpr char DoublePayload[] = R"(ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890abcdefghijklmnopqrstuvwxyz!@#$%^&*())";
 		EXPECT_EQ(pdFALSE, xRingbufferReceiveSplit(handle, reinterpret_cast<void**>(&item1), reinterpret_cast<void**>(&item2), &item1Size, &item2Size, 0));
 		EXPECT_EQ(pdFALSE, xRingbufferSend(handle, DoublePayload, 132, 0));
 		EXPECT_EQ(pdTRUE, xRingbufferSend(handle, SinglePayload , sizeof SinglePayload, 0));

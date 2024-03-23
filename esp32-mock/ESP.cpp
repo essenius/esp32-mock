@@ -34,9 +34,9 @@ int Esp::getFreeHeap() {
 
 // GPIO functions
 
-constexpr uint8_t _espPinCount = 36;
-uint8_t pinValue[_espPinCount];
-uint8_t pinModeValue[_espPinCount];
+constexpr uint8_t espPinCount = 36;
+uint8_t pinValue[espPinCount];
+uint8_t pinModeValue[espPinCount];
 
 uint8_t digitalRead(uint8_t pin) {
     return pinValue[pin];
@@ -56,50 +56,50 @@ void pinMode(uint8_t pin, uint8_t mode) {
 
 // Time functions
 
-unsigned long _espMicros = 0;
-unsigned long _espMicrosSteps = 50;
-bool _espRealTimeOn = false;
-auto _espStartTime = std::chrono::high_resolution_clock::now();
-bool _espDisableDelay = false;
+unsigned long espMicros = 0;
+unsigned long espMicrosSteps = 50;
+bool espRealTimeOn = false;
+auto espStartTime = std::chrono::high_resolution_clock::now();
+bool espDisableDelay = false;
 
-long long _espMicroShift = 0;
+long long espMicroShift = 0;
 
 void configTime(int /*i*/, int /*i1*/, const char* /*str*/, const char* /*text*/) {}
 
 void shiftMicros(long long shift) {
-    _espMicroShift = shift;
+    espMicroShift = shift;
 }
 
 void delayMicroseconds(unsigned long delay) {
-    if (_espRealTimeOn) {
-        _espMicroShift += delay;
+    if (espRealTimeOn) {
+        espMicroShift += delay;
     }
     else {
-        _espMicros += delay;
+        espMicros += delay;
     }
 }
 
 void disableDelay(bool disable) {
-    _espDisableDelay = disable;
+    espDisableDelay = disable;
 }
 
 void delay(int delay) {
-    if (_espDisableDelay) return;
-    if (_espRealTimeOn) {
-        _espMicroShift += delay * 1000LL;
+    if (espDisableDelay) return;
+    if (espRealTimeOn) {
+        espMicroShift += delay * 1000LL;
     }
     else {
-        _espMicros += delay * 1000UL;
+        espMicros += delay * 1000UL;
     }
 }
 
 void setRealTime(bool on) {
-    _espRealTimeOn = on;
-    if (_espRealTimeOn) {
-        _espStartTime = std::chrono::high_resolution_clock::now();
+    espRealTimeOn = on;
+    if (espRealTimeOn) {
+        espStartTime = std::chrono::high_resolution_clock::now();
     }
     else {
-        _espMicros = 0;
+        espMicros = 0;
     }
 }
 
@@ -108,13 +108,14 @@ unsigned long millis() {
 }
 
 unsigned long micros() {
-    if (_espRealTimeOn) {
+    if (espRealTimeOn) {
         const auto now = std::chrono::high_resolution_clock::now();
-        const auto result = std::chrono::duration_cast<std::chrono::microseconds>(now - _espStartTime).count() + _espMicroShift;
+        const auto result = static_cast<unsigned long>(
+            std::chrono::duration_cast<std::chrono::microseconds>(now - espStartTime).count() + espMicroShift);
         return result;
     }
-    _espMicros += _espMicrosSteps;
-    return _espMicros;
+    espMicros += espMicrosSteps;
+    return espMicros;
 }
 
 void yield() {}
@@ -183,7 +184,7 @@ const char* toString(LogLevel level) {
     return nullptr;
 }
 
-int _espTimerAlarmEnabled = false;
+int espTimerAlarmEnabled = false;
 hw_timer_t dummy{ 1, 1 };
 
 hw_timer_t* timerBegin(uint8_t num, uint16_t divider, bool /*countUp*/) {
@@ -193,7 +194,7 @@ hw_timer_t* timerBegin(uint8_t num, uint16_t divider, bool /*countUp*/) {
 }
 
 void timerAlarmEnable(hw_timer_t* /*timer*/) {
-    _espTimerAlarmEnabled = true;
+    espTimerAlarmEnabled = true;
 }
 
 void timerEnd(hw_timer_t* /*timer*/) {

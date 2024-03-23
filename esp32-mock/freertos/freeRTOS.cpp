@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Rik Essenius
+// Copyright 2022-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -11,8 +11,12 @@
 
 // Mock implementation for unit testing (not targeting the ESP32)
 
+// As we are mimicking existing interfaces, we don't change them
 // ReSharper disable CppParameterMayBeConst
 // ReSharper disable CppInconsistentNaming
+
+// We use hacks to get handles.This library is to enable functional testing so performance is not a big concern
+// ReSharper disable CppClangTidyPerformanceNoIntToPtr 
 
 #include "../ESP.h"
 #include "freeRTOS.h"
