@@ -21,6 +21,7 @@
 #define ARDUINO_ISR_ATTR
 #include <cstdint>
 #include <SafeCString.h>
+    #include "StringArduino.h"
 
 // ReSharper disable once CppUnusedIncludeDirective -- added on purpose
 #include "freertos/freeRTOS.h"
@@ -45,10 +46,11 @@ constexpr uint8_t LED_BUILTIN = 13;
  */
 class Esp {
 public:
-    void restart() { _heapCount = -1; }
-    int getFreeHeap();
+    static void restart() { _heapCount = -1; }
+    static uint32_t getFreeHeap();
+    static uint32_t getChipId() { return 0xabcdef; }
 private:
-    int _heapCount = -1;
+    static int _heapCount;
 };
 
 extern Esp ESP;

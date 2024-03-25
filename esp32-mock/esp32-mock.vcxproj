@@ -152,6 +152,7 @@
     <ClInclude Include="freertos\freeRTOS.h" />
     <ClInclude Include="freertos\ringbuf.h" />
     <ClInclude Include="freertos\semphr.h" />
+    <ClInclude Include="FS.h" />
     <ClInclude Include="HTTPClient.h" />
     <ClInclude Include="HTTPUpdate.h" />
     <ClInclude Include="IPAddress.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="ESP.cpp" />
     <ClCompile Include="freertos\freeRTOS.cpp" />
     <ClCompile Include="freertos\ringbuf.cpp" />
+    <ClCompile Include="FS.cpp" />
     <ClCompile Include="HTTPClient.cpp" />
     <ClCompile Include="HTTPUpdate.cpp" />
     <ClCompile Include="IPAddress.cpp" />

@@ -23,8 +23,10 @@
 
 Esp ESP;
 
+int Esp::_heapCount = -1;
+
 // Simulate changes as well as staying the same
-int Esp::getFreeHeap() {
+uint32_t Esp::getFreeHeap() {
     _heapCount++;
     if (_heapCount <= 6) return 32000L - _heapCount * 3000L;
     if (_heapCount == 7) return 14000;

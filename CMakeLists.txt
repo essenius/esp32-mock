@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 set(libName esp32-mock)
 
-project(${libName} VERSION 0.1.5 LANGUAGES CXX)
+project(${libName} VERSION 0.1.6 LANGUAGES CXX)
 
 # We only want to enable testing and code coverage for the top level project
 # If we are called from a vcpkg build, we also don't want tests

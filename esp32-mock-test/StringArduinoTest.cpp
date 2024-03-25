@@ -10,7 +10,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 #include <gtest/gtest.h>
-#include "../esp32-mock/StringArduino.h"
+#include "../esp32-mock/ESP.h"
 
 namespace Esp32MockTest {
 	TEST(StringArduinoTest, InitTest) {

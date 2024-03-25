@@ -21,7 +21,9 @@ add_executable(${testName} "")
 
 set(mySources 
     Adafruit_SSD1306Test.cpp 
+    EEPROMTest.cpp
     ESPTest.cpp 
+    FSTest.cpp
     freeRTOSTest.cpp
     HttpClientTest.cpp 
     HTTPUpdateTest.cpp 

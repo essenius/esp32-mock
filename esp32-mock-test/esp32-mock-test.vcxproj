@@ -109,6 +109,7 @@
     <ClCompile Include="EEPROMTest.cpp" />
     <ClCompile Include="ESPTest.cpp" />
     <ClCompile Include="freeRTOSTest.cpp" />
+    <ClCompile Include="FSTest.cpp" />
     <ClCompile Include="HttpClientTest.cpp" />
     <ClCompile Include="HTTPUpdateTest.cpp" />
     <ClCompile Include="IPAddressTest.cpp" />
