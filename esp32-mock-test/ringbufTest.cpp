@@ -59,4 +59,12 @@ namespace Esp32MockTest {
 		setRingBufferNoMoreEntries(handle);
 		EXPECT_EQ(pdFALSE, xRingbufferSend(handle, nullptr, 0,0));
 	}
+
+	TEST(RingBufTest, BufferOverrunTest) {
+		uxRingbufReset();
+		for (int i=0; i<10;i++) {
+			EXPECT_NE(nullptr, xRingbufferCreate(1, RINGBUF_TYPE_ALLOWSPLIT)) << "attempt " << i;
+		}
+		EXPECT_EQ(nullptr, xRingbufferCreate(1, RINGBUF_TYPE_ALLOWSPLIT));
+	}
 }

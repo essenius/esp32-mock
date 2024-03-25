@@ -15,7 +15,6 @@
 namespace Esp32MockTest {
 	TEST(PreferencesTest, InitTest) {
 		Preferences preferences;
-		EXPECT_STREQ("", preferences.getString("dummy").c_str());
 		EXPECT_TRUE(preferences.begin("test", false));
 		preferences.clear();
 		preferences.putString("dummy", "value");
@@ -45,4 +44,17 @@ namespace Esp32MockTest {
 		EXPECT_STREQ("value", preferences.getString("dummy").c_str());
 		preferences.end();
 	}
+
+	TEST(PreferencesTest, NotStartedTest) {
+		Preferences preferences;
+		EXPECT_STREQ("", preferences.getString("dummy").c_str());
+
+		preferences.putBytes("bytes", nullptr, 0);
+		preferences.putString("string", nullptr);
+		preferences.putUInt("uint", 0);
+		EXPECT_FALSE(preferences.isKey("bytes"));
+		EXPECT_FALSE(preferences.isKey("string"));
+		EXPECT_FALSE(preferences.isKey("uint"));
+	}
+
 }

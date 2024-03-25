@@ -1,3 +1,16 @@
+// Copyright 2024 Rik Essenius
+// 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
+// except in compliance with the License. You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software distributed under the License
+// is distributed on an "AS IS" BASIS WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+// Mock implementation of the ESP library for unit testing (not targeting the ESP32)
+
 #include "FS.h"
 #include "StringArduino.h"
 
@@ -7,10 +20,10 @@ std::map <std::string, std::string> File::_fileMap;
 
 
 File::operator bool() const {
-    return _exists || ((_mode & File::Out) == File::Out);
+    return _exists || (_mode & File::Out) == File::Out;
 }
 
-int File::available() const {
+size_t File::available() const {
     return size() - _currentPosition;
 }
 
@@ -32,8 +45,8 @@ void File::seek(const int offset, const SeekMode mode) {
     }
 }
 
-int File::size() const {
-    return static_cast<int>(_content.length());
+size_t File::size() const {
+    return _content.length();
 }
 
 String File::readString() {
@@ -102,7 +115,11 @@ File::File(const char* path, const char* mode) {
     case 'r': _mode = File::In; break;
     case 'w': _mode = File::Out; truncate = true; break;
     case 'a': _mode = File::Out | File::Append; break;
-    default:;
+    default: 
+        _mode = 0;
+        _exists = false;
+        _content = "";
+        return;
     }
     switch (mode[1]) {
     case '+': _mode |= File::In | File::Out; break;
@@ -128,7 +145,7 @@ File FS::open(const char* path, const char* mode) {
 }
 
 Dir FS::openDir(const char* folder) {
-    auto files = File::filesInFolder(folder);
+    const auto files = File::filesInFolder(folder);
     return Dir(files);
 }
 

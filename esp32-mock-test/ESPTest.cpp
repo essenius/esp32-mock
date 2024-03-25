@@ -95,14 +95,22 @@ namespace Esp32MockTest {
 		EXPECT_STREQ("I", toString(LogLevel::Info));
 		EXPECT_STREQ("D", toString(LogLevel::Debug));
 		EXPECT_STREQ("V", toString(LogLevel::Verbose));
+		EXPECT_EQ(nullptr, toString(static_cast<LogLevel>(6)));
 	}
 
 	TEST(ESPTest, TimerTest) {
+		yield(); // just make sure we can run it
 		const auto result  = timerBegin(1, 2, true);
 		EXPECT_EQ(1, result->num);
 		EXPECT_EQ(2, result->group);
 		timerEnd(result);
 		EXPECT_EQ(255, result->num);
 		EXPECT_EQ(255, result->group);
+	}
+
+	TEST(ESPTest, xxx) {
+		EXPECT_FALSE(isTimerAlarmEnabled());
+		timerAlarmEnable(nullptr);
+		EXPECT_TRUE(isTimerAlarmEnabled());
 	}
 }

@@ -60,6 +60,8 @@ namespace Esp32MockTest {
 		EXPECT_EQ(5, dataFile.size()) << "read size";
 		EXPECT_EQ(5, dataFile.available()) << "read available";
 		EXPECT_STREQ("hello", dataFile.readString().c_str()) << "read readString";
+		dataFile.write("not written", 11);
+		EXPECT_EQ(5, dataFile.size()) << "read size";
 		dataFile.close();
 		dataFile = SPIFFS.open(FileName, "a+");
 		EXPECT_TRUE(dataFile) << "append/update";
@@ -121,6 +123,36 @@ namespace Esp32MockTest {
 		EXPECT_STREQ("/2/test", dir.fileName().c_str());
 		EXPECT_EQ(1, dir.fileSize());
 		EXPECT_FALSE(dir.next());
+	}
+
+	TEST(FSTest, SeekTest) {
+		constexpr auto FileName = "/ca.crt";
+		SPIFFS.begin();
+		File::deleteFiles();
+		File::defineFile(FileName, "qwerty");
+		auto file = SPIFFS.open(FileName, "a+");
+		EXPECT_TRUE(file) << "File open";
+		EXPECT_EQ(6, file.position()) << "open";
+
+		file.seek(-2, SeekCur);
+		EXPECT_EQ(4, file.position()) << "SeekCur-2";
+		EXPECT_STREQ("ty", file.readString().c_str()) << "SeekCur-2";
+		file.seek(0, SeekSet);
+		EXPECT_EQ(0, file.position());
+		file.seek(-3, SeekEnd);
+		EXPECT_EQ(3, file.position()) << "SeekEnd-3";
+		EXPECT_STREQ("rty", file.readString().c_str()) << "SeekEnd-3";
+		file.seek(0, static_cast<SeekMode>(3));
+		EXPECT_EQ(6, file.position()) << "Invalid seek doesn't change position";
+
+
+	}
+
+	TEST(FSTest, WrongModeTest) {
+		constexpr auto FileName = "/ca.crt";
+		SPIFFS.begin();
+		auto file = SPIFFS.open(FileName, "q");
+		EXPECT_FALSE(file);
 	}
 
 }

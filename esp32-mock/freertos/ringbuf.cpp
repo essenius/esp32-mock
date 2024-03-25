@@ -71,7 +71,7 @@ RingbufHandle_t xRingbufferCreate(size_t /* xBufferSize */, RingbufferType_t /* 
     while (container[i].ringbufHandle != nullptr && i <= MaxRingbuffers) {
         i++;
     }
-    if (i > MaxRingbuffers) return nullptr;
+    if (i >= MaxRingbuffers) return nullptr;
     const uint64_t handle = static_cast<uint64_t>(i) + 1;
     container[i].ringbufHandle = reinterpret_cast<RingbufHandle_t>(handle);
     return container[i].ringbufHandle;

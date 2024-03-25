@@ -1,4 +1,4 @@
-// Copyright 2023 Rik Essenius
+// Copyright 2023-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -82,4 +82,14 @@ namespace Esp32MockTest {
         vTaskNotifyGiveFromISR(handle, nullptr);
         EXPECT_EQ(1u, ulTaskNotifyTake(pdTRUE, portMAX_DELAY)) << "Take returns 1 after give";
 	}
+
+    TEST_F(FreeRtosTest, QueueOverrunTest) {
+        uxQueueReset();
+        auto handle = xQueueCreate(MaxQueues, 2);
+        for (int i=0; i< 20; i++) {
+            EXPECT_EQ(pdTRUE, xQueueSendToBack(handle, buffer, 0)) << "Item " << i << " sent";
+        }
+        EXPECT_EQ(pdFALSE, xQueueSendToBack(handle, buffer, 0)) << "Item 21 fails";
+        uxQueueReset();
+    }
 }

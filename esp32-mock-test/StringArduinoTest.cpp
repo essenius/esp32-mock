@@ -17,6 +17,9 @@ namespace Esp32MockTest {
         const String string1 = "11";
 		EXPECT_TRUE(string1 == "11");
 		EXPECT_TRUE(string1 != "hi");
+		EXPECT_FALSE(string1 == "hi");
+		EXPECT_FALSE(string1 != "11");
+
 		EXPECT_EQ(11, string1.toInt());
         const auto convertedString = string1.c_str();
 		EXPECT_STREQ("11", convertedString);

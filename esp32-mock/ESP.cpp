@@ -206,4 +206,6 @@ void timerEnd(hw_timer_t* /*timer*/) {
 
 LogLevel minLogLevel = LogLevel::Info;
 
+// test only
+bool isTimerAlarmEnabled() { return espTimerAlarmEnabled; }
 

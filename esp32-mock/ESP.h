@@ -136,6 +136,11 @@ void shiftMicros(long long shift);
  */
 void setRealTime(bool on);
 
+/**
+ * \brief Testing: returns whether timer alarm is enabled
+ */
+bool isTimerAlarmEnabled();
+
 // delay() is often used to give time for other tasks. When testing, we often run sequential and then this interferes
 
 /**
