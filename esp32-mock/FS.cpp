@@ -11,6 +11,10 @@
 
 // Mock implementation of the ESP library for unit testing (not targeting the ESP32)
 
+// Mimicking existing interface
+// ReSharper disable CppMemberFunctionMayBeStatic 
+// ReSharper disable CppMemberFunctionMayBeConst
+
 #include "FS.h"
 #include "StringArduino.h"
 

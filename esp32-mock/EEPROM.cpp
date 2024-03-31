@@ -11,6 +11,7 @@
 
 // Mock implementation of the EEPROM library for unit testing (not targeting the ESP8266)
 
+// ReSharper disable CppMemberFunctionMayBeStatic - mimicking existing interface
 #include "EEPROM.h"
 #include "ESP.h"
 

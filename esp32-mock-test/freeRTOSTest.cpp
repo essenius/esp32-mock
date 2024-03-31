@@ -85,7 +85,7 @@ namespace Esp32MockTest {
 
     TEST_F(FreeRtosTest, QueueOverrunTest) {
         uxQueueReset();
-        auto handle = xQueueCreate(MaxQueues, 2);
+        const auto handle = xQueueCreate(MaxQueues, 2);
         for (int i=0; i< 20; i++) {
             EXPECT_EQ(pdTRUE, xQueueSendToBack(handle, buffer, 0)) << "Item " << i << " sent";
         }

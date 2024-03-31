@@ -151,7 +151,7 @@ namespace Esp32MockTest {
 	TEST(FSTest, WrongModeTest) {
 		constexpr auto FileName = "/ca.crt";
 		SPIFFS.begin();
-		auto file = SPIFFS.open(FileName, "q");
+        const auto file = SPIFFS.open(FileName, "q");
 		EXPECT_FALSE(file);
 	}
 

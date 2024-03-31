@@ -22,11 +22,11 @@
 
 class EEPROMClass {
 public:
-    static void reset(); // testing only
-    static void begin(int maxSize);
-    static byte read(int address);
-    static void write(int address, byte value);
-    static void end();
+    void reset(); // testing only
+    void begin(int maxSize);
+    byte read(int address);
+    void write(int address, byte value);
+    void end();
 private:
     static constexpr int MaxSize = 512;
     static const char* FileName;
