@@ -80,7 +80,7 @@ namespace Esp32MockTest {
 		EXPECT_EQ(0, client.getCallCount());
 		EXPECT_EQ(3, client.getLoopCount());
 		EXPECT_STREQ("ABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghijABCDEFGHIJabcdefghi", getTopic());
-		EXPECT_STREQ("123456789", getPayload());
+		EXPECT_STREQ("1234567890123456789", getPayload());
 		// the overflow should not reach the callback
 		EXPECT_FALSE(hasTopicOverflow());
 		EXPECT_FALSE(hasPayloadOverflow());

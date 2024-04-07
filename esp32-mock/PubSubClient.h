@@ -64,7 +64,7 @@ private:
     constexpr static int PayloadSize = 1024;
     constexpr static int TopicSize = 2500;
     constexpr static int SingleTopicSize = 100;
-    constexpr static int SinglePayloadSize = 10;
+    constexpr static int SinglePayloadSize = 20;
     std::function<void(char*, unsigned char*, unsigned)> _callback;
     int _callCount = 0;
     bool _canConnect = true;
