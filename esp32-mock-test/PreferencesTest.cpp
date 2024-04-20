@@ -34,10 +34,8 @@ namespace Esp32MockTest {
 		preferences.getBytes("nonExisting", buf, sizeof buf);
 		EXPECT_EQ(0, buf[0]);
 		preferences.end();
-		preferences.save();
 		preferences.clear();
 		EXPECT_FALSE(preferences.isKey("dummy"));
-		preferences.load();
 		EXPECT_FALSE(preferences.isKey("dummy"));
 		preferences.begin("test", false);
 		EXPECT_TRUE(preferences.isKey("dummy"));

@@ -1,4 +1,4 @@
-// Copyright 2021-2023 Rik Essenius
+// Copyright 2021-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -22,6 +22,7 @@
 
 bool Preferences::begin(const char* name, bool /*readOnly*/) {
     _started = true;
+    load();
     _currentPreference = &_preferences[name];
     return true;
 }
@@ -32,6 +33,7 @@ void Preferences::clear() {
 }
 
 void Preferences::end() {
+    save();
     _started = false;
     _currentPreference = nullptr;
 }

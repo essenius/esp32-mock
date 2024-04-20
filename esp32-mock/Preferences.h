@@ -1,4 +1,4 @@
-// Copyright 2021-2023 Rik Essenius
+// Copyright 2021-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -36,13 +36,14 @@ public:
     void putBool(const char* key, bool value);
     void putBytes(const char* key, const void* value, size_t len);
     void putUInt(const char* key, uint32_t value);
-    void save();
-    void load();
+
 private:
     std::map<std::string, std::map<std::string, std::string>> _preferences;
 
     std::map<std::string, std::string>* _currentPreference = nullptr;
     bool _started = false;
+    void save();
+    void load();
 };
 
 #endif
