@@ -1,3 +1,4 @@
+
 // Copyright 2021-2024 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
@@ -85,6 +86,10 @@ void Preferences::putBytes(const char* key, const void* value, size_t len) {
 void Preferences::putUInt(const char* key, uint32_t value) {
     if (!_started) return;
     (*_currentPreference)[key] = std::to_string(value);
+}
+
+void Preferences::reset() {
+    (void)std::remove("preferences.txt");
 }
 
 void Preferences::save() {

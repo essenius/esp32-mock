@@ -37,6 +37,8 @@ public:
     void putBytes(const char* key, const void* value, size_t len);
     void putUInt(const char* key, uint32_t value);
 
+    // testing only, to reset the entire preferences content
+    void reset();
 private:
     std::map<std::string, std::map<std::string, std::string>> _preferences;
 
