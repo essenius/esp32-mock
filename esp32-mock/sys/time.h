@@ -22,6 +22,7 @@
 
 #include <ctime>
 
+#ifdef _MSC_VER
 /**
  * \brief Mock implementation of the timeval struct for unit testing (not targeting the ESP32)
  */
@@ -29,6 +30,7 @@ struct timeval {
     time_t tv_sec; // seconds 
     long tv_usec; // microseconds
 };
+#endif
 
 /**
  * \brief Mock implementation of the gettimeofday function for unit testing (not targeting the ESP32)

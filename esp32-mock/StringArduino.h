@@ -18,6 +18,7 @@
 #define HEADER_STRING_ARDUINO
 
 #include <string>
+#include <cstring> 
 
 class String {
 public:

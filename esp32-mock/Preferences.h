@@ -17,6 +17,7 @@
 #define HEADER_PREFERENCES
 #include <map>
 
+#include <cstdint>
 #include "StringArduino.h"
 
 /**

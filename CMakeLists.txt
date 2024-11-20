@@ -19,8 +19,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(esp32-mock)
 
-message(STATUS "TOP_LEVEL: ${TOP_LEVEL}")
-if(TOP_LEVEL AND NOT DEFINED WIN32)
+if(TOP_LEVEL)
   message(STATUS "Top level project - enabling tests")
   enable_testing()
   add_subdirectory(esp32-mock-test)

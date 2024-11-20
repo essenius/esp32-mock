@@ -18,6 +18,7 @@
 // ReSharper disable CppClangTidyPerformanceUnnecessaryValueParam
 
 #include <SafeCString.h>
+#include <algorithm>
 #include "PubSubClient.h"
 
 bool PubSubClient::connect(const char* id, const char* /*willTopic*/, uint8_t /*willQos*/, bool /*willRetain*/, const char* /*willMessage*/) {

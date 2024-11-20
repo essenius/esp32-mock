@@ -1,6 +1,8 @@
 include(FindGit)
 find_package(Git)
 
+message(STATUS "Building Tests for ${libName}")
+
 include(FetchContent)
 FetchContent_Declare(
     googletest
@@ -40,4 +42,5 @@ target_sources (${testName} PRIVATE ${mySources})
 target_include_directories(${libName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${safe-cstring_SOURCE_DIR}/src )
 target_link_libraries(${testName} ${libName} gtest_main)
 
+enable_testing()
 add_test(NAME ${testName} COMMAND ${testName})

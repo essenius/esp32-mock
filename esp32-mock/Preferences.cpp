@@ -20,6 +20,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 bool Preferences::begin(const char* name, bool /*readOnly*/) {
     _started = true;

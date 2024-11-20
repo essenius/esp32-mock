@@ -18,7 +18,7 @@
 #define HEADER_PUBSUBCLIENT
 
 #include <functional>
-
+#include <cstdint>
 #include "Client.h"
 
 #define MQTT_CALLBACK_SIGNATURE std::function<void(char*, uint8_t*, unsigned int)> callback

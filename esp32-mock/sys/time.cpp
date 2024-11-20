@@ -24,7 +24,7 @@ int gettimeofday(timeval* timeVal, void* /*ignore*/) {
 #if _WIN32_WINNT >= _WIN32_WINNT_WIN8
         GetSystemTimePreciseAsFileTime(&fileTime);
 #else
-        GetSystemTimeAsFileTime(&filetime);
+        GetSystemTimeAsFileTime(&fileTime);
 #endif
         const ULARGE_INTEGER x {{fileTime.dwLowDateTime, fileTime.dwHighDateTime}};
 
