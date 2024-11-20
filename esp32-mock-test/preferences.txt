@@ -1,4 +1,0 @@
-test
-bool=1
-bytes1=1@%:e~
-dummy=value
