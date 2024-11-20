@@ -16,6 +16,7 @@ namespace Esp32MockTest {
 	TEST(PreferencesTest, InitTest) {
 		Preferences preferences;
 		preferences.reset();
+		EXPECT_STREQ("", preferences.getString("dummy").c_str());		
 		EXPECT_TRUE(preferences.begin("test", false));
 		preferences.clear();
 		preferences.putString("dummy", "value");
@@ -33,14 +34,20 @@ namespace Esp32MockTest {
 		preferences.getBytes("bytes1", buf, sizeof buf);
 		EXPECT_EQ(0, strncmp(buf, "1@%:e~", 6)) << "getBytes OK 2";
 		preferences.getBytes("nonExisting", buf, sizeof buf);
-		EXPECT_EQ(0, buf[0]);
+		preferences.putString("multiline", "multi\nline\nvalue\n");
+		preferences.putBool("zbool2", false);
+		// the value is the special value denoting a multiline. It should just give back this value
+		preferences.putString("PseudoMultiline", "#10");
 		preferences.end();
 		preferences.clear();
-		EXPECT_FALSE(preferences.isKey("dummy"));
 		EXPECT_FALSE(preferences.isKey("dummy"));
 		preferences.begin("test", false);
 		EXPECT_TRUE(preferences.isKey("dummy"));
 		EXPECT_STREQ("value", preferences.getString("dummy").c_str());
+		EXPECT_STREQ("value", preferences.getString("dummy").c_str());
+		EXPECT_STREQ("multi\nline\nvalue\n", preferences.getString("multiline").c_str()) << "Multiline OK";
+		EXPECT_FALSE(preferences.getBool("zbool2", true)) << "Bool2 ok";
+		EXPECT_STREQ("#10", preferences.getString("PseudoMultiline").c_str()) << "Pseudo-Multiline OK";
 		preferences.end();
 		preferences.reset();
 	}

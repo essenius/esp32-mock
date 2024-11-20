@@ -25,8 +25,8 @@ Included items must then not match any entries in the exclude list to remain inc
 						<Sources>
 							<Exclude>
                  <Source>.*\\.*Test\\.*</Source>
-
-							</Exclude>
+                <Function>.*GoogleTestAdapter.*</Function>
+              </Exclude>
 						</Sources>
 
 						<!-- We recommend you do not change the following values: -->

@@ -98,7 +98,15 @@ void Preferences::save() {
     for (const auto& categories : _preferences) {
         stream << categories.first << "\n";
         for (auto& entry : categories.second) {
-            stream << entry.first << "=" << entry.second << "\n";
+            stream << entry.first << "=";
+            size_t newlineCount = std::count(entry.second.begin(), entry.second.end(), '\n');
+            if (!entry.second.empty() && entry.second.back() != '\n') {
+                newlineCount++;
+            }
+            if (newlineCount > 1 || entry.second[0] == '#') {
+                stream << "#" << newlineCount << "\n";
+            }
+            stream << entry.second << "\n";
         }
         stream << "\n";
     }
@@ -120,7 +128,19 @@ void Preferences::load() {
         }
         std::string key = line.substr(0, equalsSign);
         std::string value = line.substr(equalsSign + 1);
+
+        if (value[0] == '#') {
+            const auto numberOfLines = std::stoi(value.substr(1));
+            value = "";
+
+            for (int i = 0; i < numberOfLines; i++) {
+                std::string valueLine;
+                if (!std::getline(stream, valueLine)) break;
+                value += valueLine + (numberOfLines > 1 ? "\n" : "");
+            }
+        }
         _preferences[categoryKey].insert(std::pair<std::string, std::string>(key, value));
     }
     stream.close();
 }
+
