@@ -32,7 +32,7 @@ public:
     bool connect(const char* id, const char* user, const char* pass, const char* willTopic, uint8_t willQos, bool willRetain,
                  const char* willMessage);
     bool connected() { return _canConnect; }
-
+    void disconnect() {  }
     void setLoopCallback(const char* topic, const uint8_t* payload, int size);
 
     bool loop();

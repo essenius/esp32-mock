@@ -35,4 +35,7 @@ private:
     bool _insecure = false;
 };
 
+namespace BearSSL {
+    using WiFiClientSecure = ::WiFiClientSecure;
+}
 #endif

@@ -1,4 +1,4 @@
-// Copyright 2024 Rik Essenius
+// Copyright 2024-2025 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -24,13 +24,25 @@ class EEPROMClass {
 public:
     void reset(); // testing only
     void begin(int maxSize);
+    bool commit();
     byte read(int address);
     void write(int address, byte value);
+
+    template <typename T>
+    void get(int address, T& value) {
+        std::memcpy(&value, _committedContent + address, sizeof(T));
+    }
+
+    template <typename T>
+    void put(int address, const T& value) {
+        std::memcpy(_uncommittedContent + address, &value, sizeof(T));
+    }
     void end();
 private:
     static constexpr int MaxSize = 512;
     static const char* FileName;
-    static char _content[MaxSize];
+    static char _uncommittedContent[MaxSize];
+    static char _committedContent[MaxSize];
 };
 
 static EEPROMClass EEPROM;
