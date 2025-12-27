@@ -25,10 +25,11 @@ public:
     // ReSharper disable once CppNonExplicitConvertingConstructor -- done on purpose to be able to use initialization
     String(const char* value) : _string(value) {}
 
-    bool operator==(const char* other) const { return strcmp(_string.c_str(), other) == 0; }
-    bool operator!=(const char* other) const { return strcmp(_string.c_str(), other) != 0; }
     int toInt() const { return std::stoi(_string); }
     const char* c_str() const { return _string.c_str(); }
+
+    friend bool operator==(const String& lhs, const char* rhs) { return lhs._string.compare(rhs) == 0; }
+    friend bool operator!=(const String& lhs, const char* rhs) { return lhs._string.compare(rhs) != 0; }
 
 private:
     std::string _string;

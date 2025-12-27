@@ -27,7 +27,7 @@ public:
     HTTPClient() = default;
 
     bool begin(WiFiClient& /*client*/, const char* /*url*/) { return true; }
-    void end() {}
+    void end() { /* no-op */ }
     int GET() { return ReturnValue; }
     String getString() { return {"0.1.1"}; }
     static int ReturnValue;

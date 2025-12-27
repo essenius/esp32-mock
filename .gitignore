@@ -348,6 +348,9 @@ healthchecksdb
 # VCPKG 
 vcpkg_installed/
 
+# binaries
+*.bin
+
 #secrets
 # secrets and certificates
 *.crt

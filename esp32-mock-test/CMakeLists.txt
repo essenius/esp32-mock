@@ -19,28 +19,41 @@ FetchContent_MakeAvailable(googletest)
 
 set(testName ${libName}-test)
 
-add_executable(${testName} "")
-
-set(mySources 
+# ESP32 test executable
+add_executable(${testName}-esp32 
     Adafruit_SSD1306Test.cpp 
     EEPROMTest.cpp
     ESPTest.cpp 
     FSTest.cpp
     freeRTOSTest.cpp
+    FSTest.cpp
     HttpClientTest.cpp 
     HTTPUpdateTest.cpp 
     IPAddressTest.cpp 
     PreferencesTest.cpp
     PubSubClientTest.cpp
     ringbufTest.cpp
+    StringArduinoTest.cpp
     WiFiClientSecureTest.cpp
     WiFiTest.cpp
     WireTest.cpp
 )
 
-target_sources (${testName} PRIVATE ${mySources})
-target_include_directories(${libName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${safe-cstring_SOURCE_DIR}/src )
-target_link_libraries(${testName} ${libName} gtest_main)
-
+target_compile_definitions(${testName}-esp32 PRIVATE ESP32)
+# target_sources (${testName} PRIVATE ${mySources})
+target_include_directories(${libName}-esp32 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${safe-cstring_SOURCE_DIR}/src )
+target_link_libraries(${testName}-esp32 ${libName}-esp32 gtest_main)
 enable_testing()
-add_test(NAME ${testName} COMMAND ${testName})
+
+add_test(NAME ${testName}-esp32 COMMAND ${testName}-esp32)
+
+# ESP8266 test executable
+add_executable(${testName}-esp8266
+    WiFi8266Test.cpp  
+)
+
+target_compile_definitions(${testName}-esp8266 PRIVATE ESP8266)
+target_include_directories(${libName}-esp8266 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${safe-cstring_SOURCE_DIR}/src )
+target_link_libraries(${testName}-esp8266 ${libName}-esp8266 gtest_main)
+
+add_test(NAME ${testName}-esp8266 COMMAND ${testName}-esp8266)

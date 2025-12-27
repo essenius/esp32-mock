@@ -24,7 +24,7 @@ class WiFiClient : public Client {
 public:
     WiFiClient() = default;
     bool isConnected() { return true; }
-    void stop() {}
+    void stop() { /* no-op */ }
 
     //testing
     const char* getType() override { return "WifiClient"; }

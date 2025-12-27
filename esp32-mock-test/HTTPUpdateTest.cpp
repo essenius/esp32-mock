@@ -25,8 +25,8 @@ namespace Esp32MockTest {
 		EXPECT_EQ(0, progressCount);
 		EXPECT_FALSE(started);
 		EXPECT_FALSE(finished);
-		httpUpdate.ReturnValue = HTTP_UPDATE_OK;
-		httpUpdate.onProgress([=](const int current, const int /*total*/) {
+		HTTPUpdate::ReturnValue = HTTP_UPDATE_OK;
+		httpUpdate.onProgress([](const int current, const int /*total*/) {
 			progressCount++;
 
 			if (progressCount == 1) {
@@ -36,15 +36,15 @@ namespace Esp32MockTest {
 				EXPECT_EQ(1000000, current);
 
 			}
-			});
+		});
 
 		httpUpdate.onStart([] {
 			started = true;
-			});
+		});
 
 		httpUpdate.onEnd([] {
 			finished = true;
-			});
+		});
 
 		EXPECT_EQ(HTTP_UPDATE_OK, httpUpdate.update(client, nullptr));
 

@@ -46,7 +46,7 @@ constexpr uint8_t LED_BUILTIN = 13;
  */
 class Esp {
 public:
-    static void restart() { _heapCount = -1; }
+    void restart() { _heapCount = -1; }
     uint32_t getFreeHeap();
     uint32_t getChipId() { return 0xabcdef; }
 private:

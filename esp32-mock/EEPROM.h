@@ -25,26 +25,30 @@ public:
     void reset(); // testing only
     void begin(int maxSize);
     bool commit();
+    bool isDirty();
     byte read(int address);
     void write(int address, byte value);
 
     template <typename T>
     void get(int address, T& value) {
-        std::memcpy(&value, _committedContent + address, sizeof(T));
+        std::memcpy(&value, _uncommittedContent + address, sizeof(T));
     }
 
     template <typename T>
     void put(int address, const T& value) {
         std::memcpy(_uncommittedContent + address, &value, sizeof(T));
+        _isDirty = true;
     }
+    
     void end();
 private:
     static constexpr int MaxSize = 512;
     static const char* FileName;
     static char _uncommittedContent[MaxSize];
     static char _committedContent[MaxSize];
+    bool _isDirty = false;
 };
 
-static EEPROMClass EEPROM;
+extern EEPROMClass EEPROM;
 
 #endif

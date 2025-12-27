@@ -27,7 +27,9 @@ void EEPROMClass::reset() {
 void EEPROMClass::begin(int /*maxSize*/) {
     std::ifstream myFile;
     myFile.open(FileName, std::ios::binary);
-    if (myFile.fail()) return;
+    if (myFile.fail()) {
+        memset(_uncommittedContent, 0, MaxSize);
+    }
     // sync uncommitted and committed content
     myFile.read(_uncommittedContent, MaxSize);
     commit();
@@ -36,22 +38,32 @@ void EEPROMClass::begin(int /*maxSize*/) {
 
 bool EEPROMClass::commit() {
     std::memcpy(_committedContent, _uncommittedContent, MaxSize);
+    _isDirty = false;
     return true;
+}
+
+bool EEPROMClass::isDirty() {
+    return _isDirty;
 }
 
 // note that read/write operate on committed content while put/get operate on uncommitted content
 
 byte EEPROMClass::read(const int address) {
-    return static_cast<byte>(_committedContent[address]);
+    return static_cast<byte>(_uncommittedContent[address]);
 }
 
 void EEPROMClass::write(const int address, const byte value) {
-    _committedContent[address] = static_cast<char>(value);
+    if (_uncommittedContent[address] == static_cast<char>(value)) return;
+    _uncommittedContent[address] = static_cast<char>(value);
+    _isDirty = true;
 }
 
 void EEPROMClass::end() {
     std::ofstream myFile;
-    myFile.open(FileName, std::ios::binary| std::ofstream::out | std::ofstream::trunc);
+    if (_isDirty) commit();
+    myFile.open(FileName, std::ios::binary | std::ofstream::out | std::ofstream::trunc);
     myFile.write(_committedContent, MaxSize);
     myFile.close();
 } 
+
+EEPROMClass EEPROM;

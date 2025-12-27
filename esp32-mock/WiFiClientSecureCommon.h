@@ -13,27 +13,23 @@
 // ReSharper disable CppInconsistentNaming
 // ReSharper disable CppMemberFunctionMayBeStatic
 
-#ifndef HEADER_WIFI_CLIENT_SECURE
-#define HEADER_WIFI_CLIENT_SECURE
+#ifndef HEADER_WIFI_CLIENT_SECURE_COMMON
+#define HEADER_WIFI_CLIENT_SECURE_COMMON
 
-#include "WiFiClientSecureCommon.h"
+#include "WiFiClient.h"
 
-class WiFiClientSecure: public WiFiClientSecureCommon {
+/**
+ * \brief Mock implementation of WiFiClientSecure for unit testing (not targeting the ESP32)
+ */
+class WiFiClientSecureCommon : public WiFiClient {
 public:
+    void setInsecure() { _insecure = true; }
 
-#ifdef ARDUINO_ARCH_ESP8266
-    void setTrustAnchors(const void* trust) { /* no-op */ } 
-#else 
-    void setCACert(const char* /*cert*/) { /* no-op */}
-    void setCertificate(const char* /*cert*/) { /* no-op */}
-    void setPrivateKey(const char* /*cert*/) {/* no-op */ }
-#endif
+    // testing
+    bool isSecure() const { return !_insecure; }
+    const char* getType() override { return "WifiClientSecure"; }
+private:
+    bool _insecure = false;
 };
-
-#ifdef ARDUINO_ARCH_ESP8266
-namespace BearSSL {
-    using WiFiClientSecure = ::WiFiClientSecure;
-}
-#endif
 
 #endif
