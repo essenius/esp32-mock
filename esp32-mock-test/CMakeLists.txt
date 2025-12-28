@@ -39,9 +39,9 @@ add_executable(${testName}-esp32
     WireTest.cpp
 )
 
-target_compile_definitions(${testName}-esp32 PRIVATE ESP32)
+target_compile_definitions(${testName}-esp32 PRIVATE ARDUINO_ARCH_ESP32)
 # target_sources (${testName} PRIVATE ${mySources})
-target_include_directories(${libName}-esp32 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${safe-cstring_SOURCE_DIR}/src )
+target_include_directories(${libName}-esp32 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}  )
 target_link_libraries(${testName}-esp32 ${libName}-esp32 gtest_main)
 enable_testing()
 
@@ -49,11 +49,12 @@ add_test(NAME ${testName}-esp32 COMMAND ${testName}-esp32)
 
 # ESP8266 test executable
 add_executable(${testName}-esp8266
-    WiFi8266Test.cpp  
+    WiFi8266Test.cpp 
+    ESP8266httpUpdateTest.cpp 
 )
 
-target_compile_definitions(${testName}-esp8266 PRIVATE ESP8266)
-target_include_directories(${libName}-esp8266 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${safe-cstring_SOURCE_DIR}/src )
-target_link_libraries(${testName}-esp8266 ${libName}-esp8266 gtest_main)
+target_compile_definitions(${testName}-esp8266 PRIVATE ARDUINO_ARCH_ESP8266)
+target_include_directories(${libName}-esp8266 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}  )
+target_link_libraries(${testName}-esp8266 PRIVATE ${libName}-esp8266 gtest_main)
 
 add_test(NAME ${testName}-esp8266 COMMAND ${testName}-esp8266)

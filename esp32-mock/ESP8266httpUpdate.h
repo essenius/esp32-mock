@@ -9,27 +9,11 @@
 // is distributed on an "AS IS" BASIS WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+#ifndef ESP8266_HTTP_UPDATE_H
+#define ESP8266_HTTP_UPDATE_H
+#include "HTTPUpdate.h"
 
-#ifndef HEADER_ESP8266_WIFI
-#define HEADER_ESP8266_WIFI
-#include "WiFiCommon.h"
+class ESP8266HTTPUpdate: public HTTPUpdate {};
 
-class WiFiClass : public WiFiCommon {
-    public:
-        bool hostname(const char* name);
-};
-
-extern WiFiClass WiFi;
-
-namespace BearSSL {
-    class X509List {
-    public:
-        explicit X509List(const char* pem) {
-            (void)pem; // ignore certificate content
-        }
-    };
-}
-
-
-using ::BearSSL::X509List;
+extern ESP8266HTTPUpdate ESPhttpUpdate;
 #endif

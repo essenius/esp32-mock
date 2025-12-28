@@ -23,12 +23,16 @@
 
 #include "StringArduino.h"
 #include "WiFiClient.h"
+#include "ESP.h"
 
-constexpr int HTTP_UPDATE_FAILED = 0;
-constexpr int HTTP_UPDATE_NO_UPDATES = 1;
-constexpr int HTTP_UPDATE_OK = 2;
+enum HTTPUpdateResult {
+  HTTP_UPDATE_FAILED,
+  HTTP_UPDATE_NO_UPDATES,
+  HTTP_UPDATE_OK
+};
 
-using t_httpUpdate_return = int;
+typedef HTTPUpdateResult t_httpUpdate_return; // backward compatibility
+
 using HTTPUpdateStartCB = std::function<void()>;
 using HTTPUpdateEndCB = std::function<void()>;
 using HTTPUpdateErrorCB = std::function<void(int)>;
@@ -43,17 +47,23 @@ public:
 
     int getLastError() { return 0; }
     String getLastErrorString() { return {"OK"}; }
-    static int ReturnValue;
+    static t_httpUpdate_return ReturnValue;
 
     void onStart(HTTPUpdateStartCB cbOnStart) { _cbStart = cbOnStart; }
     void onEnd(HTTPUpdateEndCB cbOnEnd) { _cbEnd = cbOnEnd; }
     void onError(HTTPUpdateErrorCB cbOnError) { _cbError = cbOnError; }
     void onProgress(HTTPUpdateProgressCB cbOnProgress) { _cbProgress = cbOnProgress; }
+
+    void setLedPin(int ledPin, uint8_t ledOn);
+
 private:
     HTTPUpdateStartCB    _cbStart;
     HTTPUpdateEndCB      _cbEnd;
     HTTPUpdateErrorCB    _cbError;
     HTTPUpdateProgressCB _cbProgress;
+
+    int _ledPin = -1;
+    uint8_t _ledOn;
 };
 
 extern HTTPUpdate httpUpdate;

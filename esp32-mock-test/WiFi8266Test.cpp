@@ -1,4 +1,4 @@
-// Copyright 2023 Rik Essenius
+// Copyright 2023-2025 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -14,7 +14,7 @@
 #include "../esp32-mock/WiFiClientSecure.h"
 
 namespace Esp32MockTest {
-	TEST(WifiTest, InitTest) {
+	TEST(Wifi8266Test, InitTest) {
 		BearSSL::X509List cert("dummy certificate");
 		WiFi.mode(WIFI_STA);
 		WiFiClientSecure client;
@@ -46,14 +46,14 @@ namespace Esp32MockTest {
 		EXPECT_STREQ("", WiFi.getHostname());
 	}
 
-	TEST(WifiTest, ConnectInTest) {
+	TEST(Wifi8266Test, ConnectInTest) {
 		WiFi.connectIn(2);
 		EXPECT_FALSE(WiFi.isConnected());
 		EXPECT_FALSE(WiFi.isConnected());
 		EXPECT_TRUE(WiFi.isConnected());
 	}
 
-	TEST(WifiTest, ConfigTest) {
+	TEST(Wifi8266Test, ConfigTest) {
 		WiFi.config(IPAddress(1, 2, 3, 4), IPAddress(5, 6, 7, 8), IPAddress(9, 10, 11, 12), IPAddress(13,14,15,16), IPAddress(17,18,19,20));
 		EXPECT_STREQ("1.2.3.4", WiFi.localIP().toString().c_str());
 		EXPECT_STREQ("5.6.7.8", WiFi.gatewayIP().toString().c_str());

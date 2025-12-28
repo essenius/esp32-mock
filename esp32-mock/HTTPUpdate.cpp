@@ -17,7 +17,7 @@
 
 #include "HTTPUpdate.h"
 
-int HTTPUpdate::ReturnValue = HTTP_UPDATE_NO_UPDATES;
+t_httpUpdate_return HTTPUpdate::ReturnValue = HTTP_UPDATE_NO_UPDATES;
 
 HTTPUpdate httpUpdate;
 
@@ -31,4 +31,10 @@ t_httpUpdate_return HTTPUpdate::update(WiFiClient& /*client*/, const char* /*url
         if (_cbEnd) _cbEnd();
     }
     return ReturnValue;
+}
+
+void HTTPUpdate::setLedPin(int ledPin, uint8_t ledOn)
+{
+    _ledPin = ledPin;
+    _ledOn = ledOn;
 }
