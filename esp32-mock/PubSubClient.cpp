@@ -23,6 +23,7 @@
 
 bool PubSubClient::connect(const char* id, const char* /*willTopic*/, uint8_t /*willQos*/, bool /*willRetain*/, const char* /*willMessage*/) {
     SafeCString::strcpy(_id, id);
+    _connectCalled = true;
     return _canConnect;
 }
 
@@ -60,19 +61,28 @@ bool PubSubClient::publish(const char* topic, const char* payload, bool retain) 
     return _canPublish;
 }
 
-void PubSubClient::reset() {
+void PubSubClient::resetHistory() {
     _callCount = 0;
     _payload[0] = 0;
-    _topic[0] = 0;
+    _topic[0] = 0; 
+    
+    _loopCount = 0;
+    _loopTopic[0] = 0;
+    _loopPayloadSize = 0;
+}
+
+
+void PubSubClient::reset()
+{
     _user[0] = 0;
     _pass[0] = 0;
     _id[0] = 0;
     _canConnect = true;
     _canSubscribe = true;
     _canPublish = true;
-    _loopCount = 0;
-    _loopTopic[0] = 0;
-    _loopPayloadSize = 0;
+    _connectCalled = false;
+
+    resetHistory();
 }
 
 PubSubClient& PubSubClient::setCallback(MQTT_CALLBACK_SIGNATURE) {

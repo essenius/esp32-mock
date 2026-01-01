@@ -37,7 +37,7 @@ namespace Esp32MockTest {
 		EXPECT_TRUE(WiFi.setHostname("hostname"));
 		EXPECT_STREQ("hostname", WiFi.getHostname());
 		EXPECT_FALSE(WiFi.setHostname(""));
-		EXPECT_STREQ("", WiFi.getHostname());
+		EXPECT_STREQ("hostname", WiFi.getHostname());
 	}
 
 	TEST(WifiTest, ConnectInTest) {

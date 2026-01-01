@@ -31,7 +31,7 @@ public:
     bool connect(const char* id, const char* willTopic, uint8_t willQos, bool willRetain, const char* willMessage);
     bool connect(const char* id, const char* user, const char* pass, const char* willTopic, uint8_t willQos, bool willRetain,
                  const char* willMessage);
-    bool connected() { return _canConnect; }
+    bool connected() { return _connectCalled && _canConnect; }
     void disconnect() { /* no-op */ }
     void setLoopCallback(const char* topic, const uint8_t* payload, int size);
 
@@ -54,6 +54,7 @@ public:
     const char* getTopics() const { return _topic; }
     const char* id() const { return _id; }
     void reset();
+    void resetHistory();
     void setCanConnect(bool canConnect) { _canConnect = canConnect; }
     void setCanPublish(bool canPublish) { _canPublish = canPublish; }
     void setCanSubscribe(bool canSubscribe) { _canSubscribe = canSubscribe; }
@@ -70,6 +71,7 @@ private:
     bool _canConnect = true;
     bool _canPublish = true;
     bool _canSubscribe = true;
+    bool _connectCalled = false;
     char _id[FieldSize] = {};
     int _loopCount = 0;
     char _pass[FieldSize] = {};

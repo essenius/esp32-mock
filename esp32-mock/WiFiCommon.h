@@ -27,6 +27,18 @@
 #define WIFI_AP 2
 #define WIFI_AP_STA 3
 
+enum wl_status_t {
+  WL_NO_SHIELD = 255,  // for compatibility with WiFi Shield library
+  WL_STOPPED = 254,
+  WL_IDLE_STATUS = 0,
+  WL_NO_SSID_AVAIL = 1,
+  WL_SCAN_COMPLETED = 2,
+  WL_CONNECTED = 3,
+  WL_CONNECT_FAILED = 4,
+  WL_CONNECTION_LOST = 5,
+  WL_DISCONNECTED = 6
+};
+
 /**
  * \brief Mock implementation of the WiFi class/object for unit testing (not targeting the ESP32)
  */
@@ -58,15 +70,18 @@ int mode() const { return _mode; }
     int RSSI() { return 1; }
     bool setHostname(const char* name);
     String SSID() { return {_ssid}; }
+    wl_status_t status() { return _status; }
     IPAddress subnetMask() const { return _subnetIP; }
 
     // testing
     void connectIn(int connectCount);
+    void setStatus(wl_status_t status) { _status = status; }
     void reset();
 private:
     byte _mac[6]{};
     char _ssid[20] = {0};
     int _mode = WIFI_STA;
+    wl_status_t _status = WL_CONNECTED;
     IPAddress _localIP;
     IPAddress _gatewayIP;
     IPAddress _subnetIP;

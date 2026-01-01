@@ -56,6 +56,9 @@ public:
 
     void setLedPin(int ledPin, uint8_t ledOn);
 
+    // testing only
+    const char* getUrl() const { return _url; }
+
 private:
     HTTPUpdateStartCB    _cbStart;
     HTTPUpdateEndCB      _cbEnd;
@@ -64,6 +67,7 @@ private:
 
     int _ledPin = -1;
     uint8_t _ledOn;
+    const char* _url = nullptr;
 };
 
 extern HTTPUpdate httpUpdate;

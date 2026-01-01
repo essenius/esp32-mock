@@ -21,7 +21,8 @@ t_httpUpdate_return HTTPUpdate::ReturnValue = HTTP_UPDATE_NO_UPDATES;
 
 HTTPUpdate httpUpdate;
 
-t_httpUpdate_return HTTPUpdate::update(WiFiClient& /*client*/, const char* /*url*/) {
+t_httpUpdate_return HTTPUpdate::update(WiFiClient& /*client*/, const char* url) {
+    _url = url;
     if (ReturnValue == HTTP_UPDATE_OK) {
         if (_cbStart) _cbStart();
         if (_cbProgress) {

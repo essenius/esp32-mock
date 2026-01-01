@@ -13,10 +13,12 @@
 #ifndef HEADER_ESP8266_WIFI
 #define HEADER_ESP8266_WIFI
 #include "WiFiCommon.h"
+#include "StringArduino.h"
 
 class WiFiClass : public WiFiCommon {
     public:
         bool hostname(const char* name);
+        String hostname();
 };
 
 extern WiFiClass WiFi;

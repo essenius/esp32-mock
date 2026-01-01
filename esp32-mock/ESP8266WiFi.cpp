@@ -17,4 +17,5 @@ bool WiFiClass::hostname(const char* name) {
     return true;
 }
 
+String WiFiClass::hostname() { return {_name}; }
 WiFiClass WiFi;

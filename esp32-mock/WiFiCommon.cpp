@@ -20,7 +20,7 @@
 #include "StringArduino.h"
 
 
-WiFiCommon::WiFiCommon() : _name("esp32_001122334455") {
+WiFiCommon::WiFiCommon() {
     reset();
     for (byte i = 0; i < 6; i++) {
         _mac[i] = i * 17;
@@ -34,6 +34,7 @@ String WiFiCommon::macAddress() {
 }
 
 void WiFiCommon::reset() {
+    SafeCString::strcpy(_name, "esp32_001122334455");
     _localIP = IPAddress(10, 0, 0, 2);
     _gatewayIP = IPAddress(10, 0, 0, 1);
     _subnetIP = IPAddress(255, 255, 0, 0);
@@ -63,6 +64,7 @@ bool WiFiCommon::isConnected() {
 }
 
 bool WiFiCommon::setHostname(const char* name) {
+    if(strlen(name) == 0) return false;
     SafeCString::strcpy(_name, name);
-    return strlen(name) > 0;
+    return true;
 }
