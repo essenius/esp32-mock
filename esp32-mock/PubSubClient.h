@@ -32,7 +32,7 @@ public:
     bool connect(const char* id, const char* user, const char* pass, const char* willTopic, uint8_t willQos, bool willRetain,
                  const char* willMessage);
     bool connected() { return _connectCalled && _canConnect; }
-    void disconnect() { /* no-op */ }
+    void disconnect() { _connectCalled = false; }
     void setLoopCallback(const char* topic, const uint8_t* payload, int size);
 
     bool loop();
@@ -48,6 +48,7 @@ public:
 
     // test assistance functions
     void callBack(char* topic, uint8_t* payload, unsigned int size) { _callback(topic, payload, size); }
+    void failPublishAfter(int callCount) { _callCountThreshold = callCount; }
     int getCallCount() const { return _callCount; }
     int getLoopCount() const { return _loopCount; }
     const char* getPayloads() const { return _payload; }
@@ -68,6 +69,7 @@ private:
     constexpr static int SinglePayloadSize = 20;
     std::function<void(char*, unsigned char*, unsigned)> _callback;
     int _callCount = 0;
+    int _callCountThreshold = 1000000;
     bool _canConnect = true;
     bool _canPublish = true;
     bool _canSubscribe = true;

@@ -29,6 +29,12 @@ namespace Esp32MockTest {
 			_payload[usedLength] = '\0';
 		}
 
+		void assertCall(const PubSubClient& client, int callCount, const char* topic, const char* payload) const {
+			ASSERT_EQ(callCount, client.getCallCount()) << "Callcount OK";
+			ASSERT_STREQ(topic, client.getTopics()) << "Topics OK";
+			ASSERT_STREQ(payload, client.getPayloads()) << "Payloads OK";
+		}
+
 		const char* getTopic() const { return _topic; }
 		const char* getPayload() const { return _payload; }
 		bool hasTopicOverflow() const { return _topicOverflow; }
@@ -43,14 +49,21 @@ namespace Esp32MockTest {
 		char _topic[BufferSize] = "";
 	};
 
-	TEST_F(PubSubClientTest, InitTest) {
+	TEST_F(PubSubClientTest, FailPublishAfterTest) {
+		PubSubClient client;
+		client.failPublishAfter(3);
+		EXPECT_TRUE(client.connect("testid", "user", "pass", "will", 0, false, "lost"));
+		for (auto i = 0; i < 3; i++) {
+			EXPECT_TRUE(client.publish("topic", "payload"));
+		}
+		EXPECT_FALSE(client.publish("topic", "payload"));
+	}
+
+	TEST_F(PubSubClientTest, SubscribeTest) {
 		PubSubClient client;
 		EXPECT_EQ(3, client.state());
-		EXPECT_EQ(0, client.getCallCount());
 		EXPECT_EQ(0, client.getLoopCount());
-		EXPECT_STREQ("", client.getPayloads());
-		EXPECT_STREQ("", client.getTopics());
-
+		assertCall(client, 0, "", "");
 		EXPECT_TRUE(client.connect("testid", "user", "pass", "will", 0, false, "lost"));
 		EXPECT_STREQ("testid", client.id());
 		EXPECT_STREQ("user", client.user());
@@ -59,9 +72,16 @@ namespace Esp32MockTest {
 		EXPECT_TRUE(client.subscribe("dummy"));
 		client.setCanSubscribe(false);
 		EXPECT_FALSE(client.subscribe("dummy2"));
+	}
+
+	TEST_F(PubSubClientTest, LoopTest) {
+
+		PubSubClient client;
+		EXPECT_TRUE(client.connect("testid", "user", "pass", "will", 0, false, "lost"));
 		client.setCallback([=](const char* topic, const uint8_t* payload, const unsigned int length) {
 			this->callback(topic, payload, length);
 		});
+
 
 		client.loop();
 		EXPECT_EQ(0, client.getCallCount());
@@ -84,11 +104,14 @@ namespace Esp32MockTest {
 		// the overflow should not reach the callback
 		EXPECT_FALSE(hasTopicOverflow());
 		EXPECT_FALSE(hasPayloadOverflow());
+	}
 
+	TEST_F(PubSubClientTest, PublishTest) {
+		PubSubClient client;
+		EXPECT_TRUE(client.connect("testid", "user", "pass", "will", 0, false, "lost"));
 		EXPECT_TRUE(client.publish("topic", "payload"));
-		EXPECT_EQ(1, client.getCallCount());
-		EXPECT_STREQ("topic\n", client.getTopics());
-		EXPECT_STREQ("payload[x]\n", client.getPayloads());
+
+		assertCall(client, 1, "topic\n", "payload[x]\n");
 
 		client.setCanPublish(false);
 		EXPECT_FALSE(client.publish("topic", "payload"));
@@ -98,9 +121,7 @@ namespace Esp32MockTest {
 		EXPECT_STREQ("", client.user());
 
 		EXPECT_TRUE(client.publish("topic", "payload", true));
-		EXPECT_EQ(1, client.getCallCount());
-		EXPECT_STREQ("topic\n", client.getTopics());
-		EXPECT_STREQ("payload\n", client.getPayloads());
+		assertCall(client, 1, "topic\n", "payload\n");
 
 		client.reset();
 

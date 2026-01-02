@@ -58,7 +58,7 @@ bool PubSubClient::publish(const char* topic, const char* payload, bool retain) 
     if (!retain) SafeCString::strcat(_payload, "[x]");
     SafeCString::strcat(_payload, "\n");
     _callCount++;
-    return _canPublish;
+    return _canPublish && _callCount <= _callCountThreshold;
 }
 
 void PubSubClient::resetHistory() {
