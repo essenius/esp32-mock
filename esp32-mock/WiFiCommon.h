@@ -66,7 +66,7 @@ int mode() const { return _mode; }
     String macAddress();
     void macAddress(uint8_t* mac) { memcpy(mac, _mac, 6); }
     IPAddress networkID() { return {192, 168, 1, 0}; }
-    void reconnect() { _connectCountdown = _connectMax; }
+    void reconnect() { _connectCountdown = _reconnectMax; }
     int RSSI() { return 1; }
     bool setHostname(const char* name);
     String SSID() { return {_ssid}; }
@@ -88,6 +88,7 @@ private:
     IPAddress _primaryDNSIP;
     IPAddress _secondaryDNSIP;
     int _connectMax = 5;
+    int _reconnectMax = 1;
     int _connectCountdown = _connectMax;
 protected:
     char _name[25] = {0};
