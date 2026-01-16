@@ -30,8 +30,8 @@ else()
   list(APPEND includeFolders ${safe-cstring_SOURCE_DIR}/src)
 endif()
 
-function(add_mock_lib target_name platform_define)
-    cmake_parse_arguments(MOCK "" "" "HEADERS;SOURCES" ${ARGN})
+function(add_mock_lib target_name)
+    cmake_parse_arguments(MOCK "" "PLATFORM_DEFINE" "HEADERS;SOURCES" ${ARGN})
 
     add_library(${target_name} "")
 
@@ -44,18 +44,22 @@ function(add_mock_lib target_name platform_define)
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${includeFolders}
     )
 
-    target_compile_definitions(${target_name}
-        PUBLIC ${platform_define}
-    )
+    if (MOCK_PLATFORM_DEFINE)
+        target_compile_definitions(${target_name}
+            PUBLIC ${MOCK_PLATFORM_DEFINE}
+        )
+    endif()
 endfunction()
 
 
-add_mock_lib(${libName}-esp32 ARDUINO_ARCH_ESP32 
+add_mock_lib(${libName}-esp32  
   HEADERS ${ESP32_HEADERS} 
-  SOURCES ${ESP32_SOURCES})
-add_mock_lib(${libName}-esp8266 ARDUINO_ARCH_ESP8266 
+  SOURCES ${ESP32_SOURCES}
+  PLATFORM_DEFINE ARDUINO_ARCH_ESP32)
+add_mock_lib(${libName}-esp8266 
   HEADERS ${ESP8266_HEADERS} 
-  SOURCES ${ESP8266_SOURCES})
+  SOURCES ${ESP8266_SOURCES}
+  PLATFORM_DEFINE ARDUINO_ARCH_ESP8266)
 
 add_subdirectory(freertos)
 add_subdirectory(sys)

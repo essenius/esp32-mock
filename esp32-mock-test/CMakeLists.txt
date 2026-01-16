@@ -42,7 +42,7 @@ add_executable(${testName}-esp32
 target_compile_definitions(${testName}-esp32 PRIVATE ARDUINO_ARCH_ESP32)
 # target_sources (${testName} PRIVATE ${mySources})
 target_include_directories(${libName}-esp32 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}  )
-target_link_libraries(${testName}-esp32 ${libName}-esp32 gtest_main)
+target_link_libraries(${testName}-esp32 PRIVATE ${libName}-esp32 gtest_main)
 enable_testing()
 
 add_test(NAME ${testName}-esp32 COMMAND ${testName}-esp32)

@@ -118,7 +118,7 @@ uint8_t getPinMode(uint8_t pin);
 // Timing functions
 
 void configTime(int i, int i1, const char* str, const char* text);
-void delay(int delay);
+void delay(unsigned long delay);
 void delayMicroseconds(unsigned long delay);
 unsigned long micros();
 unsigned long millis();

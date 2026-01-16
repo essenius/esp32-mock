@@ -66,7 +66,7 @@ bool espDisableDelay = false;
 
 long long espMicroShift = 0;
 
-void configTime(int /*i*/, int /*i1*/, const char* /*str*/, const char* /*text*/) {}
+void configTime(int /*i*/, int /*i1*/, const char* /*str*/, const char* /*text*/) { /* no-op */}
 
 void shiftMicros(long long shift) {
     espMicroShift = shift;
@@ -85,7 +85,7 @@ void disableDelay(bool disable) {
     espDisableDelay = disable;
 }
 
-void delay(int delay) {
+void delay(unsigned long delay) {
     if (espDisableDelay) return;
     if (espRealTimeOn) {
         espMicroShift += delay * 1000LL;
