@@ -14,7 +14,7 @@
 
 namespace Esp32MockTest {
 	TEST(HttpClientTest, InitTest) {
-			WiFiClient client;
+		WiFiClient client;
 		HTTPClient http;
 		EXPECT_TRUE(http.begin(client, "http://www.example.com"));
 		EXPECT_EQ(400, http.GET());

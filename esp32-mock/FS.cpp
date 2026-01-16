@@ -41,6 +41,23 @@ void File::close() {
     _exists = false;
 }
 
+int File::read() {
+    if ((_mode & File::In) == 0) return -1;
+    if (_currentPosition >= size()) return -1;
+    return _content[_currentPosition++];
+}
+
+size_t File::read(uint8_t* buffer, const size_t length) {
+    if ((_mode & File::In) == 0) return 0;
+    size_t bytesRead = 0;
+    while (bytesRead < length && _currentPosition < size()) {
+        buffer[bytesRead] = static_cast<uint8_t>(_content[_currentPosition]);
+        bytesRead++;
+        _currentPosition++;
+    }
+    return bytesRead;
+}
+
 void File::seek(const int offset, const SeekMode mode) {
     switch(mode) {
     case SeekSet: _currentPosition = offset; break;
@@ -60,13 +77,22 @@ String File::readString() {
     return { _content.substr(oldPosition).c_str() };
 }
 
-void File::write(const char* str, const size_t length) {
-    if ((_mode & File::Out) == 0) return;
+size_t File::write(char character) {
+    return write(&character, 1);
+}
+
+size_t File::write(const char* str, const size_t length) {
     if ((_mode & File::Append) == File::Append) {
         _content += str;
-    } else {
-        _content.replace(_currentPosition, length, str);
-    }
+        return length;
+    } 
+    if ((_mode & File::Out) == 0) return 0;
+    _content.replace(_currentPosition, length, str);
+    return length;
+}
+
+size_t File::write(const uint8_t* str, const size_t length) {
+    return write(reinterpret_cast<const char*>(str), length);
 }
 
 void File::deleteFiles() {

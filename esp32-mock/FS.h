@@ -16,6 +16,8 @@
 #include "StringArduino.h"
 #include <map>
 #include <vector>
+#include <cstdint>
+
 
 enum SeekMode {
     SeekSet = 0,
@@ -45,8 +47,12 @@ public:
     size_t position() const;
     void seek(int offset, SeekMode mode);
     size_t size() const;
+    int read();
+    size_t read(uint8_t* buffer, size_t length);
     String readString();
-    void write(const char* str, size_t length);
+    size_t write(char character);
+    size_t write(const char* str, size_t length);
+    size_t write(const uint8_t* buffer, size_t size);
 
     // testing only
     static void deleteFiles();
@@ -65,7 +71,7 @@ private:
 
 class FS {
  public:
-     void begin() { _started = true; }
+     bool begin() { _started = true; return true; }
      File open(const char* path, const char* mode);
      Dir openDir(const char* folder);
 private:
