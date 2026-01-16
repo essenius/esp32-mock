@@ -9,8 +9,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(safe-cstring)
 
-set(COMMON_HEADERS Adafruit_SSD1306.h Client.h EEPROM.h ESP.h FS.h HTTPClient.h HTTPUpdate.h IPAddress.h Preferences.h PubSubClient.h StringArduino.h WiFiClient.h WiFiCommon.h WiFiClientSecureCommon.h WiFiClientSecure.h Wire.h)
-set(COMMON_SOURCES EEPROM.cpp ESP.cpp FS.cpp HTTPClient.cpp HTTPUpdate.cpp IPAddress.cpp Preferences.cpp PubSubClient.cpp WiFiCommon.cpp WiFiClientSecureCommon.cpp WiFiClientSecure.cpp Wire.cpp)
+set(COMMON_HEADERS Adafruit_SSD1306.h Client.h EEPROM.h ESP.h FS.h HTTPClient.h HTTPUpdate.h IPAddress.h LittleFS.h Preferences.h PubSubClient.h StringArduino.h WiFiClient.h WiFiCommon.h WiFiClientSecureCommon.h WiFiClientSecure.h Wire.h)
+set(COMMON_SOURCES EEPROM.cpp ESP.cpp FS.cpp HTTPClient.cpp HTTPUpdate.cpp IPAddress.cpp LittleFS.cpp Preferences.cpp PubSubClient.cpp WiFiCommon.cpp WiFiClientSecureCommon.cpp WiFiClientSecure.cpp Wire.cpp)
 
 set(ESP32_HEADERS WiFi.h)
 set(ESP32_SOURCES WiFi.cpp)
