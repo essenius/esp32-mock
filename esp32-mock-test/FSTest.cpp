@@ -25,6 +25,12 @@ namespace esp32_mock_test {
 			EXPECT_EQ(file.available(), remaining) << "Available after reading character " << remaining;
 		}
 
+		static void expectNextFile(Dir& dir, const char* expectedFileName, const size_t expectedSize) {
+			EXPECT_TRUE(dir.next());
+			EXPECT_STREQ(dir.fileName().c_str(), expectedFileName);
+			EXPECT_EQ(dir.fileSize(), expectedSize);
+		}
+
 		static void expectFileMetadata(const File& file, const bool isOpen, const size_t expectedSize, const size_t expectedAvailable,
 		                               const char* label) {
 			if (isOpen) {
@@ -161,21 +167,13 @@ namespace esp32_mock_test {
 		File::testDefineFile("/2/test", "q");
 		SPIFFS.begin();
 		auto dir = SPIFFS.openDir("/");
-		EXPECT_TRUE(dir.next());
-		EXPECT_STREQ(dir.fileName().c_str(), "/1/test");
-		EXPECT_EQ(dir.fileSize(), 6);
-		EXPECT_TRUE(dir.next());
-		EXPECT_STREQ(dir.fileName().c_str(), "/1/test2");
-		EXPECT_EQ(dir.fileSize(), 3);
-		EXPECT_TRUE(dir.next());
-		EXPECT_STREQ(dir.fileName().c_str(), "/2/test");
-		EXPECT_EQ(dir.fileSize(), 1);
+		expectNextFile(dir, "/1/test", 6);
+		expectNextFile(dir, "/1/test2", 3);
+		expectNextFile(dir, "/2/test", 1);
 		EXPECT_FALSE(dir.next());
 
 		dir = SPIFFS.openDir("/2/");
-		EXPECT_TRUE(dir.next());
-		EXPECT_STREQ(dir.fileName().c_str(), "/2/test");
-		EXPECT_EQ(dir.fileSize(), 1);
+		expectNextFile(dir, "/2/test", 1);
 		EXPECT_FALSE(dir.next());
 	}
 
