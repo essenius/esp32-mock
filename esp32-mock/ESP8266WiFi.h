@@ -15,7 +15,9 @@
 #define HEADER_ESP8266_WIFI
 
 // this define is used in WiFi.h to distinguish ESP8266 from ESP32
+#ifndef ARDUINO_ARCH_ESP8266
 #define ARDUINO_ARCH_ESP8266
+#endif
 
 // ReSharper disable once CppUnusedIncludeDirective -- not unused
 #include "WiFi.h"
