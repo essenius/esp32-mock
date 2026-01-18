@@ -14,7 +14,7 @@
 #include "../esp32-mock/WiFiClientSecure.h"
 #include "../esp32-mock/ESP8266httpUpdate.h"
 
-namespace Esp32MockTest {
+namespace esp8266_mock_test {
 
 	namespace {
 		int progress_count = 0;

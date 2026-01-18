@@ -13,7 +13,7 @@
 #include "../esp32-mock/ESP8266WiFi.h"
 #include "../esp32-mock/WiFiClientSecure.h"
 
-namespace Esp32MockTest {
+namespace esp8266_mock_test {
 	TEST(Wifi8266Test, InitTest) {
 		BearSSL::X509List cert("dummy certificate");
 		WiFi.mode(WIFI_STA);
