@@ -1,4 +1,4 @@
-// Copyright 2021-2024 Rik Essenius
+// Copyright 2021-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -39,7 +39,7 @@ public:
     void putUInt(const char* key, uint32_t value);
 
     // testing only, to reset the entire preferences content
-    void reset();
+    static void testReset();
 private:
     std::map<std::string, std::map<std::string, std::string>> _preferences;
 

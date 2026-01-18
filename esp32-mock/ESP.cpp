@@ -1,4 +1,4 @@
-// Copyright 2021-2024 Rik Essenius
+// Copyright 2021-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -12,7 +12,7 @@
 // Mock implementation for unit testing (not targeting the ESP32)
 
 // Disabling warnings caused by mimicking existing interfaces
-// ReSharper disable CppInconsistentNaming 
+// ReSharper disable CppInconsistentNaming
 // ReSharper disable CppMemberFunctionMayBeStatic
 // ReSharper disable CppMemberFunctionMayBeConst
 // ReSharper disable CppParameterMayBeConst
@@ -36,19 +36,23 @@ uint32_t Esp::getFreeHeap() {
 
 // GPIO functions
 
-constexpr uint8_t espPinCount = 36;
-uint8_t pinValue[espPinCount];
-uint8_t pinModeValue[espPinCount];
+constexpr uint8_t kEspPinCount = 36;
+
+namespace {
+    uint8_t pinValue[kEspPinCount];
+    uint8_t pinModeValue[kEspPinCount];
+}
 
 uint8_t digitalRead(uint8_t pin) {
     return pinValue[pin];
 }
 
+// ReSharper disable CppParameterValueIsReassigned
 void digitalWrite(uint8_t pin, uint8_t value) {
     pinValue[pin] = value;
 }
 
-uint8_t getPinMode(uint8_t pin) {
+uint8_t testGetPinMode(uint8_t pin) {
     return pinModeValue[pin];
 }
 
@@ -58,17 +62,19 @@ void pinMode(uint8_t pin, uint8_t mode) {
 
 // Time functions
 
-unsigned long espMicros = 0;
-unsigned long espMicrosSteps = 50;
-bool espRealTimeOn = false;
-auto espStartTime = std::chrono::high_resolution_clock::now();
-bool espDisableDelay = false;
+namespace {
+    unsigned long espMicros = 0;
+    unsigned long espMicrosSteps = 50;
+    bool espRealTimeOn = false;
+    auto espStartTime = std::chrono::high_resolution_clock::now();
+    bool espDisableDelay = false;
 
-long long espMicroShift = 0;
+    long long espMicroShift = 0;
+}
 
 void configTime(int /*i*/, int /*i1*/, const char* /*str*/, const char* /*text*/) { /* no-op */}
 
-void shiftMicros(long long shift) {
+void testShiftMicros(long long shift) {
     espMicroShift = shift;
 }
 
@@ -81,7 +87,7 @@ void delayMicroseconds(unsigned long delay) {
     }
 }
 
-void disableDelay(bool disable) {
+void testDisableDelay(bool disable) {
     espDisableDelay = disable;
 }
 
@@ -95,7 +101,7 @@ void delay(unsigned long delay) {
     }
 }
 
-void setRealTime(bool on) {
+void testSetRealTime(bool on) {
     espRealTimeOn = on;
     if (espRealTimeOn) {
         espStartTime = std::chrono::high_resolution_clock::now();
@@ -131,21 +137,21 @@ int HardwareSerial::available() {
 }
 
 void HardwareSerial::begin(int /*speed*/) {
-    clearInput();
-    clearOutput();
+    testClearInput();
+    testClearOutput();
 }
 
-void HardwareSerial::clearInput() {
+void HardwareSerial::testClearInput() {
     _inputBuffer[0] = 0;
     _inputBufferPointer = _inputBuffer;
 }
 
-void HardwareSerial::clearOutput() {
+void HardwareSerial::testClearOutput() {
     _printBuffer[0] = 0;
     _printBufferPointer = _printBuffer;
 }
 
-const char* HardwareSerial::getOutput() {
+const char* HardwareSerial::testGetOutput() {
     return _printBuffer;
 }
 
@@ -168,7 +174,7 @@ char HardwareSerial::read() {
     return *_inputBufferPointer++;
 }
 
-void HardwareSerial::setInput(const char* input) {
+void HardwareSerial::testSetInput(const char* input) {
     SafeCString::strcpy(_inputBuffer, input);
     _inputBufferPointer = _inputBuffer;
 }
@@ -186,8 +192,10 @@ const char* toString(LogLevel level) {
     return nullptr;
 }
 
-int espTimerAlarmEnabled = false;
-hw_timer_t dummy{ 1, 1 };
+namespace {
+    int espTimerAlarmEnabled = false;
+    hw_timer_t dummy{ 1, 1 };
+}
 
 hw_timer_t* timerBegin(uint8_t num, uint16_t divider, bool /*countUp*/) {
     dummy.num = num;
@@ -204,8 +212,8 @@ void timerEnd(hw_timer_t* /*timer*/) {
     dummy.group = 255;
 }
 
-LogLevel minLogLevel = LogLevel::Info;
+auto minLogLevel = LogLevel::Info;
 
 // test only
-bool isTimerAlarmEnabled() { return espTimerAlarmEnabled; }
+bool testIsTimerAlarmEnabled() { return espTimerAlarmEnabled; }
 

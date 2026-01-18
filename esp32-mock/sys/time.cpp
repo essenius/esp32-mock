@@ -1,4 +1,4 @@
-// Copyright 2022-2024 Rik Essenius
+// Copyright 2022-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -29,9 +29,9 @@ int gettimeofday(timeval* timeVal, void* /*ignore*/) {
         const ULARGE_INTEGER x {{fileTime.dwLowDateTime, fileTime.dwHighDateTime}};
 
     	// microseconds between Jan 1,1601 and Jan 1,1970 (start date of Unix epoch)
-        static constexpr ULONGLONG EpochOffsetMicroSeconds = 11644473600000000ULL;
+        static constexpr ULONGLONG kEpochOffsetMicroSeconds = 11644473600000000ULL;
 
-    	const ULONGLONG microSeconds = x.QuadPart / 10 - EpochOffsetMicroSeconds;
+    	const ULONGLONG microSeconds = x.QuadPart / 10 - kEpochOffsetMicroSeconds;
         timeVal->tv_sec = static_cast<time_t>(microSeconds / 1000000ULL);
         timeVal->tv_usec = static_cast<long>(microSeconds % 1000000ULL);
     }

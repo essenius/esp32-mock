@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Rik Essenius
+// Copyright 2022-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -25,7 +25,7 @@
 #include "WiFiClient.h"
 #include "ESP.h"
 
-enum HTTPUpdateResult {
+enum HTTPUpdateResult: uint8_t {
   HTTP_UPDATE_FAILED,
   HTTP_UPDATE_NO_UPDATES,
   HTTP_UPDATE_OK
@@ -57,7 +57,9 @@ public:
     void setLedPin(int ledPin, uint8_t ledOn);
 
     // testing only
-    const char* getUrl() const { return _url; }
+    const char* testGetUrl() const { return _url; }
+	int testGetLedPin() const { return _ledPin; }
+	int testGetLedOn() const { return _ledOn; }
 
 private:
     HTTPUpdateStartCB    _cbStart;
@@ -66,7 +68,7 @@ private:
     HTTPUpdateProgressCB _cbProgress;
 
     int _ledPin = -1;
-    uint8_t _ledOn;
+    uint8_t _ledOn = LOW;
     const char* _url = nullptr;
 };
 

@@ -107,6 +107,7 @@
   <ItemGroup>
     <ClCompile Include="Adafruit_SSD1306Test.cpp" />
     <ClCompile Include="EEPROMTest.cpp" />
+    <ClCompile Include="ESP8266httpUpdateTest.cpp" />
     <ClCompile Include="ESPTest.cpp" />
     <ClCompile Include="freeRTOSTest.cpp" />
     <ClCompile Include="FSTest.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="PubSubClientTest.cpp" />
     <ClCompile Include="ringbufTest.cpp" />
     <ClCompile Include="StringArduinoTest.cpp" />
+    <ClCompile Include="WiFi8266Test.cpp" />
     <ClCompile Include="WiFiClientSecureTest.cpp" />
     <ClCompile Include="WiFiTest.cpp" />
     <ClCompile Include="WireTest.cpp" />

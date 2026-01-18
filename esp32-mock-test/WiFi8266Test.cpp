@@ -40,14 +40,14 @@ namespace Esp32MockTest {
 		WiFi.begin("ssid", "password");
 		EXPECT_STREQ("ssid", WiFi.SSID().c_str());
 
-		EXPECT_TRUE(WiFi.setHostname("hostname"));
-		EXPECT_STREQ("hostname", WiFi.getHostname());
-		EXPECT_FALSE(WiFi.setHostname(""));
-		EXPECT_STREQ("", WiFi.getHostname());
+		EXPECT_TRUE(WiFi.setHostname("hostname")) << "setHostname succeeded";
+		EXPECT_STREQ("hostname", WiFi.getHostname()) << "hostname set";
+		EXPECT_FALSE(WiFi.setHostname("")) << "Cannot set empty host name";
+		EXPECT_STREQ("hostname", WiFi.getHostname()) << "Wrong hostname not set";
 	}
 
 	TEST(Wifi8266Test, ConnectInTest) {
-		WiFi.connectIn(2);
+		WiFi.testConnectIn(2);
 		EXPECT_FALSE(WiFi.isConnected());
 		EXPECT_FALSE(WiFi.isConnected());
 		EXPECT_TRUE(WiFi.isConnected());

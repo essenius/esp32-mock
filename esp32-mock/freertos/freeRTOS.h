@@ -1,4 +1,4 @@
-// Copyright 2022-2024 Rik Essenius
+// Copyright 2022-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -17,7 +17,6 @@
 #ifndef HEADER_FREERTOS
 #define HEADER_FREERTOS
 
-//#include <climits>
 #include <cstdint>
 
 using QueueHandle_t = void*;
@@ -68,7 +67,7 @@ void vTaskNotifyGiveFromISR(TaskHandle_t xTaskToNotify, BaseType_t* pxHigherPrio
 uint32_t ulTaskNotifyTake(BaseType_t xClearCountOnExit, TickType_t xTicksToWait);
 
 // testing only, does not exist in FreeRTOS
-void uxQueueReset();
-constexpr short MaxQueues = 7;
+void testUxQueueReset();
+constexpr short kMaxQueues = 7;
 
 #endif

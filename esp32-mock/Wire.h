@@ -1,4 +1,4 @@
-// Copyright 2022-2024 Rik Essenius
+// Copyright 2022-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -88,14 +88,14 @@ public:
      * \param length the length of the expected values
      * \return return -1 if length wrong, index of wrong item if content wrong, or length if all OK
      */
-    short writeMismatchIndex(const uint8_t* expected, short length) const;
+    short testWriteMismatchIndex(const uint8_t* expected, short length) const;
 
 private:
-    static constexpr short WriteBufferSize = 2048;
+    static constexpr short kWriteBufferSize = 2048;
     uint8_t _address = 0;
     int _available = 0;
     uint8_t _nextResult = 0;
-    uint8_t _written[WriteBufferSize]{};
+    uint8_t _written[kWriteBufferSize]{};
     short _writeIndex = 0;
     bool _flatline = false;
     int _endTransmissionCounter = 10;

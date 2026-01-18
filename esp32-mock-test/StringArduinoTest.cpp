@@ -1,4 +1,4 @@
-// Copyright 2024 Rik Essenius
+// Copyright 2024-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -12,16 +12,17 @@
 #include <gtest/gtest.h>
 #include "../esp32-mock/ESP.h"
 
-namespace Esp32MockTest {
+namespace esp32_mock_test {
 	TEST(StringArduinoTest, InitTest) {
-        const String string1 = "11";
+		const String string1 = "11";
 		EXPECT_TRUE(string1 == "11");
 		EXPECT_TRUE(string1 != "hi");
 		EXPECT_FALSE(string1 == "hi");
 		EXPECT_FALSE(string1 != "11");
 
-		EXPECT_EQ(11, string1.toInt());
-        const auto convertedString = string1.c_str();
-		EXPECT_STREQ("11", convertedString);
+		EXPECT_EQ(string1.toInt(), 11);
+		const auto convertedString = string1.c_str();
+		EXPECT_STREQ(convertedString, "11");
+		EXPECT_EQ(String("a").toInt(), 0);
 	}
 }

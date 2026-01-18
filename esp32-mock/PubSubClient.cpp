@@ -1,4 +1,4 @@
-// Copyright 2021-2023 Rik Essenius
+// Copyright 2021-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -23,7 +23,7 @@
 
 bool PubSubClient::connect(const char* id, const char* /*willTopic*/, uint8_t /*willQos*/, bool /*willRetain*/, const char* /*willMessage*/) {
     SafeCString::strcpy(_id, id);
-    _connectCalled = true;
+    _connectCalled = _canConnect;
     return _canConnect;
 }
 
@@ -36,7 +36,7 @@ bool PubSubClient::connect(const char* id, const char* user, const char* pass,
 
 void PubSubClient::setLoopCallback(const char* topic, const uint8_t* payload, int size) {
     SafeCString::strcpy(_loopTopic, topic);
-    const auto usedSize = std::min(size, SinglePayloadSize - 1);
+    const auto usedSize = std::min(size, kSinglePayloadSize - 1);
     memcpy(_loopPayload, payload, usedSize);
     _loopPayloadSize = usedSize;
 }
@@ -50,10 +50,10 @@ bool PubSubClient::loop() {
 }
 
 bool PubSubClient::publish(const char* topic, const char* payload, bool retain) {
-    if (strlen(topic) + strlen(_topic) > TopicSize - 1) return false;
+    if (strlen(topic) + strlen(_topic) > kTopicSize - 1) return false;
     SafeCString::strcat(_topic, topic);
     SafeCString::strcat(_topic, "\n");
-    if (strlen(payload) + strlen(_payload) > PayloadSize - 1) return false;
+    if (strlen(payload) + strlen(_payload) > kPayloadSize - 1) return false;
     SafeCString::strcat(_payload, payload);
     if (!retain) SafeCString::strcat(_payload, "[x]");
     SafeCString::strcat(_payload, "\n");
@@ -61,7 +61,7 @@ bool PubSubClient::publish(const char* topic, const char* payload, bool retain) 
     return _canPublish && _callCount <= _callCountThreshold;
 }
 
-void PubSubClient::resetHistory() {
+void PubSubClient::testResetHistory() {
     _callCount = 0;
     _payload[0] = 0;
     _topic[0] = 0; 
@@ -72,7 +72,7 @@ void PubSubClient::resetHistory() {
 }
 
 
-void PubSubClient::reset()
+void PubSubClient::testReset()
 {
     _user[0] = 0;
     _pass[0] = 0;
@@ -81,8 +81,9 @@ void PubSubClient::reset()
     _canSubscribe = true;
     _canPublish = true;
     _connectCalled = false;
+    _callCountThreshold = kDefaultCallCountThreshold;
 
-    resetHistory();
+    testResetHistory();
 }
 
 PubSubClient& PubSubClient::setCallback(MQTT_CALLBACK_SIGNATURE) {

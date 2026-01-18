@@ -1,4 +1,4 @@
-// Copyright 2024 Rik Essenius
+// Copyright 2024-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -14,168 +14,207 @@
 // Mimicking existing interface
 // ReSharper disable CppMemberFunctionMayBeStatic 
 // ReSharper disable CppMemberFunctionMayBeConst
+// ReSharper disable CppInconsistentNaming
 
 #include "FS.h"
+
+#include <algorithm>
 #include "StringArduino.h"
 
 FS SPIFFS;
 
-std::map <std::string, std::string> File::_fileMap;
-
+std::map<std::string, FileData> File::_fileMap;
 
 File::operator bool() const {
-    return _exists || (_mode & File::Out) == File::Out;
+	return _valid;
 }
 
 size_t File::available() const {
-    return size() - _currentPosition;
+	return _currentPosition >= size() ? 0 : size() - _currentPosition;
 }
 
 void File::close() {
-    if ((_mode & File::Out) == File::Out) {
-        _fileMap[_path] = _content;
-    }
-    _currentPosition = 0;
-    _content = "";
-    _path = "";
-    _exists = false;
+	if (_valid && (_mode & kOut) == kOut) {
+		_fileMap[_path] = _content;
+	}
+	_currentPosition = 0;
+	_content.clear();
+	_path = "";
+	_exists = false;
+	_valid = false;
 }
 
 int File::read() {
-    if ((_mode & File::In) == 0) return -1;
-    if (_currentPosition >= size()) return -1;
-    return _content[_currentPosition++];
+	if ((_mode & kIn) == 0)
+		return -1;
+	if (_currentPosition >= size())
+		return -1;
+	return _content[_currentPosition++];
 }
 
 size_t File::read(uint8_t* buffer, const size_t length) {
-    if ((_mode & File::In) == 0) return 0;
-    size_t bytesRead = 0;
-    while (bytesRead < length && _currentPosition < size()) {
-        buffer[bytesRead] = static_cast<uint8_t>(_content[_currentPosition]);
-        bytesRead++;
-        _currentPosition++;
-    }
-    return bytesRead;
+	if ((_mode & kIn) == 0)
+		return 0;
+	size_t bytesRead = 0;
+	while (bytesRead < length && _currentPosition < size()) {
+		buffer[bytesRead] = _content[_currentPosition];
+		bytesRead++;
+		_currentPosition++;
+	}
+	return bytesRead;
 }
 
 void File::seek(const int offset, const SeekMode mode) {
-    switch(mode) {
-    case SeekSet: _currentPosition = offset; break;
-    case SeekCur: _currentPosition += offset; break;
-    case SeekEnd: _currentPosition = size() + offset;
-    }
+	long newPos;
+	switch (mode) {
+		case SeekSet: newPos = offset;
+			break;
+		case SeekCur: newPos = static_cast<long>(_currentPosition) + offset;
+			break;
+		case SeekEnd:
+		default: 
+			newPos = static_cast<long>(size()) + offset;
+	}
+
+	newPos = std::max<long>(newPos, 0);
+	if (newPos > static_cast<long>(size())) {
+		_currentPosition = size();
+	}
+	else {
+		_currentPosition = static_cast<size_t>(newPos);
+	}
 }
 
 size_t File::size() const {
-    return _content.length();
+	return _content.size();
 }
 
 String File::readString() {
-    if ((_mode & File::In) == 0) return "";
-    const auto oldPosition = _currentPosition;
-    _currentPosition = size();
-    return { _content.substr(oldPosition).c_str() };
+	if ((_mode & kIn) == 0)
+		return "";
+	if (_currentPosition >= size())
+		return "";
+
+	const auto length = size() - _currentPosition;
+
+	String result;
+	result.reserve(static_cast<unsigned int>(length));
+
+	result.concat(reinterpret_cast<const char*>(&_content[_currentPosition]), length);
+	_currentPosition = _content.size();
+	return result;
 }
 
-size_t File::write(char character) {
-    return write(&character, 1);
+size_t File::write(const char character) {
+	return write(&character, 1);
+}
+
+size_t File::write(const uint8_t* buffer, const size_t size) {
+	if ((_mode & kAppend) == kAppend) {
+		_content.insert(_content.end(), buffer, buffer + size);
+		_currentPosition = _content.size();
+		return size;
+	}
+	if ((_mode & kOut) == 0) return 0;
+
+	if (_currentPosition + size > _content.size()) {
+		_content.resize(_currentPosition + size);
+	}
+	for (size_t i = 0; i < size; i++) {
+		_content[_currentPosition + i] = buffer[i];
+	}
+	_currentPosition += size;
+	return size;
 }
 
 size_t File::write(const char* str, const size_t length) {
-    if ((_mode & File::Append) == File::Append) {
-        _content += str;
-        return length;
-    } 
-    if ((_mode & File::Out) == 0) return 0;
-    _content.replace(_currentPosition, length, str);
-    return length;
+	return write(reinterpret_cast<const uint8_t*>(str), length);
 }
 
-size_t File::write(const uint8_t* str, const size_t length) {
-    return write(reinterpret_cast<const char*>(str), length);
+void File::testDeleteFiles() {
+	_fileMap.clear();
 }
 
-void File::deleteFiles() {
-    _fileMap.clear();
-}
-
-void File::defineFile(const char* path, const char* content) {
-    _fileMap[path] = content;
+void File::testDefineFile(const char* path, const char* content) {
+	_fileMap[path].assign(content, content + strlen(content));
 }
 
 size_t File::position() const { return _currentPosition; }
 
-std::map<std::string, size_t> File::filesInFolder(const char* folder) {
-    std::map<std::string, size_t> result;
-    for (const auto& pair: _fileMap) {
-        if(pair.first.rfind(folder, 0) == 0) {
-            result[pair.first] = static_cast<int>(pair.second.length());
-        }
-    }
-    return result;
+std::map<std::string, size_t> File::testGetFilesInFolder(const char* folder) {
+	std::map<std::string, size_t> result;
+	for (const auto& pair : _fileMap) {
+		if (pair.first.rfind(folder, 0) == 0) {
+			result[pair.first] = static_cast<int>(pair.second.size());
+		}
+	}
+	return result;
 }
 
 bool Dir::next() {
-    if (_first) {
-        _iterator = _files.begin();
-        _first = false;
-    } else {
-        ++_iterator;
-    }
-    return _iterator != _files.end();
+	if (_first) {
+		_iterator = _files.begin();
+		_first = false;
+	}
+	else {
+		++_iterator;
+	}
+	return _iterator != _files.end();
 }
 
 String Dir::fileName() const {
-    return {_iterator->first.c_str()};
+	return {_iterator->first.c_str()};
 }
 
 size_t Dir::fileSize() const {
-    return _iterator->second;
+	return _iterator->second;
 }
 
-Dir::Dir(const std::map<std::string, size_t>& files): _files(files) {
-    _iterator = _files.begin();
+Dir::Dir(const std::map<std::string, size_t>& files) : _files(files) {
+	_iterator = _files.begin();
 }
 
 File::File(const char* path, const char* mode) {
-    _path = path;
-    _currentPosition = 0;
-    auto truncate = false;
-    switch (mode[0]) {
-    case 'r': _mode = File::In; break;
-    case 'w': _mode = File::Out; truncate = true; break;
-    case 'a': _mode = File::Out | File::Append; break;
-    default: 
-        _mode = 0;
-        _exists = false;
-        _content = "";
-        return;
-    }
-    switch (mode[1]) {
-    case '+': _mode |= File::In | File::Out; break;
-    case 0: break;
-    default:;
-    }
-    // if the file does not exist, or we need to truncate, clear the file
-    if (_fileMap.find(path) == _fileMap.end() || truncate) {
-        _content = "";
-        _exists = (_mode & File::Out) == File::Out;
-    } else {
-        _content = _fileMap[path];
-        if ((_mode & File::Append) == File::Append) {
-            _currentPosition = _content.length();
-        }
-        _exists = true;
-    }
+	_path = path;
+	_currentPosition = 0;
+	auto truncate = false;
+	_mode = 0;
+	if (strchr(mode, 'r')) {
+		_mode |= kIn;
+	}
+	if (strchr(mode, 'w')) {
+		_mode |= kOut;
+		truncate = true;
+	}
+	if (strchr(mode, 'a')) {
+		_mode |= kOut | kAppend;
+	}
+	if (strchr(mode, '+')) {
+		_mode |= kIn | kOut;
+	}
+
+	// if the file does not exist, or we need to truncate, clear the file
+	if (_fileMap.find(path) == _fileMap.end() || truncate) {
+		_content.clear();
+		_exists = false;
+	}
+	else {
+		_content = _fileMap[path];
+		if ((_mode & kAppend) == kAppend) {
+			_currentPosition = _content.size();
+		}
+		_exists = true;
+	}
+	_valid = _exists || (_mode & kOut) == kOut;
 }
 
 File FS::open(const char* path, const char* mode) {
-    if (!_started) return {};
-    return {path, mode};
+	if (!_started)
+		return {};
+	return {path, mode};
 }
 
 Dir FS::openDir(const char* folder) {
-    const auto files = File::filesInFolder(folder);
-    return Dir(files);
+	const auto files = File::testGetFilesInFolder(folder);
+	return Dir(files);
 }
-

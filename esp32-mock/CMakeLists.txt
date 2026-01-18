@@ -9,15 +9,16 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(safe-cstring)
 
-set(COMMON_HEADERS Adafruit_SSD1306.h Client.h EEPROM.h ESP.h FS.h HTTPClient.h HTTPUpdate.h IPAddress.h LittleFS.h Preferences.h PubSubClient.h StringArduino.h WiFiClient.h WiFiCommon.h WiFiClientSecureCommon.h WiFiClientSecure.h Wire.h)
-set(COMMON_SOURCES EEPROM.cpp ESP.cpp FS.cpp HTTPClient.cpp HTTPUpdate.cpp IPAddress.cpp LittleFS.cpp Preferences.cpp PubSubClient.cpp WiFiCommon.cpp WiFiClientSecureCommon.cpp WiFiClientSecure.cpp Wire.cpp)
+set(COMMON_HEADERS Adafruit_SSD1306.h Client.h EEPROM.h ESP.h FS.h HTTPClient.h HTTPUpdate.h IPAddress.h LittleFS.h Preferences.h PubSubClient.h StringArduino.h WiFi.h WiFiClient.h WiFiCommon.h WiFiClientSecureCommon.h WiFiClientSecure.h Wire.h)
+set(COMMON_SOURCES EEPROM.cpp ESP.cpp FS.cpp HTTPClient.cpp HTTPUpdate.cpp IPAddress.cpp LittleFS.cpp Preferences.cpp PubSubClient.cpp WiFI.cpp WiFiCommon.cpp WiFiClientSecureCommon.cpp WiFiClientSecure.cpp Wire.cpp)
 
-set(ESP32_HEADERS WiFi.h)
-set(ESP32_SOURCES WiFi.cpp)
+# ESP32 has no extra headers or sources at this time
+set(ESP32_HEADERS)
+set(ESP32_SOURCES)
 set(ESP8266_HEADERS ESP8266HTTPClient.h ESP8266httpUpdate.h ESP8266WiFi.h)
 set(ESP8266_SOURCES ESP8266httpUpdate.cpp ESP8266WiFi.cpp)
 
-# Note that some classes are reused by  the esp8266, e.g., HTTPClient and HTTPUpdate. Mock behavior is the same for both platforms.
+# Note that some classes are reused by  the esp8266, e.g., HTTPClient and HTTPUpdate. Mock behavior is the same for both platforms. WiFi is reused too, but has some extra methods in the esp8266 version.
 
 # If we build under vcpkg, we add the include folder 
 MESSAGE(STATUS "CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}")

@@ -1,4 +1,4 @@
-// Copyright 2021-2024 Rik Essenius
+// Copyright 2021-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -47,41 +47,42 @@ public:
     int state() { return 3; }
 
     // test assistance functions
-    void callBack(char* topic, uint8_t* payload, unsigned int size) { _callback(topic, payload, size); }
-    void failPublishAfter(int callCount) { _callCountThreshold = callCount; }
-    int getCallCount() const { return _callCount; }
-    int getLoopCount() const { return _loopCount; }
-    const char* getPayloads() const { return _payload; }
-    const char* getTopics() const { return _topic; }
-    const char* id() const { return _id; }
-    void reset();
-    void resetHistory();
-    void setCanConnect(bool canConnect) { _canConnect = canConnect; }
-    void setCanPublish(bool canPublish) { _canPublish = canPublish; }
-    void setCanSubscribe(bool canSubscribe) { _canSubscribe = canSubscribe; }
-    const char* user() const { return _user; }
+    void testCallBack(char* topic, uint8_t* payload, unsigned int size) { _callback(topic, payload, size); }
+    void testFailPublishAfter(int callCount) { _callCountThreshold = callCount; }
+    int testGetCallCount() const { return _callCount; }
+    int testGetLoopCount() const { return _loopCount; }
+    const char* testGetPayloads() const { return _payload; }
+    const char* testGetTopics() const { return _topic; }
+    const char* testGetId() const { return _id; }
+    void testReset();
+    void testResetHistory();
+    void testSetCanConnect(bool canConnect) { _canConnect = canConnect; }
+    void testSetCanPublish(bool canPublish) { _canPublish = canPublish; }
+    void testSetCanSubscribe(bool canSubscribe) { _canSubscribe = canSubscribe; }
+    const char* testGetUser() const { return _user; }
 
 private:
-    constexpr static int FieldSize = 64;
-    constexpr static int PayloadSize = 1024;
-    constexpr static int TopicSize = 2500;
-    constexpr static int SingleTopicSize = 100;
-    constexpr static int SinglePayloadSize = 20;
+    constexpr static size_t kFieldSize = 64;
+    constexpr static size_t kPayloadSize = 1024;
+    constexpr static size_t kTopicSize = 2500;
+    constexpr static size_t kSingleTopicSize = 100;
+    constexpr static int kSinglePayloadSize = 20;
+    constexpr static size_t kDefaultCallCountThreshold = 1000000;
     std::function<void(char*, unsigned char*, unsigned)> _callback;
     int _callCount = 0;
-    int _callCountThreshold = 1000000;
+    int _callCountThreshold = kDefaultCallCountThreshold;
     bool _canConnect = true;
     bool _canPublish = true;
     bool _canSubscribe = true;
     bool _connectCalled = false;
-    char _id[FieldSize] = {};
+    char _id[kFieldSize] = {};
     int _loopCount = 0;
-    char _pass[FieldSize] = {};
-    char _payload[PayloadSize] = {};
-    char _topic[TopicSize] = {};
-    char _user[FieldSize] = {};
-    char _loopTopic[SingleTopicSize] = "\0";
-    uint8_t _loopPayload[SinglePayloadSize] = {};
+    char _pass[kFieldSize] = {};
+    char _payload[kPayloadSize] = {};
+    char _topic[kTopicSize] = {};
+    char _user[kFieldSize] = {};
+    char _loopTopic[kSingleTopicSize] = "\0";
+    uint8_t _loopPayload[kSinglePayloadSize] = {};
     int _loopPayloadSize = 0;
 };
 

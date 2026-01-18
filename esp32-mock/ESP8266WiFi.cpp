@@ -1,4 +1,4 @@
-// Copyright 2025 Rik Essenius
+// Copyright 2025-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -9,7 +9,9 @@
 // is distributed on an "AS IS" BASIS WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-#include "ESP8266WiFi.h"
+// ReSharper disable CppInconsistentNaming
+
+/*#include "ESP8266WiFi.h"
 
 bool WiFiClass::hostname(const char* name) {
     strncpy(_name, name, sizeof(_name)-1);
@@ -19,3 +21,4 @@ bool WiFiClass::hostname(const char* name) {
 
 String WiFiClass::hostname() { return {_name}; }
 WiFiClass WiFi;
+*/

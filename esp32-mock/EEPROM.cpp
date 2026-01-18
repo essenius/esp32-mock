@@ -1,4 +1,4 @@
-// Copyright 2024 Rik Essenius
+// Copyright 2024-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -12,32 +12,33 @@
 // Mock implementation of the EEPROM library for unit testing (not targeting the ESP8266)
 
 // ReSharper disable CppMemberFunctionMayBeStatic - mimicking existing interface
+// ReSharper disable CppMemberFunctionMayBeConst
+
+// ReSharper disable CppInconsistentNaming
 #include "EEPROM.h"
 #include "ESP.h"
 
-const char* EEPROMClass::FileName = "EEPROM.bin";
-char EEPROMClass::_committedContent[MaxSize] = "";
-char EEPROMClass::_uncommittedContent[MaxSize] = "";
-
+char EEPROMClass::_committedContent[kMaxSize] = "";
+char EEPROMClass::_uncommittedContent[kMaxSize] = "";
 
 void EEPROMClass::reset() {
-    (void)std::remove(FileName);
+    (void)std::remove(kFileName);
 }
 
 void EEPROMClass::begin(int /*maxSize*/) {
     std::ifstream myFile;
-    myFile.open(FileName, std::ios::binary);
+    myFile.open(kFileName, std::ios::binary);
     if (myFile.fail()) {
-        memset(_uncommittedContent, 0, MaxSize);
+        memset(_uncommittedContent, 0, kMaxSize);
     }
     // sync uncommitted and committed content
-    myFile.read(_uncommittedContent, MaxSize);
+    myFile.read(_uncommittedContent, kMaxSize);
     commit();
     myFile.close();
 }
 
 bool EEPROMClass::commit() {
-    std::memcpy(_committedContent, _uncommittedContent, MaxSize);
+    std::memcpy(_committedContent, _uncommittedContent, kMaxSize);
     _isDirty = false;
     return true;
 }
@@ -61,8 +62,8 @@ void EEPROMClass::write(const int address, const byte value) {
 void EEPROMClass::end() {
     std::ofstream myFile;
     if (_isDirty) commit();
-    myFile.open(FileName, std::ios::binary | std::ofstream::out | std::ofstream::trunc);
-    myFile.write(_committedContent, MaxSize);
+    myFile.open(kFileName, std::ios::binary | std::ofstream::out | std::ofstream::trunc);
+    myFile.write(_committedContent, kMaxSize);
     myFile.close();
 } 
 

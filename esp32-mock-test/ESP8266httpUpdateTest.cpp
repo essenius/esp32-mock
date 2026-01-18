@@ -1,4 +1,4 @@
-// Copyright 2023-2025 Rik Essenius
+// Copyright 2023-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -15,23 +15,26 @@
 #include "../esp32-mock/ESP8266httpUpdate.h"
 
 namespace Esp32MockTest {
-	static int progressCount = 0;
-	static bool started = false;
-	static bool finished = false;
+
+	namespace {
+		int progress_count = 0;
+		bool started = false;
+		bool finished = false;
+	}
 
 	TEST(ESP8266httpUpdateTest, InitTest) {
 		EXPECT_EQ(0, ESPhttpUpdate.getLastError());
 		EXPECT_STREQ("OK", ESPhttpUpdate.getLastErrorString().c_str());
 		WiFiClient client;
 		EXPECT_EQ(HTTP_UPDATE_NO_UPDATES, ESPhttpUpdate.update(client, nullptr));
-		EXPECT_EQ(0, progressCount);
+		EXPECT_EQ(0, progress_count);
 		EXPECT_FALSE(started);
 		EXPECT_FALSE(finished);
 		HTTPUpdate::ReturnValue = HTTP_UPDATE_OK;
 		ESPhttpUpdate.onProgress([](const int current, const int /*total*/) {
-			progressCount++;
+			progress_count++;
 
-			if (progressCount == 1) {
+			if (progress_count == 1) {
 				EXPECT_EQ(300000, current);
 			}
 			else {
@@ -50,8 +53,11 @@ namespace Esp32MockTest {
 
 		EXPECT_EQ(HTTP_UPDATE_OK, ESPhttpUpdate.update(client, nullptr));
 
-		EXPECT_EQ(2, progressCount);
+		EXPECT_EQ(2, progress_count);
 		EXPECT_TRUE(started);
 		EXPECT_TRUE(finished);
+
+		// reset for other tests
+		HTTPUpdate::ReturnValue = HTTP_UPDATE_NO_UPDATES;
 	}
 }

@@ -11,4 +11,5 @@
 
 #include "LittleFS.h"
 
+// ReSharper disable once CppInconsistentNaming
 FS LittleFS;

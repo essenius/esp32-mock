@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Rik Essenius
+// Copyright 2022-2026 Rik Essenius
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -20,12 +20,12 @@
 
 using RingbufHandle_t = void*;
 
-enum RingbufferType_t { RINGBUF_TYPE_NOSPLIT = 0, RINGBUF_TYPE_ALLOWSPLIT, RINGBUF_TYPE_BYTEBUF, RINGBUF_TYPE_MAX };
+enum RingbufferType_t: uint8_t { RINGBUF_TYPE_NOSPLIT = 0, RINGBUF_TYPE_ALLOWSPLIT, RINGBUF_TYPE_BYTEBUF, RINGBUF_TYPE_MAX };
 
 // these 3 are for testing only
-void setRingBufferBufferFull(RingbufHandle_t bufferHandle, bool isFull);
-void setRingBufferNoMoreEntries(RingbufHandle_t bufferHandle);
-void uxRingbufReset();
+void test_set_ring_buffer_buffer_full(RingbufHandle_t bufferHandle, bool isFull);
+void test_set_ring_buffer_no_more_entries(RingbufHandle_t bufferHandle);
+void test_uxRingbufReset();
 
 inline void vRingbufferReturnItem(RingbufHandle_t /*bufferHandle*/, void* /*item1*/) {}
 

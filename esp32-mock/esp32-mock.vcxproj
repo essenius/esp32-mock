@@ -149,6 +149,9 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="EEPROM.h" />
     <ClInclude Include="ESP.h" />
+    <ClInclude Include="ESP8266HTTPClient.h" />
+    <ClInclude Include="ESP8266httpUpdate.h" />
+    <ClInclude Include="ESP8266WiFi.h" />
     <ClInclude Include="freertos\freeRTOS.h" />
     <ClInclude Include="freertos\ringbuf.h" />
     <ClInclude Include="freertos\semphr.h" />
@@ -156,6 +159,7 @@
     <ClInclude Include="HTTPClient.h" />
     <ClInclude Include="HTTPUpdate.h" />
     <ClInclude Include="IPAddress.h" />
+    <ClInclude Include="LittleFS.h" />
     <ClInclude Include="Preferences.h" />
     <ClInclude Include="PubSubClient.h" />
     <ClInclude Include="StringArduino.h" />
@@ -163,22 +167,28 @@
     <ClInclude Include="WiFi.h" />
     <ClInclude Include="WiFiClient.h" />
     <ClInclude Include="WiFiClientSecure.h" />
+    <ClInclude Include="WiFiClientSecureCommon.h" />
+    <ClInclude Include="WiFiCommon.h" />
     <ClInclude Include="Wire.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EEPROM.cpp" />
     <ClCompile Include="ESP.cpp" />
+    <ClCompile Include="ESP8266httpUpdate.cpp" />
+    <ClCompile Include="ESP8266WiFi.cpp" />
     <ClCompile Include="freertos\freeRTOS.cpp" />
     <ClCompile Include="freertos\ringbuf.cpp" />
     <ClCompile Include="FS.cpp" />
     <ClCompile Include="HTTPClient.cpp" />
     <ClCompile Include="HTTPUpdate.cpp" />
     <ClCompile Include="IPAddress.cpp" />
+    <ClCompile Include="LittleFS.cpp" />
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="PubSubClient.cpp" />
     <ClCompile Include="sys\time.cpp" />
     <ClCompile Include="WiFi.cpp" />
-    <ClCompile Include="WiFiClientSecure.cpp" />
+    <ClCompile Include="WiFiClientSecureCommon.cpp" />
+    <ClCompile Include="WiFiCommon.cpp" />
     <ClCompile Include="Wire.cpp" />
   </ItemGroup>
   <ItemGroup>

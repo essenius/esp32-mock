@@ -1,4 +1,4 @@
-// Copyright 2022-2024 Rik Essenius
+// Copyright 2022-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -16,45 +16,48 @@
 // ReSharper disable CppParameterMayBeConst
 // ReSharper disable CppClangTidyPerformanceNoIntToPtr
 // ReSharper disable once CppUnusedIncludeDirective -- not unused on Linux (but is on Windows)
+// ReSharper disable CppInconsistentNaming
 #include "../ESP.h"
 #include "ringbuf.h"
 
 #include <limits>
 
-constexpr int16_t MaxItems = 100;
-constexpr int16_t MaxItemSize = 64;
-constexpr int MaxRingbuffers = 10;
+constexpr int16_t kMaxItems = 100;
+constexpr int16_t kMaxItemSize = 64;
+constexpr int kMaxRingbuffers = 10;
 
 struct RingBufferContainer {
     RingbufHandle_t ringbufHandle = nullptr;
-    char ringBuffer[MaxItems][2][MaxItemSize]{};
-    size_t itemSize[MaxItems]{};
+    char ringBuffer[kMaxItems][2][kMaxItemSize]{};
+    size_t itemSize[kMaxItems]{};
     short nextBufferItem = 0;
     short nextReadBufferItem = 0;
     bool bufferIsFull = false;
 };
 
-RingBufferContainer container[MaxRingbuffers];
+namespace {
+    RingBufferContainer container[kMaxRingbuffers];
 
-int getIndex(RingbufHandle_t bufferHandle) {
-    // Match the handle size to an int, and subtract 1 to get the index
-    const auto handle = reinterpret_cast<uintptr_t>(bufferHandle); 
-    return static_cast<int>(handle & std::numeric_limits<int>::max()) - 1;
+    int get_index(RingbufHandle_t bufferHandle) {
+        // Match the handle size to an int, and subtract 1 to get the index
+        const auto handle = reinterpret_cast<uintptr_t>(bufferHandle);
+        return static_cast<int>(handle & std::numeric_limits<int>::max()) - 1;
+    }
 }
 
 // testing only
 
-void setRingBufferBufferFull(RingbufHandle_t bufferHandle, bool isFull) {
-    const int i = getIndex(bufferHandle);
+void test_set_ring_buffer_buffer_full(RingbufHandle_t bufferHandle, bool isFull) {
+    const int i = get_index(bufferHandle);
     container[i].bufferIsFull = isFull;
 }
 
-void setRingBufferNoMoreEntries(RingbufHandle_t bufferHandle) {
-    const int i = getIndex(bufferHandle);
-    container[i].nextBufferItem = MaxItems + 1;
+void test_set_ring_buffer_no_more_entries(RingbufHandle_t bufferHandle) {
+    const int i = get_index(bufferHandle);
+    container[i].nextBufferItem = kMaxItems + 1;
 }
 
-void uxRingbufReset() {
+void test_uxRingbufReset() {
     for (auto& i : container) {
         i.ringbufHandle = nullptr;
         i.nextBufferItem = 0;
@@ -68,10 +71,10 @@ void uxRingbufReset() {
 
 RingbufHandle_t xRingbufferCreate(size_t /* xBufferSize */, RingbufferType_t /* xBufferType */) {
     int i = 0;
-    while (container[i].ringbufHandle != nullptr && i <= MaxRingbuffers) {
+    while (container[i].ringbufHandle != nullptr && i <= kMaxRingbuffers) {
         i++;
     }
-    if (i >= MaxRingbuffers) return nullptr;
+    if (i >= kMaxRingbuffers) return nullptr;
     const uint64_t handle = static_cast<uint64_t>(i) + 1;
     container[i].ringbufHandle = reinterpret_cast<RingbufHandle_t>(handle);
     return container[i].ringbufHandle;
@@ -79,21 +82,21 @@ RingbufHandle_t xRingbufferCreate(size_t /* xBufferSize */, RingbufferType_t /* 
 
 size_t xRingbufferGetCurFreeSize(RingbufHandle_t bufferHandle) {
     if (bufferHandle == nullptr) return 0;
-    const int i = getIndex(bufferHandle);
+    const int i = get_index(bufferHandle);
     if (container[i].bufferIsFull) return 7;
-    return static_cast<size_t>(100 - container[i].nextBufferItem) * MaxItemSize * 2;
+    return static_cast<size_t>(100 - container[i].nextBufferItem) * kMaxItemSize * 2;
 }
 
 BaseType_t xRingbufferReceiveSplit(RingbufHandle_t bufferHandle, void** item1, void** item2, size_t* item1Size,
                                    size_t* item2Size, uint32_t /* ticksToWait */) {
     if (bufferHandle == nullptr) return pdFALSE;
-    const int i = getIndex(bufferHandle);
+    const int i = get_index(bufferHandle);
     if (container[i].nextReadBufferItem >= container[i].nextBufferItem) return pdFALSE;
     *item1 = &container[i].ringBuffer[container[i].nextReadBufferItem][0];
-    if (container[i].itemSize[container[i].nextReadBufferItem] > MaxItemSize) {
+    if (container[i].itemSize[container[i].nextReadBufferItem] > kMaxItemSize) {
         *item2 = &container[i].ringBuffer[container[i].nextReadBufferItem][1];
-        *item1Size = MaxItemSize;
-        *item2Size = container[i].itemSize[container[i].nextReadBufferItem] - MaxItemSize;
+        *item1Size = kMaxItemSize;
+        *item2Size = container[i].itemSize[container[i].nextReadBufferItem] - kMaxItemSize;
     }
     else {
         *item2 = nullptr;
@@ -106,13 +109,13 @@ BaseType_t xRingbufferReceiveSplit(RingbufHandle_t bufferHandle, void** item1, v
 
 UBaseType_t xRingbufferSend(RingbufHandle_t bufferHandle, const void* payload, size_t size, TickType_t /*ticksToWait*/) {
     if (bufferHandle == nullptr) return pdFALSE;
-    const int i = getIndex(bufferHandle);
-    if (container[i].nextBufferItem >= MaxItems) return pdFALSE;
-    if (size > 2LL * MaxItemSize) return pdFALSE;
-    if (size > MaxItemSize) {
-        const auto startItem2Pointer = static_cast<const char*>(payload) + MaxItemSize;
-        memcpy(&container[i].ringBuffer[container[i].nextBufferItem][0], payload, MaxItemSize);
-        memcpy(&container[i].ringBuffer[container[i].nextBufferItem][1], startItem2Pointer, size - MaxItemSize);
+    const int i = get_index(bufferHandle);
+    if (container[i].nextBufferItem >= kMaxItems) return pdFALSE;
+    if (size > 2LL * kMaxItemSize) return pdFALSE;
+    if (size > kMaxItemSize) {
+        const auto startItem2Pointer = static_cast<const char*>(payload) + kMaxItemSize;
+        memcpy(&container[i].ringBuffer[container[i].nextBufferItem][0], payload, kMaxItemSize);
+        memcpy(&container[i].ringBuffer[container[i].nextBufferItem][1], startItem2Pointer, size - kMaxItemSize);
     }
     else {
         memcpy(&container[i].ringBuffer[container[i].nextBufferItem][0], payload, size);

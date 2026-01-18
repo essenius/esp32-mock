@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Rik Essenius
+// Copyright 2022-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -68,14 +68,14 @@ uint8_t TwoWire::getAddress() {
 }
 
 size_t TwoWire::write(uint8_t value) {
-    if (_writeIndex < WriteBufferSize) {
+    if (_writeIndex < kWriteBufferSize) {
         _written[_writeIndex++] = value;
         return 1;
     }
     return 0;
 }
 
-short TwoWire::writeMismatchIndex(const uint8_t* expected, const short length) const {
+short TwoWire::testWriteMismatchIndex(const uint8_t* expected, const short length) const {
     if (length != _writeIndex) return -1;
     for (short i = 0; i < length; i++) {
         if (_written[i] != *expected) return i;

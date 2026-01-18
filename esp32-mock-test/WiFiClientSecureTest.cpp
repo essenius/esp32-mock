@@ -1,4 +1,4 @@
-// Copyright 2023 Rik Essenius
+// Copyright 2023-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -12,21 +12,20 @@
 #include <gtest/gtest.h>
 #include "../esp32-mock/WiFiClientSecure.h"
 
-namespace Esp32MockTest {
+namespace esp32_mock_test {
 	TEST(WiFiClientSecureTest, InitTest) {
 		WiFiClientSecure client1;
-		EXPECT_STREQ("WifiClientSecure", client1.getType());
-		EXPECT_TRUE(client1.isSecure());
+		EXPECT_STREQ(client1.testGetType(), "WifiClientSecure");
+		EXPECT_TRUE(client1.testIsSecure());
 		client1.setInsecure();
-		EXPECT_FALSE(client1.isSecure());
+		EXPECT_FALSE(client1.testIsSecure());
 
 		WiFiClient client2;
-		EXPECT_STREQ("WifiClient", client2.getType());
+		EXPECT_STREQ(client2.testGetType(), "WifiClient");
 		EXPECT_TRUE(client2.isConnected());
 		client2.stop();
 
 		Client client3;
-		EXPECT_STREQ("Client", client3.getType());
-
+		EXPECT_STREQ(client3.testGetType(), "Client");
 	}
 }

@@ -1,4 +1,4 @@
-// Copyright 2024-2025 Rik Essenius
+// Copyright 2024-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -12,47 +12,51 @@
 #include <gtest/gtest.h>
 #include "../esp32-mock/EEPROM.h"
 
-namespace Esp32MockTest {
+namespace esp32_mock_test {
 	TEST(EEPROMTest, ReadWriteTest) {
 		EEPROM.reset(); // forget the previous content - not part of the standard interface
 		EEPROM.begin(512);
-		EXPECT_EQ(0, EEPROM.read(100)) << "Initial value is 0";
+		EXPECT_EQ(EEPROM.read(100), 0) << "Initial value is 0";
 		EEPROM.write(100, 'a');
-		EXPECT_EQ('a', EEPROM.read(100)) << "Value after write";
+		EXPECT_EQ(EEPROM.read(100), 'a') << "Value after write";
+		EEPROM.write(100, 'a');
+		EXPECT_EQ(EEPROM.read(100), 'a') << "Value after write same (but not written again)";
+
 		EEPROM.end();
 		EEPROM.begin(512);
-		EXPECT_EQ('a', EEPROM.read(100)) << "Value after reopen retained";
+		EXPECT_EQ(EEPROM.read(100), 'a') << "Value after reopen retained";
 		EEPROM.end();
 	}
 
-		TEST(EEPROMTest, GetPutTest) {
-		EEPROM.reset(); 
+	TEST(EEPROMTest, GetPutTest) {
+		EEPROM.reset();
 		EEPROM.begin(512);
 		uint16_t value = 65535;
 		EEPROM.get(100, value);
-		EXPECT_EQ(0, value) << "Initial value is 0";
+		EXPECT_EQ(value, 0) << "Initial value is 0";
 		value = 12345;
 		EEPROM.put(100, value);
 		EXPECT_TRUE(EEPROM.isDirty()) << "isDirty true after put";
 		value = 0;
 		EEPROM.get(100, value);
-		EXPECT_EQ(12345, value)  << "get returns the put value before commit";
+		EXPECT_EQ(value, 12345) << "get returns the put value before commit";
 		EEPROM.commit();
 		EXPECT_FALSE(EEPROM.isDirty()) << "isDirty false after commit";
 		value = 0;
 		EEPROM.get(100, value);
-		EXPECT_EQ(12345, value) << "Value after commit is the same";
+		EXPECT_EQ(value, 12345) << "Value after commit is the same";
 		EEPROM.end();
 		EEPROM.begin(512);
 		value = 0;
 		EEPROM.get(100, value);
-		EXPECT_EQ(12345, value) << "Value after reopen retained";
+		EXPECT_EQ(value, 12345) << "Value after reopen retained";
 
 		EEPROM.put(100, 32767);
-		EXPECT_TRUE(EEPROM.isDirty()) << "isDirty true after put before implicit commit";		
-		EEPROM.end();	
+		EXPECT_TRUE(EEPROM.isDirty()) << "isDirty true after put before implicit commit";
+		EEPROM.end();
 		EXPECT_FALSE(EEPROM.isDirty()) << "isDirty false after implicit commit";
-		
+
 		EEPROM.get(100, value);
-		EXPECT_EQ(32767, value) << "Past put value after reopen saved by implicit commit";}
+		EXPECT_EQ(value, 32767) << "Past put value after reopen saved by implicit commit";
+	}
 }

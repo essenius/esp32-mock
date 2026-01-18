@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Rik Essenius
+// Copyright 2023-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -12,59 +12,59 @@
 #include <gtest/gtest.h>
 #include "../esp32-mock/freertos/ringbuf.h"
 
-namespace Esp32MockTest {
+namespace esp32_mock_test {
 	TEST(RingBufTest, InitTest) {
-		uxRingbufReset();
-		EXPECT_EQ(pdFALSE, xRingbufferReceiveSplit(nullptr, nullptr, nullptr, nullptr, nullptr, 0));
-		EXPECT_EQ(0, xRingbufferGetCurFreeSize(nullptr));
-		EXPECT_EQ(pdFALSE, xRingbufferSend(nullptr, nullptr, 0, 0));
+		test_uxRingbufReset();
+		EXPECT_EQ(xRingbufferReceiveSplit(nullptr, nullptr, nullptr, nullptr, nullptr, 0), pdFALSE);
+		EXPECT_EQ(xRingbufferGetCurFreeSize(nullptr), 0);
+		EXPECT_EQ(xRingbufferSend(nullptr, nullptr, 0, 0), pdFALSE);
 
 		const auto handle = xRingbufferCreate(100, RINGBUF_TYPE_ALLOWSPLIT);
-		EXPECT_EQ(12800, xRingbufferGetCurFreeSize(handle));
+		EXPECT_EQ(xRingbufferGetCurFreeSize(handle), 12800);
 
 		char* item1 = nullptr;
 		char* item2 = nullptr;
 		size_t item1Size;
 		size_t item2Size;
-		constexpr char SinglePayload[] = R"(ABCDEFGHIJKLMNOPQRSTUVWXYZ)";
-		constexpr char DoublePayload[] = R"(ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890abcdefghijklmnopqrstuvwxyz!@#$%^&*())";
-		EXPECT_EQ(pdFALSE, xRingbufferReceiveSplit(handle, reinterpret_cast<void**>(&item1), reinterpret_cast<void**>(&item2), &item1Size, &item2Size, 0));
-		EXPECT_EQ(pdFALSE, xRingbufferSend(handle, DoublePayload, 132, 0));
-		EXPECT_EQ(pdTRUE, xRingbufferSend(handle, SinglePayload , sizeof SinglePayload, 0));
-		EXPECT_EQ(12672, xRingbufferGetCurFreeSize(handle));
-		EXPECT_EQ(pdTRUE, xRingbufferSend(handle, DoublePayload, sizeof DoublePayload, 0));
-		EXPECT_EQ(12544, xRingbufferGetCurFreeSize(handle));
-		EXPECT_EQ(pdTRUE, xRingbufferReceiveSplit(handle, reinterpret_cast<void**>(&item1), reinterpret_cast<void**>(&item2), &item1Size, &item2Size, 0));
-		EXPECT_EQ(27, item1Size);
-		EXPECT_EQ(0, item2Size);
-		EXPECT_EQ(0, strncmp(SinglePayload, item1, item1Size));
-		EXPECT_EQ(12544, xRingbufferGetCurFreeSize(handle));
+		constexpr char singlePayload[] = R"(ABCDEFGHIJKLMNOPQRSTUVWXYZ)";
+		constexpr char doublePayload[] = R"(ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890abcdefghijklmnopqrstuvwxyz!@#$%^&*())";
+		EXPECT_EQ(xRingbufferReceiveSplit(handle, reinterpret_cast<void**>(&item1), reinterpret_cast<void**>(&item2), &item1Size, &item2Size, 0), pdFALSE);
+		EXPECT_EQ(xRingbufferSend(handle, doublePayload, 132, 0), pdFALSE);
+		EXPECT_EQ(xRingbufferSend(handle, singlePayload , sizeof singlePayload, 0), pdTRUE);
+		EXPECT_EQ(xRingbufferGetCurFreeSize(handle), 12672);
+		EXPECT_EQ(xRingbufferSend(handle, doublePayload, sizeof doublePayload, 0), pdTRUE);
+		EXPECT_EQ(xRingbufferGetCurFreeSize(handle), 12544);
+		EXPECT_EQ(xRingbufferReceiveSplit(handle, reinterpret_cast<void**>(&item1), reinterpret_cast<void**>(&item2), &item1Size, &item2Size, 0), pdTRUE);
+		EXPECT_EQ(item1Size, 27);
+		EXPECT_EQ(item2Size, 0);
+		EXPECT_EQ(strncmp(singlePayload, item1, item1Size), 0);
+		EXPECT_EQ(xRingbufferGetCurFreeSize(handle), 12544);
 
-		EXPECT_EQ(pdTRUE, xRingbufferReceiveSplit(handle, reinterpret_cast<void**>(&item1), reinterpret_cast<void**>(&item2), &item1Size, &item2Size, 0));
-		EXPECT_EQ(64, item1Size);
-		EXPECT_EQ(10, item2Size);
-		EXPECT_EQ(0, strncmp(DoublePayload, item1, item1Size));
-		EXPECT_EQ(0, strncmp(DoublePayload + item1Size, item2, item2Size));
-		EXPECT_EQ(12544, xRingbufferGetCurFreeSize(handle));
+		EXPECT_EQ(xRingbufferReceiveSplit(handle, reinterpret_cast<void**>(&item1), reinterpret_cast<void**>(&item2), &item1Size, &item2Size, 0), pdTRUE);
+		EXPECT_EQ(item1Size, 64);
+		EXPECT_EQ(item2Size, 10);
+		EXPECT_EQ(strncmp(doublePayload, item1, item1Size), 0);
+		EXPECT_EQ(strncmp(doublePayload + item1Size, item2, item2Size), 0);
+		EXPECT_EQ(xRingbufferGetCurFreeSize(handle), 12544);
 	}
 
 	TEST(RingBufTest, BufferFullTest) {
 		const auto handle = xRingbufferCreate(100, RINGBUF_TYPE_ALLOWSPLIT);
-		setRingBufferBufferFull(handle, true);
-		EXPECT_EQ(7, xRingbufferGetCurFreeSize(handle));
+		test_set_ring_buffer_buffer_full(handle, true);
+		EXPECT_EQ(xRingbufferGetCurFreeSize(handle), 7);
 	}
 
 	TEST(RingBufTest, NoMoreEntriesTest) {
 		const auto handle = xRingbufferCreate(100, RINGBUF_TYPE_ALLOWSPLIT);
-		setRingBufferNoMoreEntries(handle);
-		EXPECT_EQ(pdFALSE, xRingbufferSend(handle, nullptr, 0,0));
+		test_set_ring_buffer_no_more_entries(handle);
+		EXPECT_EQ(xRingbufferSend(handle, nullptr, 0,0), pdFALSE);
 	}
 
 	TEST(RingBufTest, BufferOverrunTest) {
-		uxRingbufReset();
+		test_uxRingbufReset();
 		for (int i=0; i<10;i++) {
 			EXPECT_NE(nullptr, xRingbufferCreate(1, RINGBUF_TYPE_ALLOWSPLIT)) << "attempt " << i;
 		}
-		EXPECT_EQ(nullptr, xRingbufferCreate(1, RINGBUF_TYPE_ALLOWSPLIT));
+		EXPECT_EQ(xRingbufferCreate(1, RINGBUF_TYPE_ALLOWSPLIT), nullptr);
 	}
 }

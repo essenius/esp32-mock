@@ -1,4 +1,4 @@
-// Copyright 2024 Rik Essenius
+// Copyright 2024-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -19,19 +19,23 @@
 #include <cstdint>
 
 
-enum SeekMode {
+enum SeekMode: uint8_t {
     SeekSet = 0,
     SeekCur = 1,
     SeekEnd = 2
 };
+
+using FileData = std::vector<uint8_t>;
 
 class Dir {
 public:
     bool next();
     String fileName() const;
     size_t fileSize() const;
-    bool _first = true;
     explicit Dir(const std::map<std::string, size_t>& files);
+
+private:
+    bool _first = true;
     std::map<std::string, size_t> _files;
     std::map<std::string, size_t>::iterator _iterator;
 };
@@ -40,7 +44,6 @@ class File {
 public:
     File(const char* path, const char* mode);
     File() = default;
-    bool _exists = false;
     explicit operator bool() const;
     size_t available() const;
     void close();
@@ -55,19 +58,24 @@ public:
     size_t write(const uint8_t* buffer, size_t size);
 
     // testing only
-    static void deleteFiles();
-    static void defineFile(const char* path, const char* content);
-    static std::map<std::string, size_t> filesInFolder(const char* folder);
+    static void testDeleteFiles();
+    static void testDefineFile(const char* path, const char* content);
+    static std::map<std::string, size_t> testGetFilesInFolder(const char* folder);
+
 private:
     size_t _currentPosition = 0;
     std::string _path;
-    std::string _content;
+    FileData _content;
     int _mode = 0;
-    static constexpr int In = 1;
-    static constexpr int Out = 2;
-    static constexpr int Append = 4;
-    static std::map <std::string, std::string> _fileMap;
+    bool _exists = false;
+    bool _valid = false;
+    static constexpr int kIn = 1;
+    static constexpr int kOut = 2;
+    static constexpr int kAppend = 4;
+    static std::map <std::string, FileData> _fileMap;
 };
+
+// ReSharper disable CppInconsistentNaming
 
 class FS {
  public:
@@ -79,4 +87,5 @@ private:
 };
 
 extern FS SPIFFS;
+
 #endif

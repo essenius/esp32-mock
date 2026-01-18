@@ -1,4 +1,4 @@
-// Copyright 2021-2024 Rik Essenius
+// Copyright 2021-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -37,7 +37,9 @@ constexpr uint8_t HIGH = 0x1;
 
 constexpr uint8_t LED_BUILTIN = 13;
 
+#ifndef PI
 #define PI 3.1415926535897932384626433832795
+#endif
 
 // emulation of the relevant Arduino capabilities
 
@@ -69,10 +71,10 @@ public:
     void setTimeout(long timeout);
 
     // test support (i.e. don't use in production code)
-    void clearInput();
-    void clearOutput();
-    const char* getOutput();
-    void setInput(const char* input);
+    void testClearInput();
+    void testClearOutput();
+    const char* testGetOutput();
+    void testSetInput(const char* input);
 
     template <typename... Arguments>
     int printf(const char* format, Arguments ... arguments) {
@@ -81,13 +83,13 @@ public:
         return length;
     }
 
-    static constexpr size_t PrintBufferSize = 4096;
+    static constexpr size_t kPrintBufferSize = 4096;
 
 private:
-    char _printBuffer[PrintBufferSize] = {};
+    char _printBuffer[kPrintBufferSize] = {};
     char* _printBufferPointer = _printBuffer;
-    static constexpr size_t InputBufferSize = 100;
-    char _inputBuffer[InputBufferSize] = {};
+    static constexpr size_t kInputBufferSize = 100;
+    char _inputBuffer[kInputBufferSize] = {};
     char* _inputBufferPointer = nullptr;
 };
 
@@ -98,12 +100,12 @@ int redirectPrintf(const char* format, Arguments ... arguments) {
     return Serial.printf(format, arguments...);
 }
 
-inline const char* getPrintOutput() {
-    return Serial.getOutput();
+inline const char* testGetPrintOutput() {
+    return Serial.testGetOutput();
 }
 
-inline void clearPrintOutput() {
-    Serial.clearOutput();
+inline void testClearPrintOutput() {
+    Serial.testClearOutput();
 }
 
 // GPIO functions
@@ -113,7 +115,7 @@ void digitalWrite(uint8_t pin, uint8_t value);
 void pinMode(uint8_t pin, uint8_t mode);
 
 // for testing only
-uint8_t getPinMode(uint8_t pin);
+uint8_t testGetPinMode(uint8_t pin);
 
 // Timing functions
 
@@ -128,18 +130,18 @@ void yield();
  * \brief Testing: shift the micros() clock
  * \param shift micros to shift 
  */
-void shiftMicros(long long shift);
+void testShiftMicros(long long shift);
 
 /**
  * \brief Testing: set whether the millis() clock is real time or not
  * \param on true: realtime, false: not realtime
  */
-void setRealTime(bool on);
+void testSetRealTime(bool on);
 
 /**
  * \brief Testing: returns whether timer alarm is enabled
  */
-bool isTimerAlarmEnabled();
+bool testIsTimerAlarmEnabled();
 
 // delay() is often used to give time for other tasks. When testing, we often run sequential and then this interferes
 
@@ -147,11 +149,11 @@ bool isTimerAlarmEnabled();
  * \brief Testing: disable delay() (to be able to run code sequentially which is normally run in tasks)
  * \param disable whether to disable delay() or not
  */
-void disableDelay(bool disable);
+void testDisableDelay(bool disable);
 
 // Logging
 
-enum class LogLevel { Error = 1, Warning, Info, Debug, Verbose };
+enum class LogLevel: uint8_t { Error = 1, Warning, Info, Debug, Verbose };
 
 const char* toString(LogLevel level);
 

@@ -1,4 +1,4 @@
-// Copyright 2024-2025 Rik Essenius
+// Copyright 2024-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -11,7 +11,9 @@
 
 // Mock implementation of the EEPROM library for unit testing (not targeting the ESP8266)
 
-// ReSharper disable CppInconsistentNaming -- mocking existing interface
+// ReSharper disable CppInconsistentNaming
+// ReSharper disable CppMemberFunctionMayBeStatic
+// ReSharper disable CppParameterMayBeConst
 
 #ifndef HEADER_EEPROM
 #define HEADER_EEPROM
@@ -42,10 +44,10 @@ public:
     
     void end();
 private:
-    static constexpr int MaxSize = 512;
-    static const char* FileName;
-    static char _uncommittedContent[MaxSize];
-    static char _committedContent[MaxSize];
+    static constexpr int kMaxSize = 512;
+    static constexpr auto kFileName = "EEPROM.bin";
+    static char _uncommittedContent[kMaxSize];
+    static char _committedContent[kMaxSize];
     bool _isDirty = false;
 };
 

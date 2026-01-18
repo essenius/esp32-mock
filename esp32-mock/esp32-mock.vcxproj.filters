@@ -79,6 +79,24 @@
     <ClInclude Include="FS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ESP8266HTTPClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ESP8266httpUpdate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ESP8266WiFi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LittleFS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WiFiClientSecureCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WiFiCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ESP.cpp">
@@ -102,9 +120,6 @@
     <ClCompile Include="WiFi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WiFiClientSecure.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Wire.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -121,6 +136,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ESP8266httpUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ESP8266WiFi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LittleFS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WiFiClientSecureCommon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WiFiCommon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Rik Essenius
+// Copyright 2022-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -22,13 +22,15 @@
 #include "IPAddress.h"
 #include "StringArduino.h"
 
+enum WiFiMode: uint8_t {
+    WIFI_OFF = 0,
+    WIFI_STA = 1,
+    WIFI_AP = 2,
+    WIFI_AP_STA = 3
+};
 
-#define WIFI_STA 1  
-#define WIFI_AP 2
-#define WIFI_AP_STA 3
-
-enum wl_status_t {
-  WL_NO_SHIELD = 255,  // for compatibility with WiFi Shield library
+enum wl_status_t: uint8_t {
+  WL_NO_SHIELD = 255,  // for compatibility with Wi-Fi Shield library
   WL_STOPPED = 254,
   WL_IDLE_STATUS = 0,
   WL_NO_SSID_AVAIL = 1,
@@ -73,13 +75,14 @@ int mode() const { return _mode; }
     wl_status_t status() { return _status; }
     IPAddress subnetMask() const { return _subnetIP; }
 
-    // testing
-    void connectIn(int connectCount);
-    void setStatus(wl_status_t status) { _status = status; }
-    void reset();
+	// testing functions, not part of the real interface
+    void testConnectIn(int connectCount);
+    void testSetStatus(wl_status_t status) { _status = status; }
+    void testReset();
 private:
+    static constexpr int kDefaultConnectDelay = 5;
     byte _mac[6]{};
-    char _ssid[20] = {0};
+    char _ssid[20] = {};
     int _mode = WIFI_STA;
     wl_status_t _status = WL_CONNECTED;
     IPAddress _localIP;
@@ -87,11 +90,11 @@ private:
     IPAddress _subnetIP;
     IPAddress _primaryDNSIP;
     IPAddress _secondaryDNSIP;
-    int _connectMax = 5;
+    int _connectMax = kDefaultConnectDelay;
     int _reconnectMax = 1;
     int _connectCountdown = _connectMax;
 protected:
-    char _name[25] = {0};
+    char _name[25] = {};
 };
 
 #endif

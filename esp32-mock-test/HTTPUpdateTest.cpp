@@ -1,4 +1,4 @@
-// Copyright 2023 Rik Essenius
+// Copyright 2023-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -12,29 +12,33 @@
 #include <gtest/gtest.h>
 #include "../esp32-mock/HTTPUpdate.h"
 
-namespace Esp32MockTest {
-	static int progressCount = 0;
-	static bool started = false;
-	static bool finished = false;
+namespace esp32_mock_test {
+	namespace {
+		int progress_count = 0;
+		bool started = false;
+		bool finished = false;
+	}
 
 	TEST(HttpUpdateTest, InitTest) {
-		EXPECT_EQ(0, httpUpdate.getLastError());
-		EXPECT_STREQ("OK", httpUpdate.getLastErrorString().c_str());
+		EXPECT_EQ(httpUpdate.getLastError(), 0);
+		EXPECT_STREQ(httpUpdate.getLastErrorString().c_str(), "OK");
 		WiFiClient client;
-		EXPECT_EQ(HTTP_UPDATE_NO_UPDATES, httpUpdate.update(client, nullptr));
-		EXPECT_EQ(0, progressCount);
+		httpUpdate.setLedPin(2, HIGH);
+		EXPECT_EQ(httpUpdate.testGetLedPin(), 2);
+		EXPECT_EQ(httpUpdate.testGetLedOn(), HIGH);
+		EXPECT_EQ(httpUpdate.update(client, nullptr), HTTP_UPDATE_NO_UPDATES);
+		EXPECT_EQ(progress_count, 0);
 		EXPECT_FALSE(started);
 		EXPECT_FALSE(finished);
 		HTTPUpdate::ReturnValue = HTTP_UPDATE_OK;
 		httpUpdate.onProgress([](const int current, const int /*total*/) {
-			progressCount++;
+			progress_count++;
 
-			if (progressCount == 1) {
-				EXPECT_EQ(300000, current);
+			if (progress_count == 1) {
+				EXPECT_EQ(current, 300000);
 			}
 			else {
-				EXPECT_EQ(1000000, current);
-
+				EXPECT_EQ(current, 1000000);
 			}
 		});
 
@@ -46,9 +50,9 @@ namespace Esp32MockTest {
 			finished = true;
 		});
 
-		EXPECT_EQ(HTTP_UPDATE_OK, httpUpdate.update(client, nullptr));
+		EXPECT_EQ(httpUpdate.update(client, nullptr), HTTP_UPDATE_OK);
 
-		EXPECT_EQ(2, progressCount);
+		EXPECT_EQ(progress_count, 2);
 		EXPECT_TRUE(started);
 		EXPECT_TRUE(finished);
 	}

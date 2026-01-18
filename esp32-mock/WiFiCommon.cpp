@@ -1,4 +1,4 @@
-// Copyright 2022-2025 Rik Essenius
+// Copyright 2022-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 // except in compliance with the License. You may obtain a copy of the License at
@@ -21,7 +21,7 @@
 
 
 WiFiCommon::WiFiCommon() {
-    reset();
+    testReset();
     for (byte i = 0; i < 6; i++) {
         _mac[i] = i * 17;
     }
@@ -33,17 +33,19 @@ String WiFiCommon::macAddress() {
     return {buffer};
 }
 
-void WiFiCommon::reset() {
+void WiFiCommon::testReset() {
     SafeCString::strcpy(_name, "esp32_001122334455");
+    _ssid[0] = 0;
     _localIP = IPAddress(10, 0, 0, 2);
     _gatewayIP = IPAddress(10, 0, 0, 1);
     _subnetIP = IPAddress(255, 255, 0, 0);
     _primaryDNSIP = IPAddress(8, 8, 8, 8);
     _secondaryDNSIP = IPAddress(8, 8, 4, 4);
-    _connectCountdown = _connectMax;
+	_status = WL_DISCONNECTED;
+    testConnectIn(kDefaultConnectDelay);
 }
 
-void WiFiCommon::connectIn(const int connectCount) {
+void WiFiCommon::testConnectIn(const int connectCount) {
     _connectMax = connectCount;
     _connectCountdown = _connectMax;
 }
