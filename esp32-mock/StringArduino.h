@@ -37,7 +37,7 @@ public:
 
     int toInt() const {
         try { return std::stoi(_string); }
-        catch (...) { return 0; }
+        catch (...) { return 0; } // NOSONAR - existing behavior of the Arduino String class
     }
     
     const char* c_str() const { return _string.c_str(); }

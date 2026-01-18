@@ -46,7 +46,7 @@ constexpr uint8_t LED_BUILTIN = 13;
 /**
  * \brief // Mock implementation of the Esp class for unit testing (not targeting the ESP32)
  */
-class Esp {
+class Esp { 
 public:
     void restart() { _heapCount = -1; }
     uint32_t getFreeHeap();
@@ -203,8 +203,8 @@ struct hw_timer_t {
 };
 
 hw_timer_t* timerBegin(uint8_t num, uint16_t divider, bool countUp);
-inline void timerAttachInterrupt(hw_timer_t* /*timer*/, void (*)(), bool /*edge*/) {}
-inline void timerAlarmWrite(hw_timer_t* /*timer*/, uint64_t /*alarm_value*/, bool /*auto-reload*/) {}
+inline void timerAttachInterrupt(hw_timer_t* /*timer*/, void (*)(), bool /*edge*/) { /* mock */ }
+inline void timerAlarmWrite(hw_timer_t* /*timer*/, uint64_t /*alarm_value*/, bool /*auto-reload*/) { /* mock */ }
 void timerAlarmEnable(hw_timer_t* timer);
 void timerEnd(hw_timer_t* timer);
 #endif

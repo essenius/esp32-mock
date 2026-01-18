@@ -1,3 +1,5 @@
+// sonarignore: cpp:S5817
+
 // Copyright 2021-2026 Rik Essenius
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
@@ -16,10 +18,13 @@
 // ReSharper disable CppMemberFunctionMayBeStatic
 // ReSharper disable CppMemberFunctionMayBeConst
 // ReSharper disable CppParameterMayBeConst
+// SonarQube: cpp:S5817 -  Ignored as we are mimicking existing interface
 
 #include "ESP.h"
 #include <chrono>
 #include <cstdarg>
+
+
 
 Esp ESP;
 
@@ -126,7 +131,7 @@ unsigned long micros() {
     return espMicros;
 }
 
-void yield() {}
+void yield() { /* mock */ }
 
 // Serial class
 
@@ -179,7 +184,7 @@ void HardwareSerial::testSetInput(const char* input) {
     _inputBufferPointer = _inputBuffer;
 }
 
-void HardwareSerial::setTimeout(long /*timeout*/) {}
+void HardwareSerial::setTimeout(long /*timeout*/) { /* mock */ }
 
 const char* toString(LogLevel level) {
     switch (level) {
